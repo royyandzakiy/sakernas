@@ -1,0 +1,13 @@
+.container {
+  margin:0 auto;
+  display: block;
+  padding: 0 20px;
+}
+
+.head {
+  background: #FF5834;
+  padding: 20px;
+  color: white;
+  font-size: 20px;
+  margin-bottom: 20px;
+}

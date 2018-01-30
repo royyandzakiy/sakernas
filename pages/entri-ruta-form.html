@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="main.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <div class="head">Form Entry Ruta</div>
+
+  <div class="container col-lg-8">
+    <!-- DYNAMIC TABS -->
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#hal1">Halaman 1</a></li>
+      <li><a data-toggle="tab" href="#hal2">Halaman 2</a></li>
+      <li><a data-toggle="tab" href="#hal3">Halaman 3</a></li>
+    </ul>
+
+    <div class="tab-content">
+      <div id="hal1" class="tab-pane fade in active">
+        <h3>HALAMAN 1</h3>
+
+        <!-- TABLE -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>I. Ringakasan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1</th>
+                <td>KLASIFIKASI DESA/KELURAHAN *)</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+              <th>2</th>
+                <td>NOMOR BLOK SENSUS</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+              <th>3</th>
+                <td>NOMOR KODE SAMPEL</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+              <th>4</th>
+              	<td>YANG LAINNYA</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+                <th>5</th>
+                	<td>YANG LAIN LAGI</td>
+                  <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+              <th>...</th>
+              	<td>YANG YANG</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+        </tbody>
+        </table>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>II. Kesimpulan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>1</th>
+                <td>KLASIFIKASI DESA/KELURAHAN *)</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+            <tr>
+              <th>2</th>
+                <td>NOMOR BLOK SENSUS</td>
+                <td><input type="text" class="form-control" id="usr"></td>
+            </tr>
+        </tbody>
+        </table>
+
+      </div>
+      <div id="hal2" class="tab-pane fade">
+        <h3>Menu 1</h3>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <div id="hal3" class="tab-pane fade">
+        <h3>Menu 1</h3>
+        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn">Save</button>
+    <button type="button" class="btn btn-danger">Close</button>
+  </div>
+</body>
+</html>
