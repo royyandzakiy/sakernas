@@ -73,14 +73,34 @@ const cellEditProp = {
   blurToSave: true
 };
 
-const options = {
-  // empty
-};
-
 // If you want to enable deleteRow, you must enable row selection also.
 const selectRowProp = {
   mode: 'checkbox'
 };
+
+function onAfterInsertRow(row) {
+  let newRowStr = '';
+
+  for (const prop in row) {
+    newRowStr += prop + ': ' + row[prop] + ' \n';
+  }
+  alert('The new row is:\n ' + newRowStr);
+}
+
+function onAfterDeleteRow(row) {
+  let newRowStr = '';
+
+  for (const prop in row) {
+    newRowStr += prop + ': ' + row[prop] + ' \n';
+  }
+  alert('The deleted row is:\n ' + newRowStr);
+}
+
+const options = {
+  afterInsertRow: onAfterInsertRow,   // A hook for after insert rows
+  afterDeleteRow: onAfterDeleteRow
+};
+
 
 // ----MAIN APP
 class Entri_p extends Component {
@@ -88,10 +108,18 @@ class Entri_p extends Component {
     super(props);
   }
 
+  remote(remoteObj) {
+    // Only cell editing, insert and delete row will be handled by remote store
+    remoteObj.cellEdit = true;
+    remoteObj.insertRow = true;
+    remoteObj.dropRow = true;
+    return remoteObj;
+  }
+
   render() {
     return (
       <div>
-      <BootstrapTable data={ pemutakhiran } deleteRow={ true } selectRow={ selectRowProp } insertRow={ true } cellEdit={ cellEditProp } version='4' striped hover condensed >
+      <BootstrapTable data={ pemutakhiran } deleteRow={ true } selectRow={ selectRowProp } insertRow={ true } cellEdit={ cellEditProp } options={ options } version='4' striped hover condensed >
           <TableHeaderColumn width='150' dataAlign='center' dataField='no' isKey >No</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='left' dataField='kode_kec'>Kecamatan</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='center' dataField='kode_desa'>Desa/Kelurahan</TableHeaderColumn>
