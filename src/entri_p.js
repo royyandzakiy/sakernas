@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import './main.css';
-import $ from 'jquery';
+import './css/main.css';
 
 // table stuff
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
@@ -87,32 +86,11 @@ const selectRowProp = {
 class Entri_p extends Component {
   constructor(props) {
     super(props);
-    this.data_temp={};
-
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": "http://localhost:8000/notes/5a64975b7a768503007f22c9",
-      "method": "GET",
-      "headers": {
-        "content-type": "application/x-www-form-urlencoded",
-        "cache-control": "no-cache",
-        "postman-token": "d9510c00-b936-41e9-9848-e906c4096211"
-      },
-      "data": {
-        "title": "Second Note",
-        "body": "ubah isinya, mantap juga sih"
-      }
-    }
-
-    $.ajax(settings).done(function (response) {
-      console.log(response);
-    });
-
   }
 
   render() {
     return (
+      <div>
       <BootstrapTable data={ pemutakhiran } deleteRow={ true } selectRow={ selectRowProp } insertRow={ true } cellEdit={ cellEditProp } version='4' striped hover condensed >
           <TableHeaderColumn width='150' dataAlign='center' dataField='no' isKey >No</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='left' dataField='kode_kec'>Kecamatan</TableHeaderColumn>
@@ -121,6 +99,7 @@ class Entri_p extends Component {
           <TableHeaderColumn width='150' dataAlign='center' dataField='sls'>SLS</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='center' dataField='status_dok'>Status Dok</TableHeaderColumn>
       </BootstrapTable>
+      </div>
     );
   }
 }

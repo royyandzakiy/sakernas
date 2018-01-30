@@ -1,76 +1,131 @@
 import React, { Component } from 'react';
-import './App.css';
+import './css/App.css';
+
+// dependency
 import $ from 'jquery';
+import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+
+// pages
+import Navbar from './navbar';
 import Entri_p from './entri_p';
+import Main from './main';
 
-import {
-  BrowserRouter as Router,
-  Route,
-  Link
-} from 'react-router-dom'
+//
+// ----DATA
+//    data ini akan di load setelah tombol 'refresh' ditekan
+//    GET data berdasarkan parameter pada input box
+var pemutakhiran = [{
+      kode_prov: 11,
+      kode_kab: 1,
+      kode_kec: 20,
+      kode_desa: 35,
+      nks: 10060,
+      semester: 1,
+      nort: 1,
+      id_user: 11010001,
+      status_dok: 'C',
+      //--data lain--
+      sls: 4,
+      nbf: 8,
+      nbs: 8,
+      nama_krt: 'JOHERAN',
+      alamat: 'DUSUN SEULANGA',
+      keberadaan_rt: '',
+      nurt: 3,
+      jml_art: 2
+    },{
+      kode_prov: 11,
+      kode_kab: 1,
+      kode_kec: 20,
+      kode_desa: 30,
+      nks: 15029,
+      semester: 1,
+      nort: 1,
+      id_user: 11010001,
+      status_dok: 'C',
+      //--data lain--
+      sls: 4,
+      nbf: 8,
+      nbs: 8,
+      nama_krt: 'JOHERAN',
+      alamat: 'DUSUN TAUHAO',
+      keberadaan_rt: '',
+      nurt: 3,
+      jml_art: 2
+    },{
+      kode_prov: 11,
+      kode_kab: 1,
+      kode_kec: 20,
+      kode_desa: 35,
+      nks: 15013,
+      semester: 1,
+      nort: 1,
+      id_user: 11010001,
+      status_dok: 'C',
+      //--data lain--
+      sls: 4,
+      nbf: 8,
+      nbs: 8,
+      nama_krt: 'JOHERAN',
+      alamat: 'DUSUN MAWAR',
+      keberadaan_rt: '',
+      nurt: 3,
+      jml_art: 2
+    }]
 
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
-)
+// ---FUNCTIONS
+const cellEditProp = {
+  mode: 'dbclick',
+  blurToSave: true
+};
 
-const About = () => (
-  <div>
-    <h2>About</h2>
-  </div>
-)
+const options = {
+  // empty
+};
 
-const Topic = ({ match }) => (
-  <div>
-    <h3>{match.params.topicId}</h3>
-  </div>
-)
+// If you want to enable deleteRow, you must enable row selection also.
+const selectRowProp = {
+  mode: 'checkbox'
+};
 
-const Entri = ({ match }) => (
-  <div>
-    <h2>Entri</h2>
-    <ul>
-      <li>
-        <Link to={`${match.url}/entri-p`}>
-          Rendering with React
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/dsrt`}>
-          Components
-        </Link>
-      </li>
-      <li>
-        <Link to={`${match.url}/entri-ruta`}>
-          Props v. State
-        </Link>
-      </li>
-    </ul>
+// ----MAIN APP
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.data_temp={};
 
-    <Route path={`${match.url}/:topicId`} component={Topic}/>
-    <Route exact path={match.url} render={() => (
-      <h3>Please select a topic.</h3>
-    )}/>
-  </div>
-)
+    var settings = {
+    "async": true,
+    "crossDomain": true,
+    "url": "http://localhost:8002/notes/5a64975b7a768503007f22c9",
+    "method": "GET",
+    "headers": {
+      "content-type": "application/x-www-form-urlencoded",
+      "cache-control": "no-cache",
+      "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
+    },
+    "data": {
+      "title": "Second Note",
+      "body": "ubah isinya, mantap juga sih"
+    }
+  }
 
-// MAINMENU = membuat path
-const MainMenu = () => (
-  <Router>
-    <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/entri">Entri</Link></li>
-      </ul>
+  $.ajax(settings).done(function (response) {
+    console.log("Royyan: " + response);
+  });
 
-      <hr/>
+  }
 
-      <Route exact path="/" component={Home}/>
-      <Route path="/about" component={About}/>
-      <Route path="/entri" component={Entri}/>
-    </div>
-  </Router>
-)
-export default MainMenu
+  render() {
+    return (
+      <div>
+
+      <Navbar />
+
+      </div>
+    );
+  }
+}
+
+export default App;
