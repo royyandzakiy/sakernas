@@ -95,23 +95,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.data_temp={};
-
-    var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "http://localhost:8002/pemutakhiran",
-    "method": "GET",
-    "headers": {
-      "content-type": "application/x-www-form-urlencoded",
-      "cache-control": "no-cache",
-      "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
-    }
-  }
-
-  $.ajax(settings).done(function (response) {
-    console.log("Royyan: " + response);
-  });
-
   }
 
   render() {

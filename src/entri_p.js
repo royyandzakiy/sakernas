@@ -10,63 +10,26 @@ import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min
 //    data ini akan di load setelah tombol 'refresh' ditekan
 //    GET data berdasarkan parameter pada input box
 var data = [{}];
-var pemutakhiran = [{
-      kode_prov: 11,
-      kode_kab: 1,
-      kode_kec: 20,
-      kode_desa: 35,
-      nks: 10060,
-      semester: 1,
-      nort: 1,
-      id_user: 11010001,
-      status_dok: 'C',
+var pemutakhiran = [];
+pemutakhiran = [{
+      kode_prov: 99,
+      kode_kab: 9,
+      kode_kec: 99,
+      kode_desa: 99,
+      nks: 99999,
+      semester: 9,
+      nort: 9,
+      id_user: 9999999,
+      status_dok: '9',
       //--data lain--
-      sls: 4,
-      nbf: 8,
-      nbs: 8,
-      nama_krt: 'JOHERAN',
-      alamat: 'DUSUN SEULANGA',
+      sls: 9,
+      nbf: 9,
+      nbs: 0,
+      nama_krt: '999999',
+      alamat: 'DUSUN 999999',
       keberadaan_rt: '',
-      nurt: 3,
-      jml_art: 2
-    },{
-      kode_prov: 11,
-      kode_kab: 1,
-      kode_kec: 20,
-      kode_desa: 30,
-      nks: 15029,
-      semester: 1,
-      nort: 1,
-      id_user: 11010001,
-      status_dok: 'C',
-      //--data lain--
-      sls: 4,
-      nbf: 8,
-      nbs: 8,
-      nama_krt: 'JOHERAN',
-      alamat: 'DUSUN TAUHAO',
-      keberadaan_rt: '',
-      nurt: 3,
-      jml_art: 2
-    },{
-      kode_prov: 11,
-      kode_kab: 1,
-      kode_kec: 20,
-      kode_desa: 35,
-      nks: 15013,
-      semester: 1,
-      nort: 1,
-      id_user: 11010001,
-      status_dok: 'C',
-      //--data lain--
-      sls: 4,
-      nbf: 8,
-      nbs: 8,
-      nama_krt: 'JOHERAN',
-      alamat: 'DUSUN MAWAR',
-      keberadaan_rt: '',
-      nurt: 3,
-      jml_art: 2
+      nurt: 9,
+      jml_art: 9
     }]
 
 // ---FUNCTIONS
@@ -104,20 +67,20 @@ const options = {
 };
 
 var settings = {
-"async": true,
-"crossDomain": true,
-"url": "http://localhost:8002/pemutakhiran",
-"method": "GET",
-"headers": {
-  "content-type": "application/x-www-form-urlencoded",
-  "cache-control": "no-cache",
-  "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
-}
+  "async": true,
+  "crossDomain": true,
+  "url": "http://localhost:8002/pemutakhiran",
+  "method": "GET",
+  "headers": {
+    "content-type": "application/x-www-form-urlencoded",
+    "cache-control": "no-cache",
+    "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
+  }
 }
 
 $.ajax(settings).done(function (response) {
-  console.log("Royyan: " + response);
-  data = response;
+  console.log("Bro: " + JSON.stringify(response));
+  pemutakhiran = response;
 });
 
 
