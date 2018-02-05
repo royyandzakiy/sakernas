@@ -15,6 +15,7 @@ import Main from './main';
 // ----DATA
 //    data ini akan di load setelah tombol 'refresh' ditekan
 //    GET data berdasarkan parameter pada input box
+/*
 var pemutakhiran = [{
       kode_prov: 11,
       kode_kab: 1,
@@ -73,7 +74,7 @@ var pemutakhiran = [{
       nurt: 3,
       jml_art: 2
     }]
-
+//*/
 // ---FUNCTIONS
 const cellEditProp = {
   mode: 'dbclick',
@@ -98,16 +99,12 @@ class App extends Component {
     var settings = {
     "async": true,
     "crossDomain": true,
-    "url": "http://localhost:8002/notes/5a64975b7a768503007f22c9",
+    "url": "http://localhost:8002/pemutakhiran",
     "method": "GET",
     "headers": {
       "content-type": "application/x-www-form-urlencoded",
       "cache-control": "no-cache",
       "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
-    },
-    "data": {
-      "title": "Second Note",
-      "body": "ubah isinya, mantap juga sih"
     }
   }
 

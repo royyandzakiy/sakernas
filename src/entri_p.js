@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import './css/main.css';
 
 // table stuff
+import $ from 'jquery';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 // ----DATA
 //    data ini akan di load setelah tombol 'refresh' ditekan
 //    GET data berdasarkan parameter pada input box
+var data = [{}];
 var pemutakhiran = [{
       kode_prov: 11,
       kode_kab: 1,
@@ -100,6 +102,23 @@ const options = {
   afterInsertRow: onAfterInsertRow,   // A hook for after insert rows
   afterDeleteRow: onAfterDeleteRow
 };
+
+var settings = {
+"async": true,
+"crossDomain": true,
+"url": "http://localhost:8002/pemutakhiran",
+"method": "GET",
+"headers": {
+  "content-type": "application/x-www-form-urlencoded",
+  "cache-control": "no-cache",
+  "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
+}
+}
+
+$.ajax(settings).done(function (response) {
+  console.log("Royyan: " + response);
+  data = response;
+});
 
 
 // ----MAIN APP

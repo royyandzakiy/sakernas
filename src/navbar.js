@@ -16,29 +16,7 @@ import $ from 'jquery';
 // ----NAVBAR
 class Navbar extends Component {
   constructor(props) {
-    super(props);
-    this.data_temp={};
-
-    var settings = {
-    "async": true,
-    "crossDomain": true,
-    "url": "http://localhost:8002/notes/5a64975b7a768503007f22c9",
-    "method": "GET",
-    "headers": {
-      "content-type": "application/x-www-form-urlencoded",
-      "cache-control": "no-cache",
-      "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
-    },
-    "data": {
-      "title": "Second Note",
-      "body": "ubah isinya, mantap juga sih"
-    }
-  }
-
-  $.ajax(settings).done(function (response) {
-    console.log("Royyan: " + response);
-  });
-
+    super(props)
   }
 
   render() {
