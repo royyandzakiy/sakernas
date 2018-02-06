@@ -9,7 +9,6 @@ import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min
 // ----DATA
 //    data ini akan di load setelah tombol 'refresh' ditekan
 //    GET data berdasarkan parameter pada input box
-var data = [{}];
 var pemutakhiran = [];
 pemutakhiran = [{
       kode_prov: 99,
@@ -78,11 +77,8 @@ var settings = {
   }
 }
 
-$.ajax(settings).done(function (response) {
-  // console.log("Bro: " + JSON.parse(response));
-  console.log("Bro: " + response[0]["_id"]);
-  // pemutakhiran = JSON.parse(response);
-  // pemutakhiran = jQuery.parseJSON(response);
+$.ajax(settings).done(function (dataku) {
+  console.log("Inilah dataku: " + dataku[1]["semester"]);
 });
 
 
@@ -102,7 +98,7 @@ class Entri_p extends Component {
 
   render() {
     return (
-      <div>
+      <div id="container" class="col-lg-10">
       <BootstrapTable data={ pemutakhiran } deleteRow={ true } selectRow={ selectRowProp } insertRow={ true } cellEdit={ cellEditProp } options={ options } version='4' striped hover condensed >
           <TableHeaderColumn width='150' dataAlign='center' dataField='no' isKey >No</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='left' dataField='kode_kec'>Kecamatan</TableHeaderColumn>
@@ -111,6 +107,35 @@ class Entri_p extends Component {
           <TableHeaderColumn width='150' dataAlign='center' dataField='sls'>SLS</TableHeaderColumn>
           <TableHeaderColumn width='150' dataAlign='center' dataField='status_dok'>Status Dok</TableHeaderColumn>
       </BootstrapTable>
+
+      <table id="entri-p" class="table-striped table table-bordered table-hover" >
+          <thead>
+              <tr>
+                  <th>no</th>
+                  <th>kode_kec</th>
+                  <th>kode_desa</th>
+                  <th>nks</th>
+                  <th>sls</th>
+                  <th>status_dok</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>1</td>
+                  <td>90890</td>
+                  <td>9980</td>
+                  <td>80980</td>
+                  <td>980980</td>
+                  <td>c</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <script type="text/JavaScript">
+          $('#entri-p > tbody:last-child').append('<tr>...</tr><tr>...</tr>');
+          $('#entri-p > tbody:last-child').append('<tr>...</tr><tr>...</tr>');
+          $('#entri-p > tbody:last-child').append('<tr>...</tr><tr>...</tr>');
+      </script>
       </div>
     );
   }
