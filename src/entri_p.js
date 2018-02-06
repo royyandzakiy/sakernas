@@ -79,8 +79,10 @@ var settings = {
 }
 
 $.ajax(settings).done(function (response) {
-  console.log("Bro: " + JSON.stringify(response));
-  pemutakhiran = response;
+  // console.log("Bro: " + JSON.parse(response));
+  console.log("Bro: " + response[0]["_id"]);
+  // pemutakhiran = JSON.parse(response);
+  // pemutakhiran = jQuery.parseJSON(response);
 });
 
 

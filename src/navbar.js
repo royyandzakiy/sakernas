@@ -11,7 +11,6 @@ import {
   Route,
   Link
 } from 'react-router-dom'
-import $ from 'jquery';
 
 // ----NAVBAR
 class Navbar extends Component {
