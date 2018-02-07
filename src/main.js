@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import './css/main.css';
-
 
 // ----MAIN APP
 class Main extends Component {
@@ -10,8 +8,8 @@ class Main extends Component {
 
   render() {
     return (
-      <div>
-        <h1>HALAMAN KOSONG</h1>
+      <div id="container-main">
+        <h3 style={{color:'rgba(0,0,0,.4)'}}>~</h3>
       </div>
     );
   }
