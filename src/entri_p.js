@@ -60,33 +60,40 @@ class Entri_p extends Component {
 
   constructor(props) {
       super(props);
-      var data_pemutakhiran;
+      var data_pemutakhiran = [];
 
       $(document).ready(function(){
 
           $.ajax(settings).done(function (_data_pemutakhiran) {
               data_pemutakhiran = _data_pemutakhiran;
-              console.log(JSON.stringify(data_pemutakhiran));
+              console.log("data_pemutakhiran: " + JSON.stringify(data_pemutakhiran));
 
-              for (var i=0; i<data_pemutakhiran.length; i++) {
-              	$("#entri-p > tbody").append(
-                "<a href='#'><tr class='data'>"+
-                  "<td>"+ (Number(i)+1).toString() +"</td><td>"+
-                  data_pemutakhiran[i]['kode_kec'] + "</td><td>" +
-                  data_pemutakhiran[i]['kode_desa'] + "</td><td>" +
-                  data_pemutakhiran[i]['nks'] + "</td><td>" +
-                  data_pemutakhiran[i]['sls'] + "</td><td>" +
-                  data_pemutakhiran[i]['status_dok'] + "</td>" +
-                "</tr></a><tr class='edit'>"+
-                  "<td>"+ (Number(i)+1).toString() +"</td><td>"+
-                  "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_kec'] +" />" + "</td><td>" +
-                  "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_desa'] +" />" + "</td><td>" +
-                  "<input type=\"text\" value="+ data_pemutakhiran[i]['nks'] +" />" + "</td><td>" +
-                  "<input type=\"text\" value="+ data_pemutakhiran[i]['sls'] +" />" + "</td><td>" +
-                  "<input type=\"text\" value="+ data_pemutakhiran[i]['status_dok'] +" />" + "</td>" +
+              if (data_pemutakhiran.length == 0) {
+                $("#entri-p > tbody").append("<tr>" +
+                "List Empty" +
                 "</tr>");
+              } else {
 
-                $(".edit").css("display","none");
+                for (var i=0; i<data_pemutakhiran.length; i++) {
+                	$("#entri-p > tbody").append(
+                  "<a href='#'><tr class='data'>"+
+                    "<td>"+ (Number(i)+1).toString() +"</td><td>"+
+                    data_pemutakhiran[i]['kode_kec'] + "</td><td>" +
+                    data_pemutakhiran[i]['kode_desa'] + "</td><td>" +
+                    data_pemutakhiran[i]['nks'] + "</td><td>" +
+                    data_pemutakhiran[i]['sls'] + "</td><td>" +
+                    data_pemutakhiran[i]['status_dok'] + "</td>" +
+                  "</tr></a><tr class='edit'>"+
+                    "<td>"+ (Number(i)+1).toString() +"</td><td>"+
+                    "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_kec'] +" />" + "</td><td>" +
+                    "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_desa'] +" />" + "</td><td>" +
+                    "<input type=\"text\" value="+ data_pemutakhiran[i]['nks'] +" />" + "</td><td>" +
+                    "<input type=\"text\" value="+ data_pemutakhiran[i]['sls'] +" />" + "</td><td>" +
+                    "<input type=\"text\" value="+ data_pemutakhiran[i]['status_dok'] +" />" + "</td>" +
+                  "</tr>");
+
+                  $(".edit").css("display","none");
+                  }
               }
           });
       });
@@ -96,6 +103,11 @@ class Entri_p extends Component {
   render() {
     return (
       <div id="container" class="col-lg-12">
+
+      <div>
+          <input >
+      </div>
+
       <table id="entri-p" class="table-striped table table-bordered table-hover" >
           <thead>
               <tr>
