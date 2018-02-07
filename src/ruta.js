@@ -77,14 +77,15 @@ class Ruta extends Component {
           });
 
           // get data: nbs/nks
-          $.ajax(set_settings("http://localhost:8002/nbsnks")).done(function (_data) {
+          $.ajax(set_settings("http://localhost:8002/master-nks")).done(function (_data) {
               var data = _data;
+              // console.log(JSON.stringify(data)); //debug
 
-                for (var i=0; i<data.length; i++) {
-                	$("#ruta-nbsnks").append(
-                  "<option value="+data[i]['nbs']+"/["+data[i]['nks']+"]></option>"
-                  );
-                }
+              for (var i=0; i<data.length; i++) {
+                $("#ruta-nbsnks").append(
+                "<option value="+data[i]['nbs']+" / "+data[i]['nks']+">"+data[i]['nbs']+" / "+data[i]['nks']+"</option>"
+                );
+              }
 
           });
 
@@ -102,7 +103,7 @@ class Ruta extends Component {
     var ruta_kab = $('#ruta-kab option:selected').val();
     var ruta_kec = $('#ruta-kec option:selected').val();
     var ruta_desa = $('#ruta-desa option:selected').val();
-    var ruta_nbsnks = $('#ruta-nbsnks option:selected').val();
+    //var dsrt_nbsnks = $('#dsrt-nbsnks option:selected').val();
     var ruta_no_dsrt;
 
     $.get("http://localhost:8002/dsrt",
@@ -112,7 +113,7 @@ class Ruta extends Component {
           ruta_kab:ruta_kab,
           ruta_kec:ruta_kec,
           ruta_desa:ruta_desa,
-          ruta_nbsnks:ruta_nbsnks
+          //dsrt_nbsnks:dsrt_nbsnks
         },
         function(data, status) {
             // alert(JSON.stringify(data)); //debug
