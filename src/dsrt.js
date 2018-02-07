@@ -21,7 +21,7 @@ function set_settings(_url) {
 }
 
 // ----MAIN APP
-class Entri_p extends Component {
+class Dsrt extends Component {
 
   constructor(props) {
       super(props);
@@ -153,4 +153,4 @@ class Entri_p extends Component {
   }
 }
 
-export default Entri_p;
+export default Dsrt;

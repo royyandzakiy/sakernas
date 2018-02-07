@@ -4,6 +4,7 @@ import './css/navbar.css';
 //pages
 import Main from './main';
 import Entri_p from './entri_p';
+import Entri_p_form from './entri_p_form';
 
 //dependencies
 import {
@@ -105,7 +106,7 @@ class Navbar extends Component {
 
       <Route exact path="/" component={Main}/>
       <Route path="/pemutakhiran" component={Entri_p}/>
-      <Route path="/dsrt" component={Main}/>
+      <Route path="/dsrt" component={Entri_p_form}/>
       <Route path="/ruta" component={Main}/>
       <Route path="/account" component={Main}/>
       <Route path="/logout" component={Main}/>
