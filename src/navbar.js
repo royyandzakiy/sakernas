@@ -5,6 +5,9 @@ import './css/navbar.css';
 import Main from './main';
 import Entri_p from './entri_p';
 import Entri_p_form from './entri_p_form';
+import Dsrt from './dsrt';
+import Ruta from './ruta';
+import Petugas_lap from './petugas_lap';
 
 //dependencies
 import {
@@ -50,17 +53,7 @@ class Navbar extends Component {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Master <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><Link to="/pemutakhiran">Petugas Laporan</Link></li>
-                  <li><Link to="/pemutakhiran">Pengguna</Link></li>
-                  <li><Link to="/pemutakhiran">Wilayah</Link></li>
-                  <li><Link to="/pemutakhiran">Wilayah Sampel</Link></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Master <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><Link to="/pemutakhiran">Petugas Laporan</Link></li>
+                  <li><Link to="/petugas-lap">Petugas Lapangan</Link></li>
                   <li><Link to="/pemutakhiran">Pengguna</Link></li>
                   <li><Link to="/pemutakhiran">Wilayah</Link></li>
                   <li><Link to="/pemutakhiran">Wilayah Sampel</Link></li>
@@ -106,8 +99,9 @@ class Navbar extends Component {
 
       <Route exact path="/" component={Main}/>
       <Route path="/pemutakhiran" component={Entri_p}/>
-      <Route path="/dsrt" component={Entri_p_form}/>
-      <Route path="/ruta" component={Main}/>
+      <Route path="/dsrt" component={Dsrt}/>
+      <Route path="/ruta" component={Ruta}/>
+      <Route path="/petugas-lap" component={Petugas_lap}/>
       <Route path="/account" component={Main}/>
       <Route path="/logout" component={Main}/>
       </div>
