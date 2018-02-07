@@ -62,37 +62,40 @@ class Entri_p extends Component {
       super(props);
       var data_pemutakhiran;
 
-      function ambilDataPemutakhiran() {
-        return $.ajax(settings).done(function (_data_pemutakhiran) {
-          data_pemutakhiran = _data_pemutakhiran;
-          console.log(JSON.stringify(data_pemutakhiran));
-        });
-      }
-
-
       $(document).ready(function(){
-          $.when(ambilDataPemutakhiran).done(() => {
 
-          for (var i=0; i<data_pemutakhiran.length; i++) {
-          	$("#entri-p > tbody").append(
-            "<tr>"+
-              "<td>"+ i +"</td><td>"+
-              data_pemutakhiran[i]['kode_kec'] + "</td><td>" +
-              data_pemutakhiran[i]['kode_desa'] + "</td><td>" +
-              data_pemutakhiran[i]['nks'] + "</td><td>" +
-              data_pemutakhiran[i]['sls'] + "</td><td>" +
-              data_pemutakhiran[i]['status_dok'] + "</td><td>" +
-            "</tr>");
-          }
+          $.ajax(settings).done(function (_data_pemutakhiran) {
+              data_pemutakhiran = _data_pemutakhiran;
+              console.log(JSON.stringify(data_pemutakhiran));
 
-        });
+              for (var i=0; i<data_pemutakhiran.length; i++) {
+              	$("#entri-p > tbody").append(
+                "<a href='#'><tr class='data'>"+
+                  "<td>"+ (Number(i)+1).toString() +"</td><td>"+
+                  data_pemutakhiran[i]['kode_kec'] + "</td><td>" +
+                  data_pemutakhiran[i]['kode_desa'] + "</td><td>" +
+                  data_pemutakhiran[i]['nks'] + "</td><td>" +
+                  data_pemutakhiran[i]['sls'] + "</td><td>" +
+                  data_pemutakhiran[i]['status_dok'] + "</td>" +
+                "</tr></a><tr class='edit'>"+
+                  "<td>"+ (Number(i)+1).toString() +"</td><td>"+
+                  "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_kec'] +" />" + "</td><td>" +
+                  "<input type=\"text\" value="+ data_pemutakhiran[i]['kode_desa'] +" />" + "</td><td>" +
+                  "<input type=\"text\" value="+ data_pemutakhiran[i]['nks'] +" />" + "</td><td>" +
+                  "<input type=\"text\" value="+ data_pemutakhiran[i]['sls'] +" />" + "</td><td>" +
+                  "<input type=\"text\" value="+ data_pemutakhiran[i]['status_dok'] +" />" + "</td>" +
+                "</tr>");
+
+                $(".edit").css("display","none");
+              }
+          });
       });
 
-  }
+      }
 
   render() {
     return (
-      <div id="container" class="col-lg-10">
+      <div id="container" class="col-lg-12">
       <table id="entri-p" class="table-striped table table-bordered table-hover" >
           <thead>
               <tr>
@@ -105,18 +108,8 @@ class Entri_p extends Component {
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td>1</td>
-                  <td>90890</td>
-                  <td>9980</td>
-                  <td>80980</td>
-                  <td>980980</td>
-                  <td>c</td>
-              </tr>
           </tbody>
       </table>
-      <div id="list">jsldkjfldsk
-      </div>
       </div>
     );
   }
