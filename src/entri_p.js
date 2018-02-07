@@ -3,8 +3,6 @@ import './css/main.css';
 
 // table stuff
 import $ from 'jquery';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import '../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
 // ----DATA
 //    data ini akan di load setelah tombol 'refresh' ditekan
@@ -42,27 +40,7 @@ const selectRowProp = {
   mode: 'checkbox'
 };
 
-function onAfterInsertRow(row) {
-  let newRowStr = '';
-
-  for (const prop in row) {
-    newRowStr += prop + ': ' + row[prop] + ' \n';
-  }
-  alert('The new row is:\n ' + newRowStr);
-}
-
-function onAfterDeleteRow(row) {
-  let newRowStr = '';
-
-  for (const prop in row) {
-    newRowStr += prop + ': ' + row[prop] + ' \n';
-  }
-  alert('The deleted row is:\n ' + newRowStr);
-}
-
 const options = {
-  afterInsertRow: onAfterInsertRow,   // A hook for after insert rows
-  afterDeleteRow: onAfterDeleteRow
 };
 
 var settings = {
@@ -77,20 +55,39 @@ var settings = {
   }
 }
 
-$.ajax(settings).done(function (dataku) {
-  console.log("Inilah dataku: " + dataku[1]["semester"]);
-});
-
-
 // ----MAIN APP
 class Entri_p extends Component {
 
-  remote(remoteObj) {
-    // Only cell editing, insert and delete row will be handled by remote store
-    remoteObj.cellEdit = true;
-    remoteObj.insertRow = true;
-    remoteObj.dropRow = true;
-    return remoteObj;
+  constructor(props) {
+      super(props);
+      var data_pemutakhiran;
+
+      function ambilDataPemutakhiran() {
+        return $.ajax(settings).done(function (_data_pemutakhiran) {
+          data_pemutakhiran = _data_pemutakhiran;
+          console.log(JSON.stringify(data_pemutakhiran));
+        });
+      }
+
+
+      $(document).ready(function(){
+          $.when(ambilDataPemutakhiran).done(() => {
+
+          for (var i=0; i<data_pemutakhiran.length; i++) {
+          	$("#entri-p > tbody").append(
+            "<tr>"+
+              "<td>"+ i +"</td><td>"+
+              data_pemutakhiran[i]['kode_kec'] + "</td><td>" +
+              data_pemutakhiran[i]['kode_desa'] + "</td><td>" +
+              data_pemutakhiran[i]['nks'] + "</td><td>" +
+              data_pemutakhiran[i]['sls'] + "</td><td>" +
+              data_pemutakhiran[i]['status_dok'] + "</td><td>" +
+            "</tr>");
+          }
+
+        });
+      });
+
   }
 
   render() {
@@ -118,6 +115,8 @@ class Entri_p extends Component {
               </tr>
           </tbody>
       </table>
+      <div id="list">jsldkjfldsk
+      </div>
       </div>
     );
   }
