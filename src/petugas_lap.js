@@ -113,85 +113,10 @@ class Petugas_lap extends Component {
   edit(e) {
     e.preventDefault();
 
-    var _petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
-    var _petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
-    var _petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
-
-    $.get("http://localhost:8002/petugas_lap",
-        {
-          petugas_lap_sem:_petugas_lap_sem,
-          petugas_lap_prov:_petugas_lap_prov,
-          petugas_lap_kab:_petugas_lap_kab
-        },
-        function(data, status) {
-            alert(JSON.stringify(data)); //debug
-
-            // remove rows
-            $("#petugas-lap > tbody > tr").remove();
-
-            // generate rows
-            if (data.length != 0)
-                for (var i=0; i<data.length; i++) {
-                  $("#petugas-lap > tbody").append(
-                  "<tr class='form-data' onclick=\"document.location = 'form-petugas-lap.html';\">"+
-                    "<td>"+ (Number(i)+1).toString() +"</td><td>"+
-                    data[i]['kode_petugas'] + "</td><td>" +
-                    data[i]['nama'] + "</td><td>" +
-                    data[i]['no_telp'] + "</td><td>" +
-                    data[i]['jabatan_petugas'] + "</td>" +
-                  "</tr>");
-
-                  $(".edit").css("display","none");
-                  }
-            else
-                $("#petugas-lap > tbody").append(
-                "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
-                "</tr>");
-        });
-
   }
-
   // function: delete
   delete(e) {
     e.preventDefault();
-
-    var _petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
-    var _petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
-    var _petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
-
-    $.get("http://localhost:8002/petugas_lap",
-        {
-          petugas_lap_sem:_petugas_lap_sem,
-          petugas_lap_prov:_petugas_lap_prov,
-          petugas_lap_kab:_petugas_lap_kab
-        },
-        function(data, status) {
-            alert(JSON.stringify(data)); //debug
-
-            // remove rows
-            $("#petugas-lap > tbody > tr").remove();
-
-            // generate rows
-            if (data.length != 0)
-                for (var i=0; i<data.length; i++) {
-                  $("#petugas-lap > tbody").append(
-                  "<tr class='form-data' onclick=\"document.location = 'form-petugas-lap.html';\">"+
-                    "<td>"+ (Number(i)+1).toString() +"</td><td>"+
-                    data[i]['kode_petugas'] + "</td><td>" +
-                    data[i]['nama'] + "</td><td>" +
-                    data[i]['no_telp'] + "</td><td>" +
-                    data[i]['jabatan_petugas'] + "</td>" +
-                  "</tr>");
-
-                  $(".edit").css("display","none");
-                  }
-            else
-                $("#petugas-lap > tbody").append(
-                "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
-                "</tr>");
-        });
 
   }
 
@@ -199,17 +124,19 @@ class Petugas_lap extends Component {
   refresh(e) {
     e.preventDefault();
 
-    $.get("http://localhost:8002/petugas_lap",
-        {
-          petugas_lap_sem:$('#petugas-lap-sem option:selected').val(),
-          petugas_lap_prov:$('#petugas-lap-prov option:selected').val(),
-          petugas_lap_kab:$('#petugas-lap-kab option:selected').val()
-        },
-        function(data, status) {
-            // alert(JSON.stringify(data)); //debug
+    var temp = {
+      petugas_lap_sem:$('#petugas-lap-sem option:selected').val(),
+      petugas_lap_prov:$('#petugas-lap-prov option:selected').val(),
+      petugas_lap_kab:$('#petugas-lap-kab option:selected').val()
+    };
 
+    alert(JSON.stringify(temp)); //debug
+    $("#petugas-lap > tbody > tr").remove();
+
+    $.get("http://localhost:8002/petugas-lap",
+        temp,
+        function(data, status) {
             // remove rows
-            $("#petugas-lap > tbody > tr").remove();
 
             // generate rows
             if (data.length != 0)

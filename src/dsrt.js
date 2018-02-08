@@ -104,6 +104,10 @@ class Dsrt extends Component {
     var dsrt_kec = $('#dsrt-kec option:selected').val();
     var dsrt_desa = $('#dsrt-desa option:selected').val();
     //var dsrt_nbsnks = $('#dsrt-nbsnks option:selected').val();
+
+    // remove rows
+    $("#dsrt > tbody > tr").remove();
+    
     var temp = {
       dsrt_sem:dsrt_sem,
       dsrt_prov:dsrt_prov,
@@ -119,8 +123,6 @@ class Dsrt extends Component {
             // alert(JSON.stringify(temp)); //debug
             // alert(JSON.stringify(data)); //debug
 
-            // remove rows
-            $("#dsrt > tbody > tr").remove();
 
             // generate rows
             if (data.length != 0)
