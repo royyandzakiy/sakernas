@@ -96,6 +96,7 @@ class Entri_p_form extends Component {
   render() {
     return (
       <div id="container" class="col-lg-12">
+
           <table class="table col-lg-4">
             <tbody>
               <tr>

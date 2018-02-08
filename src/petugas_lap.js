@@ -130,14 +130,13 @@ class Petugas_lap extends Component {
       petugas_lap_kab:$('#petugas-lap-kab option:selected').val()
     };
 
-    alert(JSON.stringify(temp)); //debug
+    // alert(JSON.stringify(temp)); //debug
+    // remove rows
     $("#petugas-lap > tbody > tr").remove();
 
     $.get("http://localhost:8002/petugas-lap",
         temp,
         function(data, status) {
-            // remove rows
-
             // generate rows
             if (data.length != 0)
                 for (var i=0; i<data.length; i++) {
