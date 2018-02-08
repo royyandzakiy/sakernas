@@ -59,8 +59,8 @@ class Navbar extends Component {
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/petugas-lap">Petugas Lapangan</Link></li>
                   <li><Link to="/">Pengguna</Link></li>
-                  <li><Link to="/">Wilayah</Link></li>
-                  <li><Link to="/">Wilayah Sampel</Link></li>
+                  <li class="disabled"><Link to="/">Wilayah</Link></li>
+                  <li class="disabled"><Link to="/">Wilayah Sampel</Link></li>
                 </ul>
               </li>
 
@@ -68,8 +68,8 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Rekap <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/">Progres Entri</Link></li>
-                  <li><Link to="/">Operator</Link></li>
-                  <li><Link to="/">Pengguna</Link></li>
+                  <li class="disabled"><Link to="/">Operator</Link></li>
+                  <li class="disabled"><Link to="/">Pengguna</Link></li>
                   <li><Link to="/">Cek Kewajaran</Link></li>
                 </ul>
               </li>
@@ -79,12 +79,12 @@ class Navbar extends Component {
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/">Revalidasi</Link></li>
                   <li><Link to="/">Setujui Data</Link></li>
-                  <li><Link to="/">Weighting</Link></li>
-                  <li><Link to="/">Derivasi</Link></li>
+                  <li class="disabled"><Link to="/">Weighting</Link></li>
+                  <li class="disabled"><Link to="/">Derivasi</Link></li>
                 </ul>
               </li>
 
-              <li class="dropdown">
+              <li class="dropdown disabled">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>User Support</a>
               </li>
 

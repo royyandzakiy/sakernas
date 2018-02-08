@@ -61,15 +61,15 @@ class Petugas_lap extends Component {
   refresh(e) {
     e.preventDefault();
 
-    var entri_p_sem = $('#petugas-lap-sem option:selected').val();
-    var entri_p_prov = $('#petugas-lap-prov option:selected').val();
-    var entri_p_kab = $('#petugas-lap-kab option:selected').val();
+    var petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
+    var petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
+    var petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
 
     $.get("http://localhost:8002/petugas_lap",
         {
-          entri_p_sem:entri_p_sem,
-          entri_p_prov:entri_p_prov,
-          entri_p_kab:entri_p_kab
+          petugas_lap_sem:petugas_lap_sem,
+          petugas_lap_prov:petugas_lap_prov,
+          petugas_lap_kab:petugas_lap_kab
         },
         function(data, status) {
             // alert(JSON.stringify(data)); //debug
@@ -139,9 +139,28 @@ class Petugas_lap extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default" onClick={this.refresh}>Add</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add">Add</button>
       <button type="button" class="btn btn-default" onClick={this.refresh}>Edit</button>
       <button type="button" class="btn btn-default" onClick={this.refresh}>Delete</button>
+
+      <div id="add" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Add Pengawas</h4>
+            </div>
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
       </div>
     );
   }

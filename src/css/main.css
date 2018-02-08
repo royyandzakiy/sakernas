@@ -11,3 +11,9 @@ body {
 #container-main {
   text-align: center;
 }
+
+li.disabled:hover {
+  cursor:not-allowed;
+  color: black;
+  background: black;
+}
