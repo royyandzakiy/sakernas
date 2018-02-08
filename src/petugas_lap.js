@@ -52,27 +52,79 @@ class Petugas_lap extends Component {
 
           });
 
+          $('#petugas-lap').on('click', '.clickable-row', function(event) {
+          $(this).addClass('active').siblings().removeClass('active');
+        });
+
       });
 
 
   }
 
-  // function: refresh
-  refresh(e) {
+  // function: add
+  add(e) {
     e.preventDefault();
 
-    var petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
-    var petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
-    var petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
+    var add_petugas_sem = $('#petugas-lap-sem option:selected').val();
+    var add_petugas_prov = $('#petugas-lap-prov option:selected').val();
+    var add_petugas_kab = $('#petugas-lap-kab option:selected').val();
+
+    $(document).ready(function(){
+        $('#add-sem').val(add_petugas_sem);
+        $('#add-prov').val(add_petugas_prov);
+        $('#add-kab').val(add_petugas_kab);
+    });
+  }
+
+  // function: save
+  save(e) {
+    e.preventDefault();
+
+    var add_petugas_sem = $('#add-sem').val();
+    var add_petugas_prov = $('#add-prov').val();
+    var add_petugas_kab = $('#add-kab').val();
+    var add_petugas_kodepetugas = $('#add-kode-petugas').val();$('#add-kode-petugas').val("");
+    var add_petugas_namapetugas = $('#add-nama-petugas').val();$('#add-nama-petugas').val("");
+    var add_petugas_status = $('#add-status').val();$('#add-status').val("");
+    var add_petugas_telp = $('#add-telp').val();$('#add-telp').val("");
+
+    var temp = {
+      add_petugas_sem:add_petugas_sem,
+      add_petugas_prov:add_petugas_prov,
+      add_petugas_kab:add_petugas_kab,
+      add_petugas_kodepetugas:add_petugas_kodepetugas,
+      add_petugas_namapetugas:add_petugas_namapetugas,
+      add_petugas_status:add_petugas_status,
+      add_petugas_telp:add_petugas_telp
+    };
+
+    $.post("http://localhost:8002/petugas-lap/add",
+        temp,
+        function(data, status) {
+            alert("save status: "+status+": "+JSON.stringify(data)); //debug
+            // add rows
+        }).done(function() {
+            alert('insert success!');
+        });
+        //*/
+  }
+
+  // function: edit
+  edit(e) {
+    e.preventDefault();
+
+    var _petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
+    var _petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
+    var _petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
 
     $.get("http://localhost:8002/petugas_lap",
         {
-          petugas_lap_sem:petugas_lap_sem,
-          petugas_lap_prov:petugas_lap_prov,
-          petugas_lap_kab:petugas_lap_kab
+          petugas_lap_sem:_petugas_lap_sem,
+          petugas_lap_prov:_petugas_lap_prov,
+          petugas_lap_kab:_petugas_lap_kab
         },
         function(data, status) {
-            // alert(JSON.stringify(data)); //debug
+            alert(JSON.stringify(data)); //debug
 
             // remove rows
             $("#petugas-lap > tbody > tr").remove();
@@ -100,6 +152,88 @@ class Petugas_lap extends Component {
 
   }
 
+  // function: delete
+  delete(e) {
+    e.preventDefault();
+
+    var _petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
+    var _petugas_lap_prov = $('#petugas-lap-prov option:selected').val();
+    var _petugas_lap_kab = $('#petugas-lap-kab option:selected').val();
+
+    $.get("http://localhost:8002/petugas_lap",
+        {
+          petugas_lap_sem:_petugas_lap_sem,
+          petugas_lap_prov:_petugas_lap_prov,
+          petugas_lap_kab:_petugas_lap_kab
+        },
+        function(data, status) {
+            alert(JSON.stringify(data)); //debug
+
+            // remove rows
+            $("#petugas-lap > tbody > tr").remove();
+
+            // generate rows
+            if (data.length != 0)
+                for (var i=0; i<data.length; i++) {
+                  $("#petugas-lap > tbody").append(
+                  "<tr class='form-data' onclick=\"document.location = 'form-petugas-lap.html';\">"+
+                    "<td>"+ (Number(i)+1).toString() +"</td><td>"+
+                    data[i]['kode_petugas'] + "</td><td>" +
+                    data[i]['nama'] + "</td><td>" +
+                    data[i]['no_telp'] + "</td><td>" +
+                    data[i]['jabatan_petugas'] + "</td>" +
+                  "</tr>");
+
+                  $(".edit").css("display","none");
+                  }
+            else
+                $("#petugas-lap > tbody").append(
+                "<tr class='data'>"+
+                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+                "</tr>");
+        });
+
+  }
+
+  // function: refresh
+  refresh(e) {
+    e.preventDefault();
+
+    $.get("http://localhost:8002/petugas_lap",
+        {
+          petugas_lap_sem:$('#petugas-lap-sem option:selected').val(),
+          petugas_lap_prov:$('#petugas-lap-prov option:selected').val(),
+          petugas_lap_kab:$('#petugas-lap-kab option:selected').val()
+        },
+        function(data, status) {
+            // alert(JSON.stringify(data)); //debug
+
+            // remove rows
+            $("#petugas-lap > tbody > tr").remove();
+
+            // generate rows
+            if (data.length != 0)
+                for (var i=0; i<data.length; i++) {
+                  $("#petugas-lap > tbody").append(
+                  "<tr class='form-data clickable-row'>"+
+                    "<td>"+
+                    data[i]['kode_petugas'] + "</td><td>" +
+                    data[i]['nama'] + "</td><td>" +
+                    data[i]['no_telp'] + "</td><td>" +
+                    data[i]['jabatan_petugas'] + "</td>" +
+                  "</tr>");
+
+                  $(".edit").css("display","none");
+                  }
+            else
+                $("#petugas-lap > tbody").append(
+                "<tr class='data'>"+
+                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+                "</tr>");
+        });
+
+  }
+
   render() {
     return (
       <div id="container" class="col-lg-12">
@@ -107,8 +241,8 @@ class Petugas_lap extends Component {
       <div class="form-group col-lg-4" >
         <label for="petugas-lap-sem">Semester:</label>
         <select class="form-control" id="petugas-lap-sem" >
-          <option>1</option>
-          <option>2</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
         </select>
 
         <label for="petugas-lap-prov">Provinsi:</label>
@@ -123,11 +257,11 @@ class Petugas_lap extends Component {
         <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
       </div>
 
-      <table id="petugas-lap" class="table-striped table table-bordered table-hover" >
+      <table id="petugas-lap" class="table table-bordered table-hover" >
           <thead>
               <tr>
                   <th>Kode Pengawas</th>
-                  <th colSpan="2">Nama Pengawas</th>
+                  <th>Nama Pengawas</th>
                   <th>No Telp</th>
                   <th>Status Pengawas</th>
               </tr>
@@ -139,9 +273,9 @@ class Petugas_lap extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add">Add</button>
-      <button type="button" class="btn btn-default" onClick={this.refresh}>Edit</button>
-      <button type="button" class="btn btn-default" onClick={this.refresh}>Delete</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add</button>
+      <button type="button" class="btn btn-default" onClick={this.edit}>Edit</button>
+      <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
 
       <div id="add" class="modal fade" role="dialog">
         <div class="modal-dialog">
@@ -152,15 +286,50 @@ class Petugas_lap extends Component {
               <h4 class="modal-title">Add Pengawas</h4>
             </div>
             <div class="modal-body">
-              <p>Some text in the modal.</p>
+
+            <table class="table-condensed">
+              <tbody>
+                <tr>
+                  <th>Semester :</th>
+                    <td><input type="text" class="form-control" id="add-sem" disabled /></td>
+                </tr>
+                <tr>
+                  <th>Provinsi :</th>
+                    <td><input type="text" class="form-control" id="add-prov" disabled /></td>
+                </tr>
+                <tr>
+                  <th>Kabupaten :</th>
+                    <td><input type="text" class="form-control" id="add-kab" disabled /></td>
+                </tr>
+                <tr>
+                  <th>Kode Petugas :</th>
+                    <td><input type="text" class="form-control" id="add-kode-petugas" /></td>
+                </tr>
+                <tr>
+                  <th>Nama Petugas :</th>
+                    <td><input type="text" class="form-control" id="add-nama-petugas" /></td>
+                </tr>
+                <tr>
+                  <th>Deskripsi Status :</th>
+                    <td><input type="text" class="form-control" id="add-status" /></td>
+                </tr>
+                <tr>
+                  <th>No Telp :</th>
+                    <td><input type="text" class="form-control" id="add-telp" /></td>
+                </tr>
+            </tbody>
+            </table>
+
             </div>
             <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.save}>Save</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
 
         </div>
       </div>
+
       </div>
     );
   }
