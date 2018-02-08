@@ -51,32 +51,26 @@ class Entri_p extends Component {
                 }
           });
 
-        //tes selected table
-        var $table = $('#table'),
-            $button = $('#button');
-        $(function () {
-            $button.click(function () {
-                alert('getSelections: ' + JSON.stringify($table.bootstrapTable('getSelections')));
-            });
-        });
-
     });
   }
 
-  // function: form
-  form(e) {
-    e.preventDefault();
-
-    var entri_p_sem = $('#entri-p-sem option:selected').val();
-    var entri_p_prov = $('#entri-p-prov option:selected').val();
-    var entri_p_kab = $('#entri-p-kab option:selected').val();
-    var entri_p_kec = $('#entri-p-kab option:selected').val();
-    var entri_p_desa = $('#entri-p-kab option:selected').val();
-    var entri_p_nks = $('#entri-p-kab option:selected').val();
-
+  add(e) {
+    var string = "<a onClick={this.delete}>X</a>"+
+    "<tr class='edit' id='entri-p-add'>"+
+      "<td>"+
+      "<input type=\"text\" id='modal-add-sls' /></td><td>" +
+      "<input type=\"text\" id='modal-add-nbf' /></td><td>" +
+      "<input type=\"text\" id='modal-add-nbs' /></td><td>" +
+      "<input type=\"text\" id='modal-add-nurt' /></td><td>" +
+      "<input type=\"text\" id='modal-add-nama_krt' /></td><td>" +
+      "<input type=\"text\" idmodal-add-alamat /></td><td>" +
+      "<input type=\"text\" id='modal-add-no_urut_p' /></td><td>" +
+      "<input type=\"text\" id='modal-add-jml_art' /></td>" +
+    "</tr>";
+    return string;
   }
 
-  // function: refresh
+  //--- function: refresh
   refresh(e) {
     e.preventDefault();
 
@@ -93,14 +87,15 @@ class Entri_p extends Component {
         function(data, status) {
             // alert(JSON.stringify(data)); //debug
 
-            // remove rows
+            //--- PERBARUI ENTRI-P
+            //--- remove rows
             $("#entri-p > tbody > tr").remove();
 
-            // generate rows
+            //--- generate rows
             if (data.length != 0)
                 for (var i=0; i<data.length; i++) {
                   $("#entri-p > tbody").append(
-                  "<tr class='form-data' >"+
+                  "<tr class='form-data' data-toggle='modal' data-target='#form'>"+
                     "<td>"+ (Number(i)+1).toString() +"</td><td>"+
                     data[i]['kode_kec'] + "</td><td>" +
                     data[i]['kode_desa'] + "</td><td>" +
@@ -123,8 +118,76 @@ class Entri_p extends Component {
                 "<tr class='data'>"+
                   "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
-        });
 
+            //--- ENTRI-P ONCLICK
+            //    PERBARUI MODAL-TABLE
+            // table reference
+            var entri_p = document.getElementById('entri-p'),rIndex;
+            var modal_table = document.getElementById('modal-table'),rIndex_mt;
+
+            for (var i=0; i<entri_p.rows.length; i++) {
+              entri_p.rows[i].onclick = function() {
+
+                var modal_sem = document.getElementById("entri-p-sem").value;
+                var modal_prov = document.getElementById("entri-p-prov").value;
+                var modal_kab = document.getElementById("entri-p-kab").value;
+                var modal_kec = this.cells[1].innerHTML;
+                var modal_desa = this.cells[2].innerHTML;
+                var modal_nks = this.cells[3].innerHTML;
+
+                //--- rubah nilai dari modal
+                document.getElementById("modal-sem").innerHTML = modal_sem;
+                document.getElementById("modal-prov").innerHTML = modal_prov;
+                document.getElementById("modal-kab").innerHTML = modal_kab;
+                document.getElementById("modal-kec").innerHTML = modal_kec;
+                document.getElementById("modal-desa").innerHTML = modal_desa;
+                document.getElementById("modal-nks").innerHTML = modal_nks;
+
+                //--- ambil data untuk generate TABLE
+                $.get("http://localhost:8002/pemutakhiran",
+                    {
+                      entri_p_sem:modal_sem,
+                      entri_p_prov:modal_prov,
+                      entri_p_kab:modal_kab,
+                      entri_p_kec:modal_kec,
+                      entri_p_desa:modal_desa,
+                      entri_p_nks:modal_nks
+                    },
+                    function(data, status) {
+                        // alert(JSON.stringify(data)); //debug
+
+                        //--- remove rows
+                        $("#modal-table-big > tbody > tr").remove();
+
+                        //--- GENERATE MODAL-ROWS (editable)
+                        if (data.length != 0)
+                          for (var i=0; i<data.length; i++) {
+                              $("#modal-table-big > tbody").append(
+                              "<tr class='edit'>"+
+                                "<td>"+
+                                "<input type=\"text\" value="+ data[i]['sls'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['nbf'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['nbs'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['nurt'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['nama_krt'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['alamat'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['alamat'] +" />" + "</td><td>" +
+                                "<input type=\"text\" value="+ data[i]['jml_art'] +" />" + "</td>" +
+                              "</tr>");
+                              }
+                        else
+                            $("#entri-p > tbody").append(
+                            "<tr class='data'>"+
+                              "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+                            "</tr>");
+
+                        //--- tambah 1 ROW terakhir utk Add
+                        $("#modal-table-big > tbody").append(
+                        this.add);
+                    });
+              }
+            }
+        });
   }
 
   render() {
@@ -168,8 +231,6 @@ class Entri_p extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle='modal' data-target='#form' onClick={this.form}>Edit</button>
-
       <div id="form" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
@@ -180,36 +241,38 @@ class Entri_p extends Component {
             </div>
             <div class="modal-body">
 
-            <table class="table col-lg-4">
+            <table class="table col-lg-4" id="modal-table">
               <tbody>
-                <tr>
-                  <th>Semester</th>
-                    <td>1</td>
-                </tr>
-                <tr>
-                  <th>Provinsi</th>
-                    <td>[11] ACEH</td>
-                </tr>
-                <tr>
-                  <th>Kabupaten</th>
-                    <td>[01] SIMEULUE</td>
-                </tr>
-                <tr>
-                  <th>Kecamatan</th>
-                    <td>[029] SIMEULUE TIMUR</td>
-                </tr>
-                <tr>
-                    <th>Desa</th>
-                      <td>[001] DeSA SUKAMAJU</td>
-                </tr>
-                <tr>
-                  <th>NKS</th>
-                    <td>13412</td>
-                </tr>
-            </tbody>
+
+                  <tr>
+                    <th>Semester</th>
+                      <td id="modal-sem"></td>
+                  </tr>
+                  <tr>
+                    <th>Provinsi</th>
+                      <td id="modal-prov"></td>
+                  </tr>
+                  <tr>
+                    <th>Kabupaten</th>
+                      <td id="modal-kab"></td>
+                  </tr>
+                  <tr>
+                    <th>Kecamatan</th>
+                      <td id="modal-kec"></td>
+                  </tr>
+                  <tr>
+                      <th>Desa</th>
+                        <td id="modal-desa"></td>
+                  </tr>
+                  <tr>
+                    <th>NKS</th>
+                      <td id="modal-nks"></td>
+                  </tr>
+
+              </tbody>
             </table>
 
-            <table class="table table-hover">
+            <table class="table table-hover" id="modal-table-big">
               <thead>
                 <tr>
                   <th>SLS</th>
@@ -224,72 +287,20 @@ class Entri_p extends Component {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>001</td>
-                  <td>010</td>
-                  <td>010</td>
-                  <td>001</td>
-                  <td>IRBON</td>
-                  <td>DUSUN A</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>2</td>
-                </tr>
-                <tr>
-                  <td>001</td>
-                  <td>010</td>
-                  <td>010</td>
-                  <td>001</td>
-                  <td>IRBON</td>
-                  <td>DUSUN A</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>2</td>
-                </tr>
-                <tr>
-                  <td>001</td>
-                  <td>010</td>
-                  <td>010</td>
-                  <td>001</td>
-                  <td>IRBON</td>
-                  <td>DUSUN A</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>2</td>
-                </tr>
               </tbody>
             </table>
 
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.save}>Save</button>
+              <button type="button" class="btn btn-warning" id="add-btn-add" onClick={this.add}>Add</button>
+              <button type="button" class="btn btn-warning" id="add-btn-save" onClick={this.save}>Save</button>
+              <button type="button" class="btn btn-warning" id="add-btn-generate" onClick={this.generate}>Generate Sample</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
 
         </div>
       </div>
-
-      hohoohohohoho
-
-      <div id="toolbar">
-          <button id="button" class="btn btn-default">getSelections</button>
-      </div>
-      <table id="table"
-             data-toggle="table"
-             data-toolbar="#toolbar"
-             data-height="460"
-             data-click-to-select="true"
-             data-url="json/data.json">
-          <thead>
-          <tr>
-              <th data-field="state" data-checkbox="true"></th>
-              <th data-field="id">ID</th>
-              <th data-field="name">Item Name</th>
-              <th data-field="price">Item Price</th>
-          </tr>
-          </thead>
-      </table>
       </div>
     );
   }

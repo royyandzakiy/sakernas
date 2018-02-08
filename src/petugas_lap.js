@@ -101,10 +101,11 @@ class Petugas_lap extends Component {
     $.post("http://localhost:8002/petugas-lap/add",
         temp,
         function(data, status) {
-            alert("save status: "+status+": "+JSON.stringify(data)); //debug
+            //alert("save status: "+status+": "+JSON.stringify(data)); //debug
             // add rows
         }).done(function() {
-            alert('insert success!');
+            //alert('insert success!');
+            this.refresh;
         });
         //*/
   }
