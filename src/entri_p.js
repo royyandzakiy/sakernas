@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Table from './table';
 // table stuff
 import $ from 'jquery';
 
@@ -335,7 +334,6 @@ class Entri_p extends Component {
         </div>
       </div>
 
-      <Table />
       </div>
     );
   }

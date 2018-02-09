@@ -4,7 +4,7 @@ import $ from 'jquery';
 class Table extends Component {
   constructor(props) {
     super(props);
-    this.state = { data:{ok:'oke'} };
+    this.state = { data:[] };
 
     this.getData();
   }
@@ -23,8 +23,8 @@ class Table extends Component {
       success: function(data) {
         this.setState({
           data: JSON.stringify(data)
-        })
-        alert(data);
+        });
+        this.print(this.state.data[0]['_id']);
       }.bind(this),
       error: function(err) {
         console.log(err);
@@ -35,8 +35,8 @@ class Table extends Component {
   handleSubmit() {
   }
 
-  print() {
-    return {__html: this.state.data};
+  print(_data) {
+    return {__html: _data};
   }
 
   render() {
