@@ -4,7 +4,7 @@ NOW
 # menu Entri Ruta
 # menu Master Petugas Lapangan
  refresh
-	- get data, param(sem, prov, kab, nks, no_dsrt) -> ambil dengan REST, taruh sbg component props
+	- get data, param(sem, prov, kab, nks, no_dsrt) -> ambil dengan REST, taruh sbg komponen di state
 	- simpan di state
 - edit (modal)
 	x buka modal

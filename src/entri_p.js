@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Table from './table';
 // table stuff
 import $ from 'jquery';
 
@@ -19,6 +20,7 @@ function set_settings(_url) {
 
     return settings;
 }
+
 
 // ----MAIN APP
 class Entri_p extends Component {
@@ -332,6 +334,8 @@ class Entri_p extends Component {
 
         </div>
       </div>
+
+      <Table />
       </div>
     );
   }
