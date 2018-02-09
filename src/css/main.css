@@ -17,3 +17,16 @@ li.disabled:hover {
   color: black;
   background: black;
 }
+
+#modal-table1 {
+  width: 40%;
+  display: inline-block;
+}
+
+.modal-body-bottom {
+  overflow-y: scroll;
+}
+
+#modal-table-big > tbody > tr > input[type='text'] {
+  max-width: 30px;
+}

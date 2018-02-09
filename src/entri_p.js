@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // table stuff
 import $ from 'jquery';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 // ----ALMANAC FUNCTION
 function set_settings(_url) {
@@ -241,54 +240,88 @@ class Entri_p extends Component {
             </div>
             <div class="modal-body">
 
-            <table class="table col-lg-4" id="modal-table">
-              <tbody>
+                <div class="modal-body-top">
 
-                  <tr>
-                    <th>Semester</th>
+                <table class="table col-lg-4" id="modal-table-1">
+                  <tbody>
+                    <tr>
+                      <th>Semester</th>
                       <td id="modal-sem"></td>
-                  </tr>
-                  <tr>
-                    <th>Provinsi</th>
+                    </tr>
+                    <tr>
+                      <th>Provinsi</th>
                       <td id="modal-prov"></td>
-                  </tr>
-                  <tr>
-                    <th>Kabupaten</th>
+                    </tr>
+                    <tr>
+                      <th>Kabupaten</th>
                       <td id="modal-kab"></td>
-                  </tr>
-                  <tr>
-                    <th>Kecamatan</th>
+                    </tr>
+                    <tr>
+                      <th>Kecamatan</th>
                       <td id="modal-kec"></td>
-                  </tr>
-                  <tr>
+                    </tr>
+                    <tr>
                       <th>Desa</th>
-                        <td id="modal-desa"></td>
-                  </tr>
-                  <tr>
-                    <th>NKS</th>
+                      <td id="modal-desa"></td>
+                    </tr>
+                    <tr>
+                      <th>NKS</th>
                       <td id="modal-nks"></td>
-                  </tr>
+                    </tr>
+                  </tbody>
+                </table>
 
-              </tbody>
-            </table>
+                <table class="table col-lg-4" id="modal-table-2">
+                  <tbody>
+                    <tr>
+                      <th>Semester</th>
+                      <td id="modal-sem"></td>
+                    </tr>
+                    <tr>
+                      <th>Provinsi</th>
+                      <td id="modal-prov"></td>
+                    </tr>
+                    <tr>
+                      <th>Kabupaten</th>
+                      <td id="modal-kab"></td>
+                    </tr>
+                    <tr>
+                      <th>Kecamatan</th>
+                      <td id="modal-kec"></td>
+                    </tr>
+                    <tr>
+                      <th>Desa</th>
+                      <td id="modal-desa"></td>
+                    </tr>
+                    <tr>
+                      <th>NKS</th>
+                      <td id="modal-nks"></td>
+                    </tr>
+                  </tbody>
+                </table>
 
-            <table class="table table-hover" id="modal-table-big">
-              <thead>
-                <tr>
-                  <th>SLS</th>
-                  <th>NBF</th>
-                  <th>NBS</th>
-                  <th>NURT</th>
-                  <th>Nama KRT</th>
-                  <th>Alamat</th>
-                  <th>Keberadaan Ruta</th>
-                  <th>No. Urut Pemutakhiran</th>
-                  <th>Jml ART</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+                </div>
+                <div class="modal-body-bottom">
+
+                <table class="table table-hover" id="modal-table-big">
+                  <thead>
+                    <tr>
+                      <th>SLS</th>
+                      <th>NBF</th>
+                      <th>NBS</th>
+                      <th>NURT</th>
+                      <th>Nama KRT</th>
+                      <th>Alamat</th>
+                      <th>Keberadaan Ruta</th>
+                      <th>No. Urut Pemutakhiran</th>
+                      <th>Jml ART</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+
+                </div>
 
             </div>
             <div class="modal-footer">
