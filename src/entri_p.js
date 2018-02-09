@@ -274,28 +274,26 @@ class Entri_p extends Component {
                 <table class="table col-lg-4" id="modal-table-2">
                   <tbody>
                     <tr>
-                      <th>Semester</th>
-                      <td id="modal-sem"></td>
+                      <th rowSpan="2">Jumlah rumah tangga hasil pemutakhiran</th>
+                      <td>fsdfd</td>
                     </tr>
                     <tr>
-                      <th>Provinsi</th>
-                      <td id="modal-prov"></td>
+                      <th>Keterangan Pencacah</th>
+                      <td id="modal-b3r1a">
+                        Nama: <input id="modal-b3r1a" type="text" />
+                        Tanggal: <input id="modal-b3r2atl" type="text" />
+                        Bulan: <input id="modal-b3r2abl" type="text" />
+                        Tahun: <input id="modal-b3r2ath" type="text" />
+                      </td>
                     </tr>
                     <tr>
-                      <th>Kabupaten</th>
-                      <td id="modal-kab"></td>
-                    </tr>
-                    <tr>
-                      <th>Kecamatan</th>
-                      <td id="modal-kec"></td>
-                    </tr>
-                    <tr>
-                      <th>Desa</th>
-                      <td id="modal-desa"></td>
-                    </tr>
-                    <tr>
-                      <th>NKS</th>
-                      <td id="modal-nks"></td>
+                      <th>Keterangan Pengawas</th>
+                      <td id="modal-b3r1b">
+                        Nama Pengawas: <input id="modal-b3r1b" type="text" />
+                        Tanggal: <input id="modal-b3r2btl" type="text" />
+                        Bulan: <input id="modal-b3r2bbl" type="text" />
+                        Tahun: <input id="modal-b3r2bth" type="text" />
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -303,7 +301,7 @@ class Entri_p extends Component {
                 </div>
                 <div class="modal-body-bottom">
 
-                <table class="table table-hover" id="modal-table-big">
+                <table class="table table-hover table-bordered table-striped" id="modal-table-big">
                   <thead>
                     <tr>
                       <th>SLS</th>

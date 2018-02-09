@@ -18,7 +18,7 @@ li.disabled:hover {
   background: black;
 }
 
-#modal-table1 {
+.modal-body-top > table {
   width: 40%;
   display: inline-block;
 }

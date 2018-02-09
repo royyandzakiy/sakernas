@@ -1,0 +1,35 @@
+NOW
+# menu DSRT
+## API pembuatan DSRT
+# menu Entri Ruta
+# menu Master Petugas Lapangan
+ refresh
+	- get data, param(sem, prov, kab, nks, no_dsrt) -> ambil dengan REST, taruh sbg component props
+	- simpan di state
+- edit (modal)
+	x buka modal
+	- isi ke modal
+	- get row index/id > getElement Values
+	- kirim data lewat ajax > generate table
+	- table edittable, add-able, deletable
+	- buat generate sample function
+- add (modal)
+- delete (modal)
+
+# Rekap Progress Entri Ruta
+# Rekap Cek Kewajaran
+
+# Utilitas Revalidasi Ruta
+
+LATER: Form Entri-P
+# routing
+- buat route ke komponen "form" > pass props sesuai dg yg di klik
+- get lalu tampilkan props
+- $.get dengan props utk hasilkan tabel
+- hasilkan tabel dengan input "text"
+
+# form
+- add: kirim post ke /entri-p-add
+- save: kirim post ke /entri-p-update
+- delete: tanya > kirim delete ke /entri-p-delete
+- generate sample: kirim post ke /generate-sample
