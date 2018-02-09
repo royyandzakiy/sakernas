@@ -22,9 +22,8 @@ class Table extends Component {
       },
       success: function(data) {
         this.setState({
-          data: JSON.stringify(data)
+          tes: JSON.stringify(data)
         })
-        alert(data);
       }.bind(this),
       error: function(err) {
         console.log(err);
