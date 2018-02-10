@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <style>
+            #test-table > tbody > tr.selected > td {
+              background-color: rgba(0,0,0,.05);
+            }
+            #test-table > tbody > tr > td:hover {
+              cursor: pointer;
+            }
+        </style>
+
+    </head>
+    <body>
+        <h2>SUDAH TERUJI OLEH ANAK ITB</h2>
+       <table class="table table-hover table-bordered" id="test-table">
+           <tbody>
+               <tr>
+                   <td class="nama">
+                      Royyan
+                   </td>
+                   <td class="jurusan">
+                      Teknik Informatika
+                   </td>
+                   <td class="kelas">
+                      3
+                   </td>
+               </tr>
+               <tr>
+                   <td class="nama">
+                      Azis
+                   </td>
+                   <td class="jurusan">
+                      Teknik Informatika
+                   </td>
+                   <td class="kelas">
+                      2
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+       <script type="text/javascript">
+        // alert($("#test-table > tbody > tr").length); // count
+
+        select_table();
+
+        // selects a row of a table
+        function select_table() {
+            $(document).ready(function() {
+                $("#test-table tr").click(function () {
+                    $('.selected').removeClass('selected');
+                    $(this).addClass("selected");
+                    var product = $('.nama',this).html();
+                    var infRate =$('.jurusan',this).html();
+                    var note =$('.kelas',this).html();
+                    alert('data: ' + product +','+ infRate+','+ note);
+                });
+            });
+        }
+        </script>
+    </body>
+
+</html>

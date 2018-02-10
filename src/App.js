@@ -5,6 +5,7 @@ import './css/App.css';
 
 // pages
 import Navbar from './navbar';
+import Test from './test';
 
 // ----MAIN APP
 class App extends Component {
@@ -16,7 +17,7 @@ class App extends Component {
     return (
       <div>
 
-      <Navbar />
+      <Test />
 
       </div>
     );
