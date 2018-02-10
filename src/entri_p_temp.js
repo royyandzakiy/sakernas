@@ -379,7 +379,7 @@ class Entri_p extends Component {
           entri_p_kab:entri_p_kab
         },
         function(data, status) {
-            // alert(JSON.stringify(data)); //debug
+            alert(JSON.stringify(data)); //debug
 
             //--- PERBARUI ENTRI-P
             //--- remove rows

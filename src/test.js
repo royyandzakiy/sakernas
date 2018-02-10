@@ -2,49 +2,70 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 //pages
 
+function TableItem(props) {
+  return(
+    <tr>
+        <td className="nama">{props.nama}</td>
+        <td className="jurusan">{props.jurusan}</td>
+        <td className="nim">{props.nim}</td>
+    </tr>
+  );
+}
+
+function ItemList(props) {
+  alert(props.data);
+  const data = props.data;
+  return (
+    <tr>
+        {data.map((data) =>
+            <TableItem
+                nama={data['nama']}
+                jurusan={data['jurusan']}
+                nim={data['nim']}
+            />
+        )}
+    </tr>
+  );
+}
+
 // ----Test
 class Test extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      table_data: {
-      }
+      data: [
+        {
+          nama: 'Royyan',
+          jurusan: 'IF',
+          nim: '13515123',
+        },
+        {
+          nama: 'Azis',
+          jurusan: 'IF',
+          nim: '13515001',
+        },
+      ]
     }
 
-    this.select_table(); // working fine
+    this.selectTableController(); // working fine
+    ItemList(this.state.data);
 
   }
 
 
   // selects a row of a table
-  select_table() {
+  selectTableController() {
       $(document).ready(function() {
           $("#test-table tr").click(function () {
               $('.selected').removeClass('selected');
               $(this).addClass("selected");
               var product = $('.nama',this).html();
               var infRate =$('.jurusan',this).html();
-              var note =$('.kelas',this).html();
+              var note =$('.nim',this).html();
               alert('data: ' + product +','+ infRate+','+ note);
           });
       });
-  }
-
-  tableClickController () {
-    alert($("#table-test tr").length);
-  }
-
-  generateTable() {
-    $(document).ready(
-      $("#table-test > tbody").append (
-        "<tr>"+
-          "<td>this.state.table_data['nama']</td>"+
-          "<td>this.state.table_data['jurusan']</td>"+
-          "<td>this.state.table_data['nim']</td>"+
-        "</tr>"
-      )
-  );
   }
 
   generateData() {
@@ -75,7 +96,7 @@ class Test extends Component {
                  <td class="jurusan">
                     Teknik Informatika
                  </td>
-                 <td class="kelas">
+                 <td class="nim">
                     3
                  </td>
              </tr>
@@ -86,12 +107,14 @@ class Test extends Component {
                  <td class="jurusan">
                     Teknik Informatika
                  </td>
-                 <td class="kelas">
+                 <td class="nim">
                     2
                  </td>
              </tr>
          </tbody>
      </table>
+
+     <ItemList data={this.state.data} />
       </div>
     );
   }
