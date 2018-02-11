@@ -1,4 +1,4 @@
-- semua dibikin api terus di buat keterangan textnya
+- semua dibikin api
 
 NOW
 # Entry-P
