@@ -1,24 +1,7 @@
 import React, { Component } from 'react';
+import Modal from './modal';
 // table stuff
 import $ from 'jquery';
-
-// ----ALMANAC FUNCTION
-function set_settings(_url) {
-
-    var settings = {
-      "async": true,
-      "crossDomain": true,
-      "url": _url,
-      "method": "GET",
-      "headers": {
-        "content-type": "application/x-www-form-urlencoded",
-        "cache-control": "no-cache",
-        "postman-token": "a7fad470-f7a5-ec21-2aa5-4bd2f532cd6b"
-      }
-    }
-
-    return settings;
-}
 
 // ----MAIN APP
 class Entri_p extends Component {
@@ -192,6 +175,9 @@ class Entri_p extends Component {
             </tr>
           </tbody>
       </table>
+
+      <Modal />
+
       </div>
     );
   }

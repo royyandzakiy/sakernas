@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <style>
+    </style>
+
+    <title>Sakernas Monitor</title>
+  </head>
+  <body>
+    <div id="container-index">
+        <div class="form-group col-lg-4" >
+          <label for="entri-p-sem">Semester:</label>
+          <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem}>
+            <option>1</option>
+            <option>2</option>
+          </select>
+
+          <label for="entri-p-prov">Provinsi:</label>
+          <select class="form-control" id="entri-p-prov" onChange={this.changeHandlerProv}>
+          </select>
+
+          <label for="entri-p-kab">Kabupaten:</label>
+          <select class="form-control" id="entri-p-kab" onChange={this.changeHandlerKab}>
+          </select>
+
+          <br />
+          <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
+        </div>
+
+        <table id="entri-p" class="table-striped table table-bordered table-hover" >
+            <thead>
+                <tr>
+                    <th>no</th>
+                    <th>kode_kec</th>
+                    <th>kode_desa</th>
+                    <th>nks</th>
+                    <th>sls</th>
+                    <th>status_dok</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan='6'>Tekan Refresh</td>
+              </tr>
+            </tbody>
+        </table>
+    </div>
+  </body>
+</html>
