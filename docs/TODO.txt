@@ -1,4 +1,23 @@
+- semua dibikin api
+
 NOW
+# Entry-P
+- getData - semester
+- getData - provinsi
+- getData - kabupaten
+
+- getData - entry_p
+
+- generateTable - entry_p
+
+- tr - listen onClick
+- getData - entry_p_form - setState
+- generateTable - entry_p_form
+- entry_p_form - input text - onChange
+- button - save - entry_p_form
+
+
+OLD
 # menu DSRT
 ## API pembuatan DSRT
 # menu Entri Ruta
