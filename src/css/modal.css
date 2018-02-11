@@ -1,0 +1,29 @@
+.modal-body-top {
+  padding:5px;
+}
+
+.modal-body-top > table {
+  width: 40%;
+  display: inline-block;
+}
+
+.modal-body-bottom {
+  overflow-y: scroll;
+}
+
+#modal-table-big > tbody > tr > input[type='text'] {
+  max-width: 30px;
+}
+
+#entri-p-form-b4_rcat > textarea {
+  width: 100%;
+}
+
+#modal-body > #b5 > td {
+  width:10%;
+}
+
+#modal-body > table#b5 {
+  width:10%;
+  overflow-y: scroll;
+}

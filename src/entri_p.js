@@ -8,59 +8,59 @@ class Entri_p extends Component {
 
   constructor(props) {
       super(props);
-      this.state = {
-        entri_p_sem_val: '',
-        entri_p_kab_list: {},
-        entri_p_kab_val: '',
-        entri_p_prov_list: {},
-        entri_p_prov_val: '',
-      };
-
       this.changeHandlerProv = this.changeHandlerProv.bind(this);
       this.changeHandlerKab = this.changeHandlerKab.bind(this);
       this.changeHandlerSem = this.changeHandlerSem.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.state = {
+        entri_p_sem_val: '1',
+        entri_p_prov_list: {},
+        entri_p_prov_val: '00',
+        entri_p_kab_list: {},
+        entri_p_kab_val: '01',
+      };
+
   }
 
   componentDidMount() {
-    var query = {}
+
+        // isi list provinsi
         $.get("http://localhost:8002/master-prov",
-            query,
+            {},
             function(_data, status) {
                 // alert(JSON.stringify(_data)); //debug
+
+                for (var i=0; i<_data.length; i++) {
+                  $("#entri-p-prov").append(
+                    "<option " + (i==0 ? "selected" : "") +
+                    "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
+                  );
+                }
 
                 this.setState({
                   entri_p_prov_list: _data,
                   entri_p_prov_val: _data[0]['kode_prov']
                 });
-
-                var data = this.state.entri_p_prov_list;
-
-                for (var i=0; i<data.length; i++) {
-                  $("#entri-p-prov").append(
-                    "<option value="+data[i]['kode_prov']+">["+data[i]['kode_prov']+"] "+data[i]['nama_prov']+"</option>"
-                  );
-                }
             }.bind(this));
 
-
+        // isi list kabupaten
         $.get("http://localhost:8002/master-kab",
-            query,
+            {kode_prov: this.state.entri_p_prov_val},
             function(_data, status) {
                 // alert(JSON.stringify(_data)); //debug
+                $("#entri-p-kab > option").remove();
 
-                this.setState({
-                    entri_p_kab_list: _data,
-                    entri_p_kab_val: _data[0]['kode_kab']
-                });
-
-                var data = this.state.entri_p_kab_list;
-
-                for (var i=0; i<data.length; i++) {
-                  $("#entri-p-kab").append(
-                    "<option value="+data[i]['kode_kab']+">["+data[i]['kode_kab']+"] "+data[i]['nama_kab']+"</option>"
-                  );
+                if (_data.length != 0)
+                for (var i=0; i<_data.length; i++) {
+                  if(_data[i]['kode_prov'] == this.state.entri_p_prov_val)
+                    $("#entri-p-kab").append(
+                      "<option value="+_data[i]['kode_kab']+">["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                    );
                 }
+                this.setState({
+                  entri_p_kab_list: _data,
+                  entri_p_kab_val: _data[0]['kode_kab']
+                });
 
             }.bind(this));
   }
@@ -69,12 +69,12 @@ class Entri_p extends Component {
   refresh(e) {
     e.preventDefault();
 
-    var entri_p_sem_val = $('#entri-p-sem option:selected').val();
+    // var entri_p_sem_val = $('#entri-p-sem option:selected').val();
 
     var query = {
-      entri_p_sem:entri_p_sem_val,
-      entri_p_prov:this.state.entri_p_prov_val,
-      entri_p_kab:this.state.entri_p_kab_val
+      semester:this.state.entri_p_sem_val,
+      kode_prov:this.state.entri_p_prov_val,
+      kode_kab:this.state.entri_p_kab_val
     }
 
     // alert("query_kab: " +JSON.stringify(this.state.entri_p_kab_val));
@@ -83,7 +83,7 @@ class Entri_p extends Component {
     $.get("http://localhost:8002/pemutakhiran",
         query,
         function(data, status) {
-            // alert(JSON.stringify(data)); //debug
+            // alert("data : "+ JSON.stringify(data)); //debug
 
             //--- PERBARUI ENTRI-P
             //--- remove rows
@@ -119,17 +119,27 @@ class Entri_p extends Component {
     });
   }
 
-  changeHandlerProv(childComponent) {
-        // alert(childComponent.target.value);
-        // var entri_p_prov = $('#entri-p-prov option:selected').val();
-        this.setState({
-              entri_p_prov_val: childComponent.target.value
-        });
-    }
+  changeHandlerProv(event) {
+    this.setState({
+      entri_p_prov_val:event.target.value
+    }, () => {
+    $("#entri-p-kab > option").remove();
+    var data = this.state.entri_p_kab_list;
+    // alert(JSON.stringify(data));
+    // alert(JSON.stringify(this.state.entri_p_prov_val));
+    // alert(JSON.stringify(this.state.entri_p_kab_val));
+
+    // rubah pilihan pada dropdown list kabupaten
+    for (var i=0; i<data.length; i++)
+      // alert(data[i]['kode_prov'] == this.state.entri_p_prov_val);
+      if(data[i]['kode_prov'] == this.state.entri_p_prov_val)
+          $("#entri-p-kab").append(
+            "<option value="+ data[i]['kode_kab'] +">["+data[i]['kode_kab'] + "] " + data[i]['nama_kab'] + "</option>"
+          );
+    });
+  }
 
   changeHandlerKab(childComponent) {
-        // alert(childComponent.target.value);
-        // var entri_p_kab = $('#entri-p-kab option:selected').val();
         this.setState({
               entri_p_kab_val: childComponent.target.value
         });
@@ -141,17 +151,17 @@ class Entri_p extends Component {
 
       <div class="form-group col-lg-4" >
         <label for="entri-p-sem">Semester:</label>
-        <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem}>
+        <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem.bind(this)}  value={this.state.entri_p_sem_val}>
           <option>1</option>
           <option>2</option>
         </select>
 
         <label for="entri-p-prov">Provinsi:</label>
-        <select class="form-control" id="entri-p-prov" onChange={this.changeHandlerProv}>
+        <select class="form-control" id="entri-p-prov" onChange={this.changeHandlerProv.bind(this)} value={this.state.entri_p_prov_val}>
         </select>
 
         <label for="entri-p-kab">Kabupaten:</label>
-        <select class="form-control" id="entri-p-kab" onChange={this.changeHandlerKab}>
+        <select class="form-control" id="entri-p-kab" onChange={this.changeHandlerKab.bind(this)} value={this.state.entri_p_kab_val}>
         </select>
 
         <br />

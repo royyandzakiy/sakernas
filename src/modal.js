@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import './css/modal.css';
 // table stuff
 import $ from 'jquery';
 
@@ -187,7 +187,140 @@ class Modal extends Component {
             </div>
 
             <div class="modal-body">
-            lasdjkldfj
+
+            <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#hal1">Halaman 1</a></li>
+              <li><a data-toggle="tab" href="#hal2">Halaman 2</a></li>
+            </ul>
+
+            <div class="tab-content">
+            <div id="hal1" class="tab-pane fade in active">
+                <table class="table table-striped table-bordered">
+                <h3>Form Entri Pemutakhiran Data Ruta</h3>
+                    <tbody>
+                        <tr>
+                            <td>Semester: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Provinsi: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kab/Kota: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Kecamatan: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Desa: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>SLS: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>NKS: </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jumlah RT hasil pemutakhiran: </td>
+                            <td>
+                                <input type="text" value="" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-striped table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Uraian</th>
+                          <th>Pencacah</th>
+                          <th>Pengawas</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                            <td>Nama Petugas</td>
+                            <td>
+                                <input id="entri-p-form-b3_r1a" type="text" value="" />
+                            </td>
+                            <td>
+                                <input id="entri-p-form-b3_r1b" type="text" value="" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Tanggal</td>
+                            <td>
+                                <input id="entri-p-form-b3_r2a" type="date" value="" />
+                            </td>
+                            <td>
+                                <input id="entri-p-form-b3_r2b" type="date" value="" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-striped table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Catatan</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                            <td>
+                                <textarea id="entri-p-form-b4_rcat" type="text" value=""></textarea>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                </div>
+                <div id="hal2" class="tab-pane fade">
+                  <h3>Pemutakhiran Rumah Tangga</h3>
+                  <table id="b5" class="table table-striped table-bordered">
+                      <thead>
+                          <tr>
+                              <th>sls</th>
+                              <th>nbf</th>
+                              <th>nbs</th>
+                              <th>nort</th>
+                              <th>nama_krt</th>
+                              <th>alamat</th>
+                              <th>keberadaan_rt</th>
+                              <th>nurt</th>
+                              <th>jml_art</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td><input id="" type="text" value="sls" /></td>
+                              <td><input id="" type="text" value="nbf" /></td>
+                              <td><input id="" type="text" value="nbs" /></td>
+                              <td><input id="" type="text" value="nort" /></td>
+                              <td><input id="" type="text" value="nama_krt" /></td>
+                              <td><input id="" type="text" value="alamat" /></td>
+                              <td><input id="" type="text" value="keberadaan_rt" /></td>
+                              <td><input id="" type="text" value="nurt" /></td>
+                              <td><input id="" type="text" value="jml_art" /></td>
+                          </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+
             </div>
 
             <div class="modal-footer">

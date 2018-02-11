@@ -8,6 +8,8 @@ import Entri_p_form from './entri_p_form';
 import Dsrt from './dsrt';
 import Ruta from './ruta';
 import Petugas_lap from './petugas_lap';
+import Login from './login';
+import Register from './register';
 
 //dependencies
 import {
@@ -102,6 +104,8 @@ class Navbar extends Component {
       </nav>
 
       <Route exact path="/" component={Main}/>
+      <Route path="/login" component={Login}/>
+      <Route path="/register" component={Register}/>
       <Route path="/pemutakhiran" component={Entri_p}/>
       <Route path="/dsrt" component={Dsrt}/>
       <Route path="/ruta" component={Ruta}/>
