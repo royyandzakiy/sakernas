@@ -58,3 +58,6 @@ LATER: Form Entri-P
 - save: kirim post ke /entri-p-update
 - delete: tanya > kirim delete ke /entri-p-delete
 - generate sample: kirim post ke /generate-sample
+
+TOFIX:
+- attr('value') > ganti ke .val()-nya jquery, krn cm bs ambil data awal sblm diganti

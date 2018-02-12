@@ -30,3 +30,8 @@ li.disabled:hover {
 #modal-table-big > tbody > tr > input[type='text'] {
   max-width: 30px;
 }
+
+.main {
+  text-align: center;
+  margin: 0 auto;
+}

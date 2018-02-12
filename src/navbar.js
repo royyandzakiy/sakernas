@@ -10,6 +10,10 @@ import Ruta from './ruta';
 import Petugas_lap from './petugas_lap';
 import Login from './login';
 import Register from './register';
+import Progres_ruta from './progres_ruta';
+import Cek_kewajaran from './cek_kewajaran';
+import Revalidasi from './revalidasi';
+import Account from './account';
 
 //dependencies
 import {
@@ -69,17 +73,17 @@ class Navbar extends Component {
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Rekap <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><Link to="/">Progres Entri</Link></li>
+                  <li><Link to="/progres-ruta">Progres Entri</Link></li>
                   <li class="disabled"><Link to="/">Operator</Link></li>
                   <li class="disabled"><Link to="/">Pengguna</Link></li>
-                  <li><Link to="/">Cek Kewajaran</Link></li>
+                  <li><Link to="/cek-kewajaran">Cek Kewajaran</Link></li>
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Utilitas <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><Link to="/">Revalidasi</Link></li>
+                  <li><Link to="/revalidasi">Revalidasi</Link></li>
                   <li class="disabled"><Link to="/">Setujui Data</Link></li>
                   <li class="disabled"><Link to="/">Weighting</Link></li>
                   <li class="disabled"><Link to="/">Derivasi</Link></li>
@@ -110,8 +114,11 @@ class Navbar extends Component {
       <Route path="/dsrt" component={Dsrt}/>
       <Route path="/ruta" component={Ruta}/>
       <Route path="/petugas-lap" component={Petugas_lap}/>
-      <Route path="/account" component={Main}/>
       <Route path="/logout" component={Main}/>
+      <Route path="/progres-ruta" component={Progres_ruta}/>
+      <Route path="/cek-kewajaran" component={Cek_kewajaran}/>
+      <Route path="/revalidasi" component={Revalidasi}/>
+      <Route path="/account" component={Account}/>
       </div>
       </Router>
     );

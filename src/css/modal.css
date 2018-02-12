@@ -25,5 +25,9 @@
 
 #modal-body > table#b5 {
   width:10%;
-  overflow-y: scroll;
+}
+
+#form-entri-p-4 {
+  overflow-x: scroll;
+  overflow-y: hidden;
 }

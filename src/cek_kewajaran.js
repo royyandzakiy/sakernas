@@ -21,7 +21,7 @@ function set_settings(_url) {
 }
 
 // ----MAIN APP
-class Petugas_lap extends Component {
+class Cek_kewajaran extends Component {
 
   constructor(props) {
       super(props);
@@ -33,7 +33,7 @@ class Petugas_lap extends Component {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
-                	$("#petugas-lap-prov").append(
+                	$("#cek-kewajaran-prov").append(
                   "<option value="+data[i]['kode_prov']+">["+data[i]['kode_prov']+"] "+data[i]['nama_prov']+"</option>"
                   );
                 }
@@ -45,14 +45,14 @@ class Petugas_lap extends Component {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
-                	$("#petugas-lap-kab").append(
+                	$("#cek-kewajaran-kab").append(
                   "<option value="+data[i]['kode_kab']+">["+data[i]['kode_kab']+"] "+data[i]['nama_kab']+"</option>"
                   );
                 }
 
           });
 
-          $('#petugas-lap').on('click', '.clickable-row', function(event) {
+          $('#cek-kewajaran').on('click', '.clickable-row', function(event) {
           $(this).addClass('active').siblings().removeClass('active');
         });
 
@@ -61,13 +61,42 @@ class Petugas_lap extends Component {
 
   }
 
+  componentDidMount() {
+    $("#cek-kewajaran > tbody > tr").remove();
+    for (var i=0; i<12; i++) {
+      $("#cek-kewajaran > tbody").append(
+      "<tr class='form-data clickable-row'>"+
+        "<td>"+
+        i*5+"-"+(5*(i+1)-1)+"</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td>" +
+      "</tr>");
+
+      }
+      $("#cek-kewajaran > tbody").append(
+        "<tr class='form-data clickable-row'>"+
+        "<td>"+
+        "60+</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td>" +
+        "</tr>");
+  }
+
   // function: add
   add(e) {
     e.preventDefault();
 
-    var add_petugas_sem = $('#petugas-lap-sem option:selected').val();
-    var add_petugas_prov = $('#petugas-lap-prov option:selected').val();
-    var add_petugas_kab = $('#petugas-lap-kab option:selected').val();
+    var add_petugas_sem = $('#cek-kewajaran-sem option:selected').val();
+    var add_petugas_prov = $('#cek-kewajaran-prov option:selected').val();
+    var add_petugas_kab = $('#cek-kewajaran-kab option:selected').val();
 
     $(document).ready(function(){
         $('#add-sem').val(add_petugas_sem);
@@ -98,7 +127,7 @@ class Petugas_lap extends Component {
       add_petugas_telp:add_petugas_telp
     };
 
-    $.post("http://localhost:8002/petugas-lap/add",
+    $.post("http://localhost:8002/cek-kewajaran/add",
         temp,
         function(data, status) {
             //alert("save status: "+status+": "+JSON.stringify(data)); //debug
@@ -126,22 +155,22 @@ class Petugas_lap extends Component {
     e.preventDefault();
 
     var temp = {
-      petugas_lap_sem:$('#petugas-lap-sem option:selected').val(),
-      petugas_lap_prov:$('#petugas-lap-prov option:selected').val(),
-      petugas_lap_kab:$('#petugas-lap-kab option:selected').val()
+      petugas_lap_sem:$('#cek-kewajaran-sem option:selected').val(),
+      petugas_lap_prov:$('#cek-kewajaran-prov option:selected').val(),
+      petugas_lap_kab:$('#cek-kewajaran-kab option:selected').val()
     };
 
     // alert(JSON.stringify(temp)); //debug
     // remove rows
-    $("#petugas-lap > tbody > tr").remove();
+    $("#cek-kewajaran > tbody > tr").remove();
 
-    $.get("http://localhost:8002/petugas-lap",
+    $.get("http://localhost:8002/cek-kewajaran",
         temp,
         function(data, status) {
             // generate rows
             if (data.length != 0)
                 for (var i=0; i<data.length; i++) {
-                  $("#petugas-lap > tbody").append(
+                  $("#cek-kewajaran > tbody").append(
                   "<tr class='form-data clickable-row'>"+
                     "<td>"+
                     data[i]['kode_petugas'] + "</td><td>" +
@@ -153,7 +182,7 @@ class Petugas_lap extends Component {
                   $(".edit").css("display","none");
                   }
             else
-                $("#petugas-lap > tbody").append(
+                $("#cek-kewajaran > tbody").append(
                 "<tr class='data'>"+
                   "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
@@ -165,120 +194,51 @@ class Petugas_lap extends Component {
     return (
       <div id="container" class="col-lg-12 main">
 
-      <div class="form-group col-lg-4">
-        <label for="petugas-lap-sem">Semester:</label>
-        <select class="form-control" id="petugas-lap-sem" >
+      <div class="form-group col-lg-4" >
+        <label for="cek-kewajaran-sem">Semester:</label>
+        <select class="form-control" id="cek-kewajaran-sem" >
           <option value="1">1</option>
           <option value="2">2</option>
         </select>
 
-        <label for="petugas-lap-prov">Provinsi:</label>
-        <select class="form-control" id="petugas-lap-prov">
+        <label for="cek-kewajaran-prov">Provinsi:</label>
+        <select class="form-control" id="cek-kewajaran-prov">
         </select>
 
-        <label for="petugas-lap-kab">Kabupaten:</label>
-        <select class="form-control" id="petugas-lap-kab">
+        <label for="cek-kewajaran-kab">Kabupaten:</label>
+        <select class="form-control" id="cek-kewajaran-kab">
         </select>
 
         <br />
         <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
       </div>
 
-      <div class="col-lg-12">
-
-      <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#hal1">Pengawas</a></li>
-        <li><a data-toggle="tab" href="#hal2">Pencacah</a></li>
-      </ul>
-
-      <div class="tab-content">
-        <div id="hal1" class="tab-pane fade in active">
-          <h3>Pengawas</h3>
-
-      <table id="petugas-lap" class="table table-bordered table-hover" >
+      <table id="cek-kewajaran" class="table table-bordered table-hover" >
           <thead>
               <tr>
-                  <th>Kode Pengawas</th>
-                  <th>Nama Pengawas</th>
-                  <th>No Telp</th>
-                  <th>Status Pengawas</th>
+                  <th>Kelompok Umur (B4K6)</th>
+                  <th>Laki-laki</th>
+                  <th>(%) Laki-laki</th>
+                  <th>Perempuan</th>
+                  <th>(%) Perempuan</th>
+                  <th>Total</th>
+                  <th>(%) Total</th>
               </tr>
           </thead>
           <tbody>
             <tr>
-              <td colSpan='6'>Tekan Refresh</td>
+              <td colSpan='7'>Tekan Refresh</td>
             </tr>
           </tbody>
       </table>
 
-      </div>
-
-      <div id="hal2" class="tab-pane fade in active">
-        <h3>Pencacah</h3>
-      </div>
-    </div>
-
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add</button>
-      <button type="button" class="btn btn-default" onClick={this.edit}>Edit</button>
-      <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
-
-      <div id="add" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Add Pengawas</h4>
-            </div>
-            <div class="modal-body">
-
-            <table class="table-condensed">
-              <tbody>
-                <tr>
-                  <th>Semester :</th>
-                    <td><input type="text" class="form-control" id="add-sem" disabled /></td>
-                </tr>
-                <tr>
-                  <th>Provinsi :</th>
-                    <td><input type="text" class="form-control" id="add-prov" disabled /></td>
-                </tr>
-                <tr>
-                  <th>Kabupaten :</th>
-                    <td><input type="text" class="form-control" id="add-kab" disabled /></td>
-                </tr>
-                <tr>
-                  <th>Kode Petugas :</th>
-                    <td><input type="text" class="form-control" id="add-kode-petugas" /></td>
-                </tr>
-                <tr>
-                  <th>Nama Petugas :</th>
-                    <td><input type="text" class="form-control" id="add-nama-petugas" /></td>
-                </tr>
-                <tr>
-                  <th>Deskripsi Status :</th>
-                    <td><input type="text" class="form-control" id="add-status" /></td>
-                </tr>
-                <tr>
-                  <th>No Telp :</th>
-                    <td><input type="text" class="form-control" id="add-telp" /></td>
-                </tr>
-            </tbody>
-            </table>
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.save}>Save</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      </div>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Setujui Data</button>
+      <button type="button" class="btn btn-default" onClick={this.edit}>Save</button>
+      <button type="button" class="btn btn-default" onClick={this.delete}>Close</button>
 
       </div>
     );
   }
 }
 
-export default Petugas_lap;
+export default Cek_kewajaran;

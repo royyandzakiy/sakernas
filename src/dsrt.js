@@ -107,7 +107,7 @@ class Dsrt extends Component {
 
     // remove rows
     $("#dsrt > tbody > tr").remove();
-    
+
     var temp = {
       dsrt_sem:dsrt_sem,
       dsrt_prov:dsrt_prov,
@@ -147,7 +147,7 @@ class Dsrt extends Component {
 
   render() {
     return (
-      <div id="container" class="col-lg-12">
+      <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
         <label for="dsrt-sem">Semester:</label>

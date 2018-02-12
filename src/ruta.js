@@ -157,7 +157,7 @@ class Ruta extends Component {
 
   render() {
     return (
-      <div id="container" class="col-lg-12">
+      <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
         <label for="ruta-sem">Semester:</label>

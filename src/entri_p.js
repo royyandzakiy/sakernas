@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Modal from './modal';
+import './css/modal.css';
 // table stuff
 import $ from 'jquery';
 
@@ -12,6 +12,8 @@ class Entri_p extends Component {
       this.changeHandlerKab = this.changeHandlerKab.bind(this);
       this.changeHandlerSem = this.changeHandlerSem.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.add = this.add.bind(this);
+      this.save = this.save.bind(this);
       // this.setupListener = this.setupListener.bind(this);
       this.state = {
         entri_p_sem_val: '1',
@@ -25,14 +27,89 @@ class Entri_p extends Component {
         entri_p_sls_val: '01',
         refresh: false
       };
-
-      // alert(JSON.stringify(this.state));
   }
 
-  // setupListener(e) {
-  //   e.preventDefault();
-  //
-  // }
+  add(e) {
+    $("#form-entri-b5 > tbody").append(
+    "<tr>"+
+      "<td>"+
+      "<input type='hidden' value='new' />"+
+      "<input type='text' value='' class='entri-p-form-rt-sls'/></td><td>"+
+      "<input type='text' class='entri-p-form-rt-nbf'value='' /></td><td>"+
+      "<input class='entri-p-form-rt-nbs' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-nort' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-nama_krt' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-alamat' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-keberadaan_rt' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-nurt' type='text' value='' /></td><td>"+
+      "<input class='entri-p-form-rt-jml_art' type='text' value='' /></td>"+
+    '</tr>');
+  }
+
+  save(e) {
+    // get table
+    // get all data
+        // post data
+        // check response
+        var form_entri_b5 = document.getElementById('form-entri-b5'),rIndex; // entri_p di ekstrak & jadi listener
+        var form_entri_p_1 = document.getElementById('form-entri-p-1'),rIndex; // entri_p di ekstrak & jadi listener
+        for (var i=0; i<form_entri_b5.rows.length; i++) {
+          if (i > 0) {
+          var _id = form_entri_b5.rows[i].cells[0].children[0].value;
+          alert(_id);
+          alert(form_entri_p_1.rows[3].cells[1].innerHTML);
+          var id_user = '';
+          var b3_r1a = $('#form-entri-p-2 #entri-p-form-b3_r1a').val();
+          var b3_r1b = $('#form-entri-p-2 #entri-p-form-b3_r1b').val();
+          var status_dok = 'C'; // cek status_dok
+
+          var temp =
+              {
+                "kode_prov":this.state.entri_p_prov_val ,
+                "kode_kab":this.state.entri_p_kab_val ,
+                "kode_kec":form_entri_p_1.rows[3].cells[1].innerHTML ,
+                "kode_desa":form_entri_p_1.rows[4].cells[1].innerHTML ,
+                "nks":form_entri_p_1.rows[6].cells[1].innerHTML ,
+                "semester":form_entri_p_1.rows[0].cells[1].innerHTML ,
+                "id_user":id_user ,
+                "status_dok":status_dok ,
+                "b3_r2a_tl":'' ,
+                "b3_r2a_bl":'' ,
+                "b3_r2a_th":'' ,
+                "b3_r2b_tl":'' ,
+                "b3_r2b_bl":'' ,
+                "b3_r2b_th":'' ,
+                "b4_rcat": $('#form-entri-p-2 #entri-p-form-b4_rcat').val(),
+                "sls": form_entri_b5.rows[i].cells[0].children[1].value,
+                "nbf": form_entri_b5.rows[i].cells[1].children[0].value,
+                "nbs": form_entri_b5.rows[i].cells[2].children[0].value,
+                "nama_krt": form_entri_b5.rows[i].cells[4].children[0].value,
+                "alamat": form_entri_b5.rows[i].cells[5].children[0].value,
+                "keberadaan_rt": form_entri_b5.rows[i].cells[6].children[0].value,
+                "nurt": form_entri_b5.rows[i].cells[7].children[0].value,
+                "jml_art": form_entri_b5.rows[i].cells[8].children[0].value,
+                "nort":''
+              }
+
+            if (_id == 'new'){
+              $.post("http://localhost:8002/pemutakhiran/add",
+                  temp,
+                  function(_data, status) {
+                    alert(JSON.stringify(_data));
+                  });
+
+            } else {//*/
+              // else
+              temp['_id'] = _id;
+              $.post("http://localhost:8002/pemutakhiran/update/"+_id,
+                  temp,
+                  function(_data, status) {
+
+                  });
+          }//*/
+        }
+      }
+  }
 
   componentDidMount() {
 
@@ -93,8 +170,11 @@ class Entri_p extends Component {
         function(data, status) {
             // alert("data : "+ JSON.stringify(data)); //debug
 
-            //--- PERBARUI TABLE ENTRI-P
+            //--- PERBARUI TABLE ENTRI-P & TABLE FORM-ENTRI-P
             $("#entri-p > tbody > tr").remove(); // remove rows
+            $("#form-entri-b5 > tbody > tr").remove(); // remove rows
+
+            // alert(JSON.stringify(data));
 
             if (data.length != 0) { // generate rows
                 for (var i=0; i<data.length; i++) {
@@ -107,11 +187,26 @@ class Entri_p extends Component {
                     data[i]['sls'] + "</td><td>" +
                     data[i]['status_dok'] + "</td>" +
                   "</tr>");
+
+                  $("#form-entri-b5 > tbody").append(
+                  "<tr id='"+data[i]['_id']+"'>"+
+                    "<td>"+
+                    "<input type='hidden' value='"+data[i]['_id']+"' />"+
+                    "<input type='text' value='"+data[i]['sls']+"' class='entri-p-form-rt-sls'/></td><td>"+
+                    "<input type='text' class='entri-p-form-rt-nbf'value='"+data[i]['nbf']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-nbs' type='text' value='"+data[i]['nks']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-nort' type='text' value='"+data[i]['nort']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-nama_krt' type='text' value='"+data[i]['nama_krt']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-alamat' type='text' value='"+data[i]['alamat']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-keberadaan_rt' type='text' value='"+data[i]['keberadaan_rt']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-nurt' type='text' value='"+data[i]['nurt']+"' /></td><td>"+
+                    "<input class='entri-p-form-rt-jml_art' type='text' value='"+data[i]['jml_art']+"' /></td>"+
+                  '</tr>');
                   }
             } else {
                 $("#entri-p > tbody").append(
                 "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+                  "<td colspan='6'>Tidak ada data yang sesuai</td><td>"+
                 "</tr>");
             }
 
@@ -162,7 +257,6 @@ class Entri_p extends Component {
             },()=>{
               // alert('new: '+ JSON.stringify(this.state));
             });
-
         }.bind(this));
 
         // alert(JSON.stringify(this.state));
@@ -206,7 +300,7 @@ class Entri_p extends Component {
 
   render() {
     return (
-      <div id="container" class="col-lg-12">
+      <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
         <label for="entri-p-sem">Semester:</label>
@@ -262,7 +356,8 @@ class Entri_p extends Component {
             </ul>
 
             <div class="tab-content">
-            <div id="form-entri-p" class="tab-pane fade in active">
+            <div id="hal1" class="tab-pane fade in active">
+            <div id="form-entri-p">
                 <table class="table table-striped table-bordered" id="form-entri-p-1">
                 <h3>Form Entri Pemutakhiran Data Ruta</h3>
                     <tbody>
@@ -310,7 +405,7 @@ class Entri_p extends Component {
                     </tbody>
                 </table>
 
-                <table class="table table-striped table-bordered" class="form-entri-p-2">
+                <table class="table table-striped table-bordered" id="form-entri-p-2">
                   <thead>
                       <tr>
                           <th>Uraian</th>
@@ -322,19 +417,19 @@ class Entri_p extends Component {
                         <tr>
                             <td>Nama Petugas</td>
                             <td>
-                                <input id="entri-p-form-b3_r1a" type="text" value="" />
+                                  <input id="entri-p-form-b3_r1a" type="text" />
                             </td>
                             <td>
-                                <input id="entri-p-form-b3_r1b" type="text" value="" />
+                                <input id="entri-p-form-b3_r1b" type="text" />
                             </td>
                         </tr>
                         <tr>
                             <td>Tanggal</td>
                             <td>
-                                <input id="entri-p-form-b3_r2a" type="date" value="" />
+                                <input id="entri-p-form-b3_r2a" type="date" />
                             </td>
                             <td>
-                                <input id="entri-p-form-b3_r2b" type="date" value="" />
+                                <input id="entri-p-form-b3_r2b" type="date" />
                             </td>
                         </tr>
                     </tbody>
@@ -349,14 +444,16 @@ class Entri_p extends Component {
                   <tbody>
                         <tr>
                             <td>
-                                <textarea id="entri-p-form-b4_rcat" type="text" value=""></textarea>
+                                <textarea id="entri-p-form-b4_rcat" type="text"></textarea>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
                 </div>
-                <div id="hal2" class="tab-pane fade" id="form-entri-p">
+                </div>
+                <div id="hal2" class="tab-pane fade">
+                <div id="form-entri-p-4">
                   <h3>Pemutakhiran Rumah Tangga</h3>
                   <table id="form-entri-b5" class="table table-striped table-bordered">
                       <thead>
@@ -374,15 +471,15 @@ class Entri_p extends Component {
                       </thead>
                       <tbody>
                           <tr>
-                              <td><input type="text" value="sls" id="form-entri-p-rt-sls"/></td>
-                              <td><input type="text" id="form-entri-p-rt"value="nbf" /></td>
-                              <td><input id="form-entri-nbs" type="text" value="nbs" /></td>
-                              <td><input id="form-entri-nort" type="text" value="nort" /></td>
-                              <td><input id="form-entri-nama_krt" type="text" value="nama_krt" /></td>
-                              <td><input id="form-entri-alamat" type="text" value="alamat" /></td>
-                              <td><input id="form-entri-keberadaan_rt" type="text" value="keberadaan_rt" /></td>
-                              <td><input id="form-entri-nurt" type="text" value="nurt" /></td>
-                              <td><input id="form-entri-jml_art" type="text" value="jml_art" /></td>
+                              <td><input type="text" value="sls" id="entri-p-form-rt-sls"/></td>
+                              <td><input type="text" id="entri-p-form-rt-nbf"value="nbf" /></td>
+                              <td><input id="entri-p-form-rt-nbs" type="text" value="nbs" /></td>
+                              <td><input id="entri-p-form-rt-nort" type="text" value="nort" /></td>
+                              <td><input id="entri-p-form-rt-nama_krt" type="text" value="nama_krt" /></td>
+                              <td><input id="entri-p-form-rt-alamat" type="text" value="alamat" /></td>
+                              <td><input id="entri-p-form-rt-keberadaan_rt" type="text" value="keberadaan_rt" /></td>
+                              <td><input id="entri-p-form-rt-nurt" type="text" value="nurt" /></td>
+                              <td><input id="entri-p-form-rt-jml_art" type="text" value="jml_art" /></td>
                           </tr>
                       </tbody>
                   </table>
@@ -399,6 +496,7 @@ class Entri_p extends Component {
             </div>
           </div>
 
+        </div>
         </div>
       </div>
 
