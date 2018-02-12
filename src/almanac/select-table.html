@@ -58,8 +58,10 @@
 
           for (var i=0; i<entri_p.rows.length; i++) {
             entri_p.rows[i].onclick = function() {
+                  // ubah text
                   $('#text1').val(this.cells[0].innerHTML.replace(/\s\s+/g, ''));
-                  this.cells[1].innerHTML = 'a';
+                  // ganti inner cell
+                  alert(this.cells[1].innerHTML);
             };
           }
         }
