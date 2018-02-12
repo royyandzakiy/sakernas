@@ -1,4 +1,9 @@
-- semua dibikin api
+- semua dibikin api terus di buat keterangan textnya
+- pemutakhiran: fix, tampilkan form, add, edit, delete
+- ruta: fix, tampilkan form, add, edit, delete
+- petugas-lap: fix, tampilkan form, add, edit, delete
+- progress entri
+
 
 NOW
 # Entry-P

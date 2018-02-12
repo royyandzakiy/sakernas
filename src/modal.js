@@ -10,10 +10,45 @@ class Modal extends Component {
       this.state = {
         data_p:{},
         modal_table_1: {},
-        modal_table_big: {}
+        modal_table_big: {},
+        refresh:false
       };
 
       this.getData();
+      this.refreshForm = this.refreshForm.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+  // You don't have to do this check first, but it can help prevent an unneeded render
+  alert(JSON.stringify(nextProps));
+  if (nextProps.semester !== this.state.semester) {
+    this.setState({ semester: nextProps.semester });
+  }
+  if (nextProps.kode_prov !== this.state.kode_prov) {
+    this.setState({ kode_prov: nextProps.kode_prov });
+  }
+  if (nextProps.kode_kab !== this.state.kode_kab) {
+    this.setState({ kode_kab: nextProps.kode_kab });
+  }
+  if (nextProps.kode_kec !== this.state.kode_kec) {
+    this.setState({ kode_kec: nextProps.kode_kec });
+  }
+  if (nextProps.kode_desa !== this.state.kode_desa) {
+    this.setState({ kode_desa: nextProps.kode_desa });
+  }
+  if (nextProps.sls !== this.state.sls) {
+    this.setState({ sls: nextProps.sls });
+  }
+  if (nextProps.nks !== this.state.nks) {
+    this.setState({ nks: nextProps.nks });
+  }
+  if(nextProps.refresh != this.state.refresh) {
+    this.refreshForm();
+  }
+}
+
+  refreshForm() {
+      alert('refresh!');
   }
 
   getData() {
@@ -31,9 +66,6 @@ class Modal extends Component {
         this.setState({
           data_p: _data
         });
-        // alert(this.state.data_p);
-
-        this.fill();
 
       }.bind(this),
       error: function(err) {
@@ -41,67 +73,6 @@ class Modal extends Component {
       }.bind(this)
     });
   }
-
-  fill() {
-    //--- ENTRI-P ONCLICK
-    //    PERBARUI MODAL-TABLE
-    // table reference
-    var entri_p = document.getElementById('entri-p'),rIndex;
-    var modal_table = document.getElementById('modal-table'),rIndex_mt;
-
-    for (var i=0; i<entri_p.rows.length; i++) {
-      entri_p.rows[i].onclick = function() {
-        alert('msg3');
-        alert($(this).children('td'));
-
-        var modal_sem = document.getElementById("entri-p-sem").value;
-        var modal_prov = document.getElementById("entri-p-prov").value;
-        var modal_kab = document.getElementById("entri-p-kab").value;
-        var modal_kec = this.cells[1].innerHTML;
-        var modal_desa = this.cells[2].innerHTML;
-        var modal_nks = this.cells[3].innerHTML;
-
-        //--- rubah nilai dari modal
-        document.getElementById("modal-sem").innerHTML = modal_sem;
-        document.getElementById("modal-prov").innerHTML = modal_prov;
-        document.getElementById("modal-kab").innerHTML = modal_kab;
-        document.getElementById("modal-kec").innerHTML = modal_kec;
-        document.getElementById("modal-desa").innerHTML = modal_desa;
-        document.getElementById("modal-nks").innerHTML = modal_nks;
-
-        //--- remove rows
-        $("#modal-table-big > tbody > tr").remove();
-
-        //--- GENERATE MODAL-ROWS (editable)
-        alert (this.state.data_p.length);
-        if (this.state.data_p.length != 0)
-          for (var i=0; i<this.state.data_p.length; i++) {
-              $("#modal-table-big > tbody").append(
-              "<tr class='edit'>"+
-                "<td>"+
-                "<input type=\"text\" value="+ this.state.data_p[i]['sls'] +" />" +this.state.data_p[i]['sls']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['nbf'] +" />" +this.state.data_p[i]['nbf']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['nbs'] +" />" +this.state.data_p[i]['nbs']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['nurt'] +" />" +this.state.data_p[i]['nurt']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['nama_krt'] +" />" +this.state.data_p[i]['nama_krt']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['alamat'] +" />" +this.state.data_p[i]['alamat']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['alamat'] +" />" +this.state.data_p[i]['alamat']+ "</td><td>" +
-                "<input type=\"text\" value="+ this.state.data_p[i]['jml_art'] +" />" +this.state.data_p[i]['jml_art']+ "</td>" +
-              "</tr>");
-              }
-        else
-            $("#entri-p > tbody").append(
-            "<tr class='data'>"+
-              "<td colspan='6'>Tidak ada data yang sesuai</td>"+
-            "</tr>");
-
-        //--- tambah 1 ROW terakhir utk Add
-        $("#modal-table-big > tbody").append(
-        this.add);
-
-    }
-  }
-}
 
   default() {
     //--- ENTRI-P ONCLICK
@@ -194,8 +165,8 @@ class Modal extends Component {
             </ul>
 
             <div class="tab-content">
-            <div id="hal1" class="tab-pane fade in active">
-                <table class="table table-striped table-bordered">
+            <div id="form-entri-p" class="tab-pane fade in active">
+                <table class="table table-striped table-bordered" id="form-entri-p-1">
                 <h3>Form Entri Pemutakhiran Data Ruta</h3>
                     <tbody>
                         <tr>
@@ -242,7 +213,7 @@ class Modal extends Component {
                     </tbody>
                 </table>
 
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" class="form-entri-p-2">
                   <thead>
                       <tr>
                           <th>Uraian</th>
@@ -272,7 +243,7 @@ class Modal extends Component {
                     </tbody>
                 </table>
 
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" id="form-entri-p-3">
                   <thead>
                       <tr>
                           <th>Catatan</th>
@@ -288,9 +259,9 @@ class Modal extends Component {
                 </table>
 
                 </div>
-                <div id="hal2" class="tab-pane fade">
+                <div id="hal2" class="tab-pane fade" id="form-entri-p">
                   <h3>Pemutakhiran Rumah Tangga</h3>
-                  <table id="b5" class="table table-striped table-bordered">
+                  <table id="form-entri-b5" class="table table-striped table-bordered">
                       <thead>
                           <tr>
                               <th>sls</th>
@@ -306,15 +277,15 @@ class Modal extends Component {
                       </thead>
                       <tbody>
                           <tr>
-                              <td><input id="" type="text" value="sls" /></td>
-                              <td><input id="" type="text" value="nbf" /></td>
-                              <td><input id="" type="text" value="nbs" /></td>
-                              <td><input id="" type="text" value="nort" /></td>
-                              <td><input id="" type="text" value="nama_krt" /></td>
-                              <td><input id="" type="text" value="alamat" /></td>
-                              <td><input id="" type="text" value="keberadaan_rt" /></td>
-                              <td><input id="" type="text" value="nurt" /></td>
-                              <td><input id="" type="text" value="jml_art" /></td>
+                              <td><input type="text" value="sls" id="form-entri-p-rt-sls"/></td>
+                              <td><input type="text" id="form-entri-p-rt"value="nbf" /></td>
+                              <td><input id="form-entri-nbs" type="text" value="nbs" /></td>
+                              <td><input id="form-entri-nort" type="text" value="nort" /></td>
+                              <td><input id="form-entri-nama_krt" type="text" value="nama_krt" /></td>
+                              <td><input id="form-entri-alamat" type="text" value="alamat" /></td>
+                              <td><input id="form-entri-keberadaan_rt" type="text" value="keberadaan_rt" /></td>
+                              <td><input id="form-entri-nurt" type="text" value="nurt" /></td>
+                              <td><input id="form-entri-jml_art" type="text" value="jml_art" /></td>
                           </tr>
                       </tbody>
                   </table>

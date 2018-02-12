@@ -60,7 +60,7 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Master <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/petugas-lap">Petugas Lapangan</Link></li>
-                  <li><Link to="/">Pengguna</Link></li>
+                  <li class="disabled"><Link to="/">Pengguna</Link></li>
                   <li class="disabled"><Link to="/">Wilayah</Link></li>
                   <li class="disabled"><Link to="/">Wilayah Sampel</Link></li>
                 </ul>
@@ -80,7 +80,7 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Utilitas <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/">Revalidasi</Link></li>
-                  <li><Link to="/">Setujui Data</Link></li>
+                  <li class="disabled"><Link to="/">Setujui Data</Link></li>
                   <li class="disabled"><Link to="/">Weighting</Link></li>
                   <li class="disabled"><Link to="/">Derivasi</Link></li>
                 </ul>

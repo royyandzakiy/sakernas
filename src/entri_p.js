@@ -12,15 +12,27 @@ class Entri_p extends Component {
       this.changeHandlerKab = this.changeHandlerKab.bind(this);
       this.changeHandlerSem = this.changeHandlerSem.bind(this);
       this.refresh = this.refresh.bind(this);
+      // this.setupListener = this.setupListener.bind(this);
       this.state = {
         entri_p_sem_val: '1',
         entri_p_prov_list: {},
         entri_p_prov_val: '00',
         entri_p_kab_list: {},
         entri_p_kab_val: '01',
+        entri_p_kec_val: '01',
+        entri_p_desa_val: '01',
+        entri_p_nks_val: '01',
+        entri_p_sls_val: '01',
+        refresh: false
       };
 
+      // alert(JSON.stringify(this.state));
   }
+
+  // setupListener(e) {
+  //   e.preventDefault();
+  //
+  // }
 
   componentDidMount() {
 
@@ -28,9 +40,8 @@ class Entri_p extends Component {
         $.get("http://localhost:8002/master-prov",
             {},
             function(_data, status) {
-                // alert(JSON.stringify(_data)); //debug
 
-                for (var i=0; i<_data.length; i++) {
+              for (var i=0; i<_data.length; i++) {
                   $("#entri-p-prov").append(
                     "<option " + (i==0 ? "selected" : "") +
                     "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
@@ -68,15 +79,12 @@ class Entri_p extends Component {
   //--- function: refresh
   refresh(e) {
     e.preventDefault();
-
     // var entri_p_sem_val = $('#entri-p-sem option:selected').val();
-
     var query = {
       semester:this.state.entri_p_sem_val,
       kode_prov:this.state.entri_p_prov_val,
       kode_kab:this.state.entri_p_kab_val
     }
-
     // alert("query_kab: " +JSON.stringify(this.state.entri_p_kab_val));
     // alert("query: " +JSON.stringify(query));
 
@@ -85,12 +93,10 @@ class Entri_p extends Component {
         function(data, status) {
             // alert("data : "+ JSON.stringify(data)); //debug
 
-            //--- PERBARUI ENTRI-P
-            //--- remove rows
-            $("#entri-p > tbody > tr").remove();
+            //--- PERBARUI TABLE ENTRI-P
+            $("#entri-p > tbody > tr").remove(); // remove rows
 
-            //--- generate rows
-            if (data.length != 0)
+            if (data.length != 0) { // generate rows
                 for (var i=0; i<data.length; i++) {
                   $("#entri-p > tbody").append(
                   "<tr class='form-data' data-toggle='modal' data-target='#form'>"+
@@ -102,14 +108,37 @@ class Entri_p extends Component {
                     data[i]['status_dok'] + "</td>" +
                   "</tr>");
 
-                  // generate-modal
+                      // generate-clickHandler
+                      var entri_p = document.getElementById('form-entri-p-1'),rIndex; // entri_p di ekstrak & jadi listener
+                      var form_entri_p_p1 = document.getElementById('form-entri-p-1'),rIndex; // FORM diubah
+
+                      for (var i=0; i<entri_p.rows.length; i++) {
+                        entri_p.rows[i].onclick = function() {
+                              // form_entri_p_p1.cells[0].innerHTML = this.state.entri_p_sem_val;
+
+                              // form_entri_p_p1.cells[1].innerHTML = this.state.entri_p_prov_val;
+                              // form_entri_p_p1.cells[2].innerHTML = this.state.entri_p_kab_val;
+                              // form_entri_p_p1.cells[3].innerHTML = this.cells[1].innerHTML;
+                              // form_entri_p_p1.cells[4].innerHTML = this.cells[2].innerHTML;
+                              // form_entri_p_p1.cells[5].innerHTML = this.cells[3].innerHTML;
+                        };
+                      }
                   }
-            else
+                  this.setState({
+                      refresh:true
+                  },()=>{
+                    this.setState({
+                      refresh:false
+                    });
+                  });
+            } else
                 $("#entri-p > tbody").append(
                 "<tr class='data'>"+
                   "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
         });
+
+        // alert(JSON.stringify(this.state));
   }
 
   changeHandlerSem(childComponent) {
@@ -120,28 +149,31 @@ class Entri_p extends Component {
   }
 
   changeHandlerProv(event) {
+    var temp = $('#entri-p-prov option:selected').text().substring(1,3);
     this.setState({
-      entri_p_prov_val:event.target.value
+      entri_p_prov_val:temp,
+      entri_p_kab_val:'01',
     }, () => {
     $("#entri-p-kab > option").remove();
     var data = this.state.entri_p_kab_list;
-    // alert(JSON.stringify(data));
-    // alert(JSON.stringify(this.state.entri_p_prov_val));
-    // alert(JSON.stringify(this.state.entri_p_kab_val));
-
     // rubah pilihan pada dropdown list kabupaten
     for (var i=0; i<data.length; i++)
-      // alert(data[i]['kode_prov'] == this.state.entri_p_prov_val);
-      if(data[i]['kode_prov'] == this.state.entri_p_prov_val)
+      if(data[i]['kode_prov'] == this.state.entri_p_prov_val) {
           $("#entri-p-kab").append(
             "<option value="+ data[i]['kode_kab'] +">["+data[i]['kode_kab'] + "] " + data[i]['nama_kab'] + "</option>"
           );
+        }
     });
   }
 
   changeHandlerKab(childComponent) {
+        // var temp = $('#entri-p-kab option:selected').text();
+        var temp = childComponent.target.value;
+        // alert(temp);
         this.setState({
-              entri_p_kab_val: childComponent.target.value
+              entri_p_kab_val:temp
+        },()=>{
+          // alert(this.state.entri_p_kab_val);
         });
     }
 
@@ -186,7 +218,7 @@ class Entri_p extends Component {
           </tbody>
       </table>
 
-      <Modal />
+      <Modal refresh={this.state.refresh} semester={this.state.entri_p_sem_val} kode_prov={this.state.entri_p_prov_val} kode_kab={this.state.entri_p_kab_val} kode_kec={this.state.entri_p_kec_val} kode_desa={this.state.entri_p_desa_val} sls={this.state.entri_p_sls_val} nks={this.state.entri_p_nks_val} />
 
       </div>
     );
