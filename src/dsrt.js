@@ -180,7 +180,7 @@ class Dsrt extends Component {
         <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
       </div>
 
-      <table id="dsrt" class="table table-hover">
+      <table id="dsrt" class="table table-striped table table-bordered table-hover">
         <thead>
           <tr>
             <th>No Dsrt</th>
@@ -192,6 +192,36 @@ class Dsrt extends Component {
         <tbody>
             <tr>
               <td colSpan='6'>Tekan Refresh</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>SAMSUL BAHRI</td>
+              <td>DUSUN MELATI</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>FADLI ISMAIL</td>
+              <td>DUSUN MELATI</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>SAMSURI</td>
+              <td>DUSUN MELATI</td>
+              <td>4</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>BURHANUDDIN</td>
+              <td>DUSUN MAWAR</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>DIDI ARIANTO</td>
+              <td>DUSUN MELATI</td>
+              <td>2</td>
             </tr>
         </tbody>
       </table>

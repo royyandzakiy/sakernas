@@ -47,38 +47,40 @@ class Entri_p extends Component {
   }
 
   save(e) {
-    // get table
-    // get all data
-        // post data
-        // check response
         var form_entri_b5 = document.getElementById('form-entri-b5'),rIndex; // entri_p di ekstrak & jadi listener
         var form_entri_p_1 = document.getElementById('form-entri-p-1'),rIndex; // entri_p di ekstrak & jadi listener
+        var form_entri_p_2 = document.getElementById('form-entri-p-2'),rIndex; // entri_p di ekstrak & jadi listener
         for (var i=0; i<form_entri_b5.rows.length; i++) {
           if (i > 0) {
           var _id = form_entri_b5.rows[i].cells[0].children[0].value;
-          alert(_id);
-          alert(form_entri_p_1.rows[3].cells[1].innerHTML);
           var id_user = '';
           var b3_r1a = $('#form-entri-p-2 #entri-p-form-b3_r1a').val();
           var b3_r1b = $('#form-entri-p-2 #entri-p-form-b3_r1b').val();
-          var status_dok = 'C'; // cek status_dok
+
+          var d = new Date();
+          form_entri_p_2.rows[2].cells[1].children[0].value = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+          form_entri_p_2.rows[2].cells[2].children[0].value = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
+          alert(form_entri_p_2.rows[2].cells[1].children[0].value);
+          alert(form_entri_p_2.rows[2].cells[2].children[0].value);
+
+          var status_dok = 'C'; // fungsi memeriksa status dokumen
 
           var temp =
               {
-                "kode_prov":this.state.entri_p_prov_val ,
-                "kode_kab":this.state.entri_p_kab_val ,
-                "kode_kec":form_entri_p_1.rows[3].cells[1].innerHTML ,
-                "kode_desa":form_entri_p_1.rows[4].cells[1].innerHTML ,
-                "nks":form_entri_p_1.rows[6].cells[1].innerHTML ,
-                "semester":form_entri_p_1.rows[0].cells[1].innerHTML ,
-                "id_user":id_user ,
-                "status_dok":status_dok ,
-                "b3_r2a_tl":'' ,
-                "b3_r2a_bl":'' ,
-                "b3_r2a_th":'' ,
-                "b3_r2b_tl":'' ,
-                "b3_r2b_bl":'' ,
-                "b3_r2b_th":'' ,
+                "kode_prov":this.state.entri_p_prov_val,
+                "kode_kab":this.state.entri_p_kab_val,
+                "kode_kec":form_entri_p_1.rows[3].cells[1].innerHTML,
+                "kode_desa":form_entri_p_1.rows[4].cells[1].innerHTML,
+                "nks":form_entri_p_1.rows[6].cells[1].innerHTML,
+                "semester":form_entri_p_1.rows[0].cells[1].innerHTML,
+                "id_user":id_user,
+                "status_dok":status_dok,
+                "b3_r2a_tl":'',
+                "b3_r2a_bl":'',
+                "b3_r2a_th":'',
+                "b3_r2b_tl":'',
+                "b3_r2b_bl":'',
+                "b3_r2b_th":'',
                 "b4_rcat": $('#form-entri-p-2 #entri-p-form-b4_rcat').val(),
                 "sls": form_entri_b5.rows[i].cells[0].children[1].value,
                 "nbf": form_entri_b5.rows[i].cells[1].children[0].value,
@@ -88,31 +90,41 @@ class Entri_p extends Component {
                 "keberadaan_rt": form_entri_b5.rows[i].cells[6].children[0].value,
                 "nurt": form_entri_b5.rows[i].cells[7].children[0].value,
                 "jml_art": form_entri_b5.rows[i].cells[8].children[0].value,
-                "nort":''
+                "nort": form_entri_b5.rows[i].cells[3].children[0].value
               }
 
+            if(0)
             if (_id == 'new'){
-              $.post("http://localhost:8002/pemutakhiran/add",
-                  temp,
-                  function(_data, status) {
-                    alert(JSON.stringify(_data));
-                  });
+                  $.post("http://localhost:8002/pemutakhiran/add",
+                      temp,
+                      function(_data, status) {
+                        console.log(_data);
+                      });
+            } else {
+              var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://localhost:8002/pemutakhiran/update/"+_id,
+                    "method": "PUT",
+                    "headers": {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "cache-control": "no-cache",
+                    "postman-token": "979f6bf0-2751-c970-018d-e5b138487bec"
+                    },
+                    "data": temp
+                }
 
-            } else {//*/
-              // else
-              temp['_id'] = _id;
-              $.post("http://localhost:8002/pemutakhiran/update/"+_id,
-                  temp,
-                  function(_data, status) {
-
-                  });
-          }//*/
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+          }
         }
       }
+      alert('Data diperbaharui!');
+      this.refresh();
   }
 
   componentDidMount() {
-
         // isi list provinsi
         $.get("http://localhost:8002/master-prov",
             {},
@@ -130,7 +142,6 @@ class Entri_p extends Component {
                   entri_p_prov_val: _data[0]['kode_prov']
                 });
             }.bind(this));
-
         // isi list kabupaten
         $.get("http://localhost:8002/master-kab",
             {kode_prov: this.state.entri_p_prov_val},
@@ -154,8 +165,7 @@ class Entri_p extends Component {
   }
 
   //--- function: refresh
-  refresh(e) {
-    e.preventDefault();
+  refresh() {
     // var entri_p_sem_val = $('#entri-p-sem option:selected').val();
     var query = {
       semester:this.state.entri_p_sem_val,
@@ -336,6 +346,30 @@ class Entri_p extends Component {
             <tr>
               <td colSpan='6'>Tekan Refresh</td>
             </tr>
+            <tr>
+              <td>1</td>
+              <td>020</td>
+              <td>028</td>
+              <td>15013</td>
+              <td>DUSUN MELATI</td>
+              <td>C</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>020</td>
+              <td>030</td>
+              <td>15029</td>
+              <td>DUSUN TAUHAO</td>
+              <td>C</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>020</td>
+              <td>035</td>
+              <td>15060</td>
+              <td>DUSUN MAWAR</td>
+              <td>C</td>
+            </tr>
           </tbody>
       </table>
 
@@ -490,7 +524,7 @@ class Entri_p extends Component {
 
             <div class="modal-footer">
               <button type="button" class="btn btn-warning" id="add-btn-add" onClick={this.add}>Add</button>
-              <button type="button" class="btn btn-warning" id="add-btn-save" onClick={this.save}>Save</button>
+              <button type="button" class="btn btn-warning" id="add-btn-save" onClick={this.save} data-dismiss="modal">Save</button>
               <button type="button" class="btn btn-warning" id="add-btn-generate" onClick={this.generate}>Generate Sample</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>

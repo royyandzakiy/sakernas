@@ -190,10 +190,10 @@ class Ruta extends Component {
         <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
       </div>
 
-      <table id="ruta" class="table table-hover">
+      <table id="ruta" class="table table-striped table table-bordered table-hover">
         <thead>
           <tr>
-            <th>No Dsrt</th>
+            <th>No DSRT</th>
             <th>Nama KRT</th>
             <th>Alamat</th>
             <th>ART</th>
@@ -204,6 +204,36 @@ class Ruta extends Component {
             <tr>
               <td colSpan='6'>Tekan Refresh</td>
             </tr>
+            <tr>
+              <td>1</td>
+              <td>SAMSUL BAHRI</td>
+              <td>DUSUN MELATI</td>
+              <td>3</td>
+            <td>C</td></tr>
+            <tr>
+              <td>2</td>
+              <td>FADLI ISMAIL</td>
+              <td>DUSUN MELATI</td>
+              <td>4</td>
+            <td>C</td></tr>
+            <tr>
+              <td>3</td>
+              <td>SAMSURI</td>
+              <td>DUSUN MELATI</td>
+              <td>4</td>
+            <td>C</td></tr>
+            <tr>
+              <td>4</td>
+              <td>BURHANUDDIN</td>
+              <td>DUSUN MAWAR</td>
+              <td>3</td>
+            <td>C</td></tr>
+            <tr>
+              <td>5</td>
+              <td>DIDI ARIANTO</td>
+              <td>DUSUN MELATI</td>
+              <td>2</td>
+            <td>C</td></tr>
         </tbody>
       </table>
 

@@ -195,7 +195,7 @@ class Petugas_lap extends Component {
         <div id="hal1" class="tab-pane fade in active">
           <h3>Pengawas</h3>
 
-      <table id="petugas-lap" class="table table-bordered table-hover" >
+      <table id="petugas-lap" class="table table-striped table table-bordered table-hover">
           <thead>
               <tr>
                   <th>Kode Pengawas</th>
@@ -206,21 +206,56 @@ class Petugas_lap extends Component {
           </thead>
           <tbody>
             <tr>
-              <td colSpan='6'>Tekan Refresh</td>
+              <td colSpan='4'>Tekan Refresh</td>
+            </tr>
+            <tr>
+              <td>102</td>
+              <td>DJAMALUDDIN</td>
+              <td>081280185069</td>
+              <td>2 Staff BPS Kabupaten/Kota</td>
             </tr>
           </tbody>
       </table>
 
-      </div>
-
-      <div id="hal2" class="tab-pane fade in active">
-        <h3>Pencacah</h3>
-      </div>
-    </div>
-
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Pengawas</button>
       <button type="button" class="btn btn-default" onClick={this.edit}>Edit</button>
       <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
+
+      </div>
+
+      <div id="hal2" class="tab-pane fade in">
+        <h3>Pencacah</h3>
+
+        <table id="petugas-lap" class="table table-striped table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Kode Pengawas</th>
+                    <th>Nama Pengawas</th>
+                    <th>No Telp</th>
+                    <th>Status Pengawas</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan='4'>Tekan Refresh</td>
+              </tr>
+              <tr>
+                <td>502</td>
+                <td>BAYU RIANTA</td>
+                <td>081233974213</td>
+                <td>3 Staff BPS Kabupaten/Kota</td>
+              </tr>
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Pencacah</button>
+        <button type="button" class="btn btn-default" onClick={this.edit}>Edit</button>
+        <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
+      </div>
+
+
+    </div>
+
 
       <div id="add" class="modal fade" role="dialog">
         <div class="modal-dialog">
