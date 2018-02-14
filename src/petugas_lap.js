@@ -28,12 +28,14 @@ class Petugas_lap extends Component {
       var data_pemutakhiran = [];
 
       $(document).ready(function(){
+      // INIT
+      // 1. get dropdown data
           // get data: provinsi
           $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
-                	$("#petugas-lap-prov").append(
+                	$("#cek-kewajaran-prov").append(
                   "<option value="+data[i]['kode_prov']+">["+data[i]['kode_prov']+"] "+data[i]['nama_prov']+"</option>"
                   );
                 }
@@ -45,16 +47,20 @@ class Petugas_lap extends Component {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
-                	$("#petugas-lap-kab").append(
+                	$("#cek-kewajaran-kab").append(
                   "<option value="+data[i]['kode_kab']+">["+data[i]['kode_kab']+"] "+data[i]['nama_kab']+"</option>"
                   );
                 }
 
           });
 
-          $('#petugas-lap').on('click', '.clickable-row', function(event) {
+      //2. set click listener
+          $('#petugas-lap').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
           $(this).addClass('active').siblings().removeClass('active');
-        });
+          });
+          $('#pencacah-lap').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
+          $(this).addClass('active').siblings().removeClass('active');
+          });
 
       });
 
@@ -226,13 +232,13 @@ class Petugas_lap extends Component {
       <div id="hal2" class="tab-pane fade in">
         <h3>Pencacah</h3>
 
-        <table id="petugas-lap" class="table table-striped table table-bordered table-hover">
+        <table id="pencacah-lap" class="table table-striped table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>Kode Pengawas</th>
-                    <th>Nama Pengawas</th>
+                    <th>Kode Pencacah</th>
+                    <th>Nama Pencacah</th>
                     <th>No Telp</th>
-                    <th>Status Pengawas</th>
+                    <th>Status Pencacah</th>
                 </tr>
             </thead>
             <tbody>

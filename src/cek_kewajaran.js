@@ -28,6 +28,8 @@ class Cek_kewajaran extends Component {
       var data_pemutakhiran = [];
 
       $(document).ready(function(){
+      // INIT
+      // 1. get dropdown data
           // get data: provinsi
           $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
               var data = _data;
@@ -52,7 +54,8 @@ class Cek_kewajaran extends Component {
 
           });
 
-          $('#cek-kewajaran').on('click', '.clickable-row', function(event) {
+      //2. set click listener
+          $('#cek-kewajaran').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
           $(this).addClass('active').siblings().removeClass('active');
         });
 
@@ -62,6 +65,7 @@ class Cek_kewajaran extends Component {
   }
 
   componentDidMount() {
+    // INIT table #cek-kewajaran
     $("#cek-kewajaran > tbody > tr").remove();
     for (var i=0; i<12; i++) {
       $("#cek-kewajaran > tbody").append(
