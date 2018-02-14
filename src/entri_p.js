@@ -344,9 +344,6 @@ class Entri_p extends Component {
           </thead>
           <tbody>
             <tr>
-              <td colSpan='6'>Tekan Refresh</td>
-            </tr>
-            <tr>
               <td>1</td>
               <td>020</td>
               <td>028</td>

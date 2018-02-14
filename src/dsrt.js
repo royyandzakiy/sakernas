@@ -191,9 +191,6 @@ class Dsrt extends Component {
         </thead>
         <tbody>
             <tr>
-              <td colSpan='6'>Tekan Refresh</td>
-            </tr>
-            <tr>
               <td>1</td>
               <td>SAMSUL BAHRI</td>
               <td>DUSUN MELATI</td>

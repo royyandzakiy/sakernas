@@ -212,9 +212,6 @@ class Petugas_lap extends Component {
           </thead>
           <tbody>
             <tr>
-              <td colSpan='4'>Tekan Refresh</td>
-            </tr>
-            <tr>
               <td>102</td>
               <td>DJAMALUDDIN</td>
               <td>081280185069</td>
@@ -242,9 +239,6 @@ class Petugas_lap extends Component {
                 </tr>
             </thead>
             <tbody>
-              <tr>
-                <td colSpan='4'>Tekan Refresh</td>
-              </tr>
               <tr>
                 <td>502</td>
                 <td>BAYU RIANTA</td>
