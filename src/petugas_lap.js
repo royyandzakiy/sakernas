@@ -193,21 +193,21 @@ class Petugas_lap extends Component {
       <div class="col-lg-12">
 
       <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#hal1">Petugas</a></li>
+        <li class="active"><a data-toggle="tab" href="#hal1">Pengawas</a></li>
         <li><a data-toggle="tab" href="#hal2">Pencacah</a></li>
       </ul>
 
       <div class="tab-content">
         <div id="hal1" class="tab-pane fade in active">
-          <h3>Petugas</h3>
+          <h3>Pengawas</h3>
 
       <table id="petugas-lap" class="table table-striped table table-bordered table-hover">
           <thead>
               <tr>
-                  <th>Kode Petugas</th>
-                  <th>Nama Petugas</th>
+                  <th>Kode Pengawas</th>
+                  <th>Nama Pengawas</th>
                   <th>No Telp</th>
-                  <th>Status Petugas</th>
+                  <th>Status Pengawas</th>
               </tr>
           </thead>
           <tbody>
@@ -220,7 +220,7 @@ class Petugas_lap extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Petugas</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Pengawas</button>
       <button type="button" class="btn btn-default" onClick={this.edit}>Edit</button>
       <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
 
@@ -263,7 +263,7 @@ class Petugas_lap extends Component {
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Add Petugas</h4>
+              <h4 class="modal-title">Add Pengawas</h4>
             </div>
             <div class="modal-body">
 
