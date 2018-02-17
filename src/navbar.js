@@ -64,9 +64,9 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Master <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/petugas-lap">Petugas Lapangan</Link></li>
-                  <li class="disabled"><Link to="/">Pengguna</Link></li>
-                  <li class="disabled"><Link to="/">Wilayah</Link></li>
-                  <li class="disabled"><Link to="/">Wilayah Sampel</Link></li>
+                  <li class="disabled"><Link to="#">Pengguna</Link></li>
+                  <li class="disabled"><Link to="#">Wilayah</Link></li>
+                  <li class="disabled"><Link to="#">Wilayah Sampel</Link></li>
                 </ul>
               </li>
 
@@ -74,8 +74,8 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Rekap <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/progres-ruta">Progres Entri</Link></li>
-                  <li class="disabled"><Link to="/">Operator</Link></li>
-                  <li class="disabled"><Link to="/">Pengguna</Link></li>
+                  <li class="disabled"><Link to="#">Operator</Link></li>
+                  <li class="disabled"><Link to="#">Pengguna</Link></li>
                   <li><Link to="/cek-kewajaran">Cek Kewajaran</Link></li>
                 </ul>
               </li>
@@ -84,9 +84,9 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-fw fa-bell-o"></i>Utilitas <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/revalidasi">Revalidasi</Link></li>
-                  <li class="disabled"><Link to="/">Setujui Data</Link></li>
-                  <li class="disabled"><Link to="/">Weighting</Link></li>
-                  <li class="disabled"><Link to="/">Derivasi</Link></li>
+                  <li class="disabled"><Link to="#">Setujui Data</Link></li>
+                  <li class="disabled"><Link to="#">Weighting</Link></li>
+                  <li class="disabled"><Link to="#">Derivasi</Link></li>
                 </ul>
               </li>
 
@@ -98,7 +98,7 @@ class Navbar extends Component {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><Link to="/account">Account</Link></li>
-                  <li><Link to="/logout">Logout</Link></li>
+                  <li><Link to="#">Logout</Link></li>
                 </ul>
               </li>
 
@@ -108,7 +108,6 @@ class Navbar extends Component {
       </nav>
 
       <Route exact path="/" component={Main}/>
-      <Route path="/login" component={Login}/>
       <Route path="/register" component={Register}/>
       <Route path="/pemutakhiran" component={Entri_p}/>
       <Route path="/dsrt" component={Dsrt}/>

@@ -25,168 +25,203 @@ class Revalidasi extends Component {
 
   constructor(props) {
       super(props);
-      var data_pemutakhiran = [];
 
-      $(document).ready(function(){
-          // get data: provinsi
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
-              var data = _data;
+      this.changeHandlerProv = this.changeHandlerProv.bind(this);
+      this.changeHandlerKab = this.changeHandlerKab.bind(this);
+      this.changeHandlerSem = this.changeHandlerSem.bind(this);
+      this.revalidasi = this.revalidasi.bind(this);
+      this.refresh = this.refresh.bind(this);
+      this.save = this.save.bind(this);
 
-                for (var i=0; i<data.length; i++) {
-                	$("#revalidasi-prov").append(
-                  "<option value="+data[i]['kode_prov']+">["+data[i]['kode_prov']+"] "+data[i]['nama_prov']+"</option>"
-                  );
-                }
-
-          });
-
-          // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
-              var data = _data;
-
-                for (var i=0; i<data.length; i++) {
-                	$("#revalidasi-kab").append(
-                  "<option value="+data[i]['kode_kab']+">["+data[i]['kode_kab']+"] "+data[i]['nama_kab']+"</option>"
-                  );
-                }
-
-          });
-
-          $('#revalidasi').on('click', '.clickable-row', function(event) {
-          $(this).addClass('active').siblings().removeClass('active');
-        });
-
-      });
-
-
+      this.state = {
+        entri_p_sem_val: '1',
+        entri_p_prov_list: {},
+        entri_p_prov_val: '00',
+        entri_p_kab_list: {},
+        entri_p_kab_val: '01',
+        entri_p_kec_val: '01',
+        entri_p_desa_val: '01',
+        entri_p_nks_val: '01',
+        entri_p_sls_val: '01',
+      };
   }
 
-  // function: add
-  add(e) {
-    e.preventDefault();
+  componentDidMount() {
+    // INIT table #cek-kewajaran
+    $("#cek-kewajaran > tbody > tr").remove();
+    for (var i=0; i<12; i++) {
+      $("#cek-kewajaran > tbody").append(
+      "<tr class='form-data clickable-row'>"+
+        "<td>"+
+        i*5+"-"+(5*(i+1)-1)+"</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td>" +
+      "</tr>");
 
-    var add_petugas_sem = $('#revalidasi-sem option:selected').val();
-    var add_petugas_prov = $('#revalidasi-prov option:selected').val();
-    var add_petugas_kab = $('#revalidasi-kab option:selected').val();
+      }
+      $("#cek-kewajaran > tbody").append(
+        "<tr class='form-data clickable-row'>"+
+        "<td>"+
+        "60+</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td><td>" +
+        "</td>" +
+        "</tr>");
 
-    $(document).ready(function(){
-        $('#add-sem').val(add_petugas_sem);
-        $('#add-prov').val(add_petugas_prov);
-        $('#add-kab').val(add_petugas_kab);
+    // SET states, INIT dropdowns
+    this.setState({
+      entri_p_sem_val: '1'
     });
+
+    $.get("http://localhost:8002/master-prov",
+        {},
+        function(_data, status) {
+
+          for (var i=0; i<_data.length; i++) {
+              $("#entri-p-prov").append(
+                "<option " + (i==0 ? "selected" : "") +
+                "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
+              );
+            }
+
+            this.setState({
+              entri_p_prov_list: _data,
+              entri_p_prov_val: _data[0]['kode_prov']
+            });
+        }.bind(this));
+    // isi list kabupaten
+    $.get("http://localhost:8002/master-kab",
+        {kode_prov: this.state.entri_p_prov_val},
+        function(_data, status) {
+            // alert(JSON.stringify(_data)); //debug
+            $("#entri-p-kab > option").remove();
+
+            if (_data.length != 0)
+            for (var i=0; i<_data.length; i++) {
+              if(_data[i]['kode_prov'] == this.state.entri_p_prov_val)
+                $("#entri-p-kab").append(
+                  "<option value="+_data[i]['kode_kab']+">["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                );
+            }
+            this.setState({
+              entri_p_kab_list: _data,
+              entri_p_kab_val: _data[0]['kode_kab']
+            });
+
+        }.bind(this));
   }
 
-  // function: save
   save(e) {
-    e.preventDefault();
-
-    var add_petugas_sem = $('#add-sem').val();
-    var add_petugas_prov = $('#add-prov').val();
-    var add_petugas_kab = $('#add-kab').val();
-    var add_petugas_kodepetugas = $('#add-kode-petugas').val();$('#add-kode-petugas').val("");
-    var add_petugas_namapetugas = $('#add-nama-petugas').val();$('#add-nama-petugas').val("");
-    var add_petugas_status = $('#add-status').val();$('#add-status').val("");
-    var add_petugas_telp = $('#add-telp').val();$('#add-telp').val("");
-
-    var temp = {
-      add_petugas_sem:add_petugas_sem,
-      add_petugas_prov:add_petugas_prov,
-      add_petugas_kab:add_petugas_kab,
-      add_petugas_kodepetugas:add_petugas_kodepetugas,
-      add_petugas_namapetugas:add_petugas_namapetugas,
-      add_petugas_status:add_petugas_status,
-      add_petugas_telp:add_petugas_telp
-    };
-
-    $.post("http://localhost:8002/revalidasi/add",
-        temp,
-        function(data, status) {
-            //alert("save status: "+status+": "+JSON.stringify(data)); //debug
-            // add rows
-        }).done(function() {
-            //alert('insert success!');
-            this.refresh;
-        });
-        //*/
+    // do something
   }
 
-  // function: edit
-  edit(e) {
-    e.preventDefault();
-
-  }
-  // function: delete
-  delete(e) {
-    e.preventDefault();
-
+  revalidasi(e) {
+    
   }
 
-  // function: refresh
+  // function: revalidasi
   refresh(e) {
     e.preventDefault();
 
+    var query = {
+      semester:this.state.entri_p_sem_val,
+      kode_prov:this.state.entri_p_prov_val,
+      kode_kab:this.state.entri_p_kab_val
+    }
+
     $("#revalidasi > tbody > tr").remove();
 
-    var temp = {
-      petugas_lap_sem:$('#revalidasi-sem option:selected').val(),
-      petugas_lap_prov:$('#revalidasi-prov option:selected').val(),
-      petugas_lap_kab:$('#revalidasi-kab option:selected').val()
-    };
-
-    // alert(JSON.stringify(temp)); //debug
-    // remove rows
-    $("#revalidasi > tbody > tr").remove();
-
-    $.get("http://localhost:8002/revalidasi",
-        temp,
+    $.get("http://localhost:8002/data-art",
+        query,
         function(data, status) {
-            // generate rows
-            if (data.length != 0)
-                for (var i=0; i<data.length; i++) {
-                  $("#revalidasi > tbody").append(
-                  "<tr class='form-data clickable-row'>"+
-                    "<td>"+
-                    data[i]['kode_petugas'] + "</td><td>" +
-                    data[i]['nama'] + "</td><td>" +
-                    data[i]['no_telp'] + "</td><td>" +
-                    data[i]['jabatan_petugas'] + "</td>" +
-                  "</tr>");
+        // alert(JSON.stringify(data));
 
-                  $(".edit").css("display","none");
-                  }
-            else
-                $("#revalidasi > tbody").append(
-                "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
-                "</tr>");
-        });
-
+        if(data.length > 0) {
+          for(var i=0; i<data.length; i++){
+            $("#revalidasi > tbody").append(
+            "<tr class='form-data clickable-row'>"+
+              "<td>"+
+              (i+1) + "</td><td>" +
+              data[i].b5_rnama  + "</td>" +
+            "</tr>");
+          }
+        } else {
+          $("#revalidasi > tbody").append(
+          "<tr class='form-data clickable-row'>"+
+            "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+          "</tr>");
+        }
+    });
   }
+
+  changeHandlerSem(childComponent) {
+    // alert(childComponent.target.value);
+    this.setState({
+      entri_p_sem_val: childComponent.target.value.toString()
+    });
+  }
+
+  changeHandlerProv(event) {
+    var temp = $('#entri-p-prov option:selected').text().substring(1,3);
+    this.setState({
+      entri_p_prov_val:temp,
+      entri_p_kab_val:'01',
+    }, () => {
+    $("#entri-p-kab > option").remove();
+    var data = this.state.entri_p_kab_list;
+    // rubah pilihan pada dropdown list kabupaten
+    for (var i=0; i<data.length; i++)
+      if(data[i]['kode_prov'] == this.state.entri_p_prov_val) {
+          $("#entri-p-kab").append(
+            "<option value="+ data[i]['kode_kab'] +">["+data[i]['kode_kab'] + "] " + data[i]['nama_kab'] + "</option>"
+          );
+        }
+    });
+  }
+
+  changeHandlerKab(childComponent) {
+        // var temp = $('#entri-p-kab option:selected').text();
+        var temp = childComponent.target.value;
+        // alert(temp);
+        this.setState({
+              entri_p_kab_val:temp
+        },()=>{
+          // alert(this.state.entri_p_kab_val);
+        });
+    }
+
 
   render() {
     return (
       <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
-        <label for="revalidasi-sem">Semester:</label>
-        <select class="form-control" id="revalidasi-sem" >
-          <option value="1">1</option>
-          <option value="2">2</option>
+        <label for="entri-p-sem">Semester:</label>
+        <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem.bind(this)}  value={this.state.entri_p_sem_val}>
+          <option>1</option>
+          <option>2</option>
         </select>
 
-        <label for="revalidasi-prov">Provinsi:</label>
-        <select class="form-control" id="revalidasi-prov">
+        <label for="entri-p-prov">Provinsi:</label>
+        <select class="form-control" id="entri-p-prov" onChange={this.changeHandlerProv.bind(this)} value={this.state.entri_p_prov_val}>
         </select>
 
-        <label for="revalidasi-kab">Kabupaten:</label>
-        <select class="form-control" id="revalidasi-kab">
+        <label for="entri-p-kab">Kabupaten:</label>
+        <select class="form-control" id="entri-p-kab" onChange={this.changeHandlerKab.bind(this)} value={this.state.entri_p_kab_val}>
         </select>
 
         <br />
-        <button type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
+        <button type="button" class="btn btn-success" onClick={this.refresh}>refresh</button>
       </div>
 
-      <table id="revalidasi" class="table table-bordered table-hover" >
+      <table id="revalidasi" class="table table-bordered table-striped table-hover" >
           <thead>
               <tr>
                   <th colSpan='1'>No.</th>
@@ -195,13 +230,13 @@ class Revalidasi extends Component {
           </thead>
           <tbody>
             <tr>
-              <td colSpan='5'>Tekan Refresh</td>
+              <td colSpan='5'>Tekan revalidasi</td>
             </tr>
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Start Revalidasi</button>
-      <button type="button" class="btn btn-default" onClick={this.edit}>Save</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.revalidasi}>Start Revalidasi</button>
+      <button type="button" class="btn btn-default" onClick={this.save}>Save</button>
 
       </div>
     );

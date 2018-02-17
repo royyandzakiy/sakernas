@@ -25,43 +25,24 @@ class Cek_kewajaran extends Component {
 
   constructor(props) {
       super(props);
-      var data_pemutakhiran = [];
 
-      $(document).ready(function(){
-      // INIT
-      // 1. get dropdown data
-          // get data: provinsi
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
-              var data = _data;
+      this.changeHandlerProv = this.changeHandlerProv.bind(this);
+      this.changeHandlerKab = this.changeHandlerKab.bind(this);
+      this.changeHandlerSem = this.changeHandlerSem.bind(this);
+      this.refresh = this.refresh.bind(this);
+      this.approve = this.approve.bind(this);
 
-                for (var i=0; i<data.length; i++) {
-                	$("#cek-kewajaran-prov").append(
-                  "<option value="+data[i]['kode_prov']+">["+data[i]['kode_prov']+"] "+data[i]['nama_prov']+"</option>"
-                  );
-                }
-
-          });
-
-          // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
-              var data = _data;
-
-                for (var i=0; i<data.length; i++) {
-                	$("#cek-kewajaran-kab").append(
-                  "<option value="+data[i]['kode_kab']+">["+data[i]['kode_kab']+"] "+data[i]['nama_kab']+"</option>"
-                  );
-                }
-
-          });
-
-      //2. set click listener
-          $('#cek-kewajaran').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
-          $(this).addClass('active').siblings().removeClass('active');
-        });
-
-      });
-
-
+      this.state = {
+        entri_p_sem_val: '1',
+        entri_p_prov_list: {},
+        entri_p_prov_val: '00',
+        entri_p_kab_list: {},
+        entri_p_kab_val: '01',
+        entri_p_kec_val: '01',
+        entri_p_desa_val: '01',
+        entri_p_nks_val: '01',
+        entri_p_sls_val: '01',
+      };
   }
 
   componentDidMount() {
@@ -92,125 +73,194 @@ class Cek_kewajaran extends Component {
         "</td><td>" +
         "</td>" +
         "</tr>");
-  }
 
-  // function: add
-  add(e) {
-    e.preventDefault();
-
-    var add_petugas_sem = $('#cek-kewajaran-sem option:selected').val();
-    var add_petugas_prov = $('#cek-kewajaran-prov option:selected').val();
-    var add_petugas_kab = $('#cek-kewajaran-kab option:selected').val();
-
-    $(document).ready(function(){
-        $('#add-sem').val(add_petugas_sem);
-        $('#add-prov').val(add_petugas_prov);
-        $('#add-kab').val(add_petugas_kab);
+    // SET states, INIT dropdowns
+    this.setState({
+      entri_p_sem_val: '1'
     });
+
+    $.get("http://localhost:8002/master-prov",
+        {},
+        function(_data, status) {
+
+          for (var i=0; i<_data.length; i++) {
+              $("#entri-p-prov").append(
+                "<option " + (i==0 ? "selected" : "") +
+                "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
+              );
+            }
+
+            this.setState({
+              entri_p_prov_list: _data,
+              entri_p_prov_val: _data[0]['kode_prov']
+            });
+        }.bind(this));
+    // isi list kabupaten
+    $.get("http://localhost:8002/master-kab",
+        {kode_prov: this.state.entri_p_prov_val},
+        function(_data, status) {
+            // alert(JSON.stringify(_data)); //debug
+            $("#entri-p-kab > option").remove();
+
+            if (_data.length != 0)
+            for (var i=0; i<_data.length; i++) {
+              if(_data[i]['kode_prov'] == this.state.entri_p_prov_val)
+                $("#entri-p-kab").append(
+                  "<option value="+_data[i]['kode_kab']+">["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                );
+            }
+            this.setState({
+              entri_p_kab_list: _data,
+              entri_p_kab_val: _data[0]['kode_kab']
+            });
+
+        }.bind(this));
   }
 
-  // function: save
-  save(e) {
+  // function: approve
+  approve(e) {
     e.preventDefault();
 
-    var add_petugas_sem = $('#add-sem').val();
-    var add_petugas_prov = $('#add-prov').val();
-    var add_petugas_kab = $('#add-kab').val();
-    var add_petugas_kodepetugas = $('#add-kode-petugas').val();$('#add-kode-petugas').val("");
-    var add_petugas_namapetugas = $('#add-nama-petugas').val();$('#add-nama-petugas').val("");
-    var add_petugas_status = $('#add-status').val();$('#add-status').val("");
-    var add_petugas_telp = $('#add-telp').val();$('#add-telp').val("");
+    var query = {
+      semester:this.state.entri_p_sem_val,
+      kode_prov:this.state.entri_p_prov_val,
+      kode_kab:this.state.entri_p_kab_val,
+      id_user:'999'
+    }
 
-    var temp = {
-      add_petugas_sem:add_petugas_sem,
-      add_petugas_prov:add_petugas_prov,
-      add_petugas_kab:add_petugas_kab,
-      add_petugas_kodepetugas:add_petugas_kodepetugas,
-      add_petugas_namapetugas:add_petugas_namapetugas,
-      add_petugas_status:add_petugas_status,
-      add_petugas_telp:add_petugas_telp
-    };
-
-    $.post("http://localhost:8002/cek-kewajaran/add",
-        temp,
+    $.post("http://localhost:8002/approval",
+        query,
         function(data, status) {
-            //alert("save status: "+status+": "+JSON.stringify(data)); //debug
-            // add rows
-        }).done(function() {
-            //alert('insert success!');
-            this.refresh;
-        });
-        //*/
-  }
-
-  // function: edit
-  edit(e) {
-    e.preventDefault();
-
-  }
-  // function: delete
-  delete(e) {
-    e.preventDefault();
-
+          console.log(JSON.stringify(data));
+      });
   }
 
   // function: refresh
   refresh(e) {
     e.preventDefault();
 
-    var temp = {
-      petugas_lap_sem:$('#cek-kewajaran-sem option:selected').val(),
-      petugas_lap_prov:$('#cek-kewajaran-prov option:selected').val(),
-      petugas_lap_kab:$('#cek-kewajaran-kab option:selected').val()
-    };
+    var query = {
+      semester:this.state.entri_p_sem_val,
+      kode_prov:this.state.entri_p_prov_val,
+      kode_kab:this.state.entri_p_kab_val
+    }
 
-    // alert(JSON.stringify(temp)); //debug
-    // remove rows
     $("#cek-kewajaran > tbody > tr").remove();
 
     $.get("http://localhost:8002/cek-kewajaran",
-        temp,
+        query,
         function(data, status) {
-            // generate rows
-            if (data.length != 0)
-                for (var i=0; i<data.length; i++) {
-                  $("#cek-kewajaran > tbody").append(
-                  "<tr class='form-data clickable-row'>"+
-                    "<td>"+
-                    data[i]['kode_petugas'] + "</td><td>" +
-                    data[i]['nama'] + "</td><td>" +
-                    data[i]['no_telp'] + "</td><td>" +
-                    data[i]['jabatan_petugas'] + "</td>" +
-                  "</tr>");
+        // COUNT things
+        // alert(JSON.stringify(data));
+        for(var i=0; i<data.kategori.length; i++){
 
-                  $(".edit").css("display","none");
-                  }
-            else
-                $("#cek-kewajaran > tbody").append(
-                "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
-                "</tr>");
-        });
+          if(data.totalData == 0) {
+            $("#cek-kewajaran > tbody").append(
+            "<tr class='form-data clickable-row'>"+
+              "<td>"+
+              i*5+"-"+((i+1)*5-1)+"</td><td>" +
+              "0</td><td>" +
+              "0%</td><td>" +
+              "0</td><td>" +
+              "0%</td><td>" +
+              "0</td><td>" +
+              "0%</td>" +
+            "</tr>");
+          } else if(i < 12) {
+              $("#cek-kewajaran > tbody").append(
+              "<tr class='form-data clickable-row'>"+
+                "<td>"+
+                i*5+"-"+((i+1)*5-1)+"</td><td>" +
+                data.kategori[i].totalL+"</td><td>" +
+                (data.kategori[i].totalL/data.totalData).toFixed(4)*100+"%</td><td>" +
+                data.kategori[i].totalP+"</td><td>" +
+                (data.kategori[i].totalP/data.totalData).toFixed(4)*100+"%</td><td>" +
+                data.kategori[i].total+"</td><td>" +
+                (data.kategori[i].total/data.totalData).toFixed(4)*100+"%</td>" +
+              "</tr>");
+          } else {
+            $("#cek-kewajaran > tbody").append(
+            "<tr class='form-data clickable-row'>"+
+              "<td>"+
+              i*5+"+</td><td>" +
+              data.kategori[i].totalL+"</td><td>" +
+              (data.kategori[i].totalL/data.totalData).toFixed(4)*100+"%</td><td>" +
+              data.kategori[i].totalP+"</td><td>" +
+              (data.kategori[i].totalP/data.totalData).toFixed(4)*100+"%</td><td>" +
+              data.kategori[i].total+"</td><td>" +
+              (data.kategori[i].total/data.totalData).toFixed(4)*100+"%</td>" +
+            "</tr>");
+          }
+        }
 
+        $("#cek-kewajaran > tbody").append(
+        "<tr class='form-data clickable-row'>"+
+          "<td>"+
+          "TOTAL</td><td>" +
+          data.totalDataL+"</td><td>" +
+          (data.totalData != 0 ? ((data.totalDataL/data.totalData).toFixed(4)*100) : 0) +"%</td><td>" +
+          data.totalDataP+"</td><td>" +
+          (data.totalData != 0 ? ((data.totalDataP/data.totalData).toFixed(4)*100) : 0)+"%</td><td>" +
+          data.totalData+"</td><td>" +
+          "100%</td>" +
+        "</tr>");
+    });
   }
+
+  changeHandlerSem(childComponent) {
+    // alert(childComponent.target.value);
+    this.setState({
+      entri_p_sem_val: childComponent.target.value.toString()
+    });
+  }
+
+  changeHandlerProv(event) {
+    var temp = $('#entri-p-prov option:selected').text().substring(1,3);
+    this.setState({
+      entri_p_prov_val:temp,
+      entri_p_kab_val:'01',
+    }, () => {
+    $("#entri-p-kab > option").remove();
+    var data = this.state.entri_p_kab_list;
+    // rubah pilihan pada dropdown list kabupaten
+    for (var i=0; i<data.length; i++)
+      if(data[i]['kode_prov'] == this.state.entri_p_prov_val) {
+          $("#entri-p-kab").append(
+            "<option value="+ data[i]['kode_kab'] +">["+data[i]['kode_kab'] + "] " + data[i]['nama_kab'] + "</option>"
+          );
+        }
+    });
+  }
+
+  changeHandlerKab(childComponent) {
+        // var temp = $('#entri-p-kab option:selected').text();
+        var temp = childComponent.target.value;
+        // alert(temp);
+        this.setState({
+              entri_p_kab_val:temp
+        },()=>{
+          // alert(this.state.entri_p_kab_val);
+        });
+    }
+
 
   render() {
     return (
       <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
-        <label for="cek-kewajaran-sem">Semester:</label>
-        <select class="form-control" id="cek-kewajaran-sem" >
-          <option value="1">1</option>
-          <option value="2">2</option>
+        <label for="entri-p-sem">Semester:</label>
+        <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem.bind(this)}  value={this.state.entri_p_sem_val}>
+          <option>1</option>
+          <option>2</option>
         </select>
 
-        <label for="cek-kewajaran-prov">Provinsi:</label>
-        <select class="form-control" id="cek-kewajaran-prov">
+        <label for="entri-p-prov">Provinsi:</label>
+        <select class="form-control" id="entri-p-prov" onChange={this.changeHandlerProv.bind(this)} value={this.state.entri_p_prov_val}>
         </select>
 
-        <label for="cek-kewajaran-kab">Kabupaten:</label>
-        <select class="form-control" id="cek-kewajaran-kab">
+        <label for="entri-p-kab">Kabupaten:</label>
+        <select class="form-control" id="entri-p-kab" onChange={this.changeHandlerKab.bind(this)} value={this.state.entri_p_kab_val}>
         </select>
 
         <br />
@@ -236,9 +286,9 @@ class Cek_kewajaran extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Setujui Data</button>
-      <button type="button" class="btn btn-default" onClick={this.edit}>Save</button>
-      <button type="button" class="btn btn-default" onClick={this.delete}>Close</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.approve}>Setujui Data</button>
+      {/*<button type="button" class="btn btn-default" onClick={this.edit}>Save</button>*/}
+      {/*<button type="button" class="btn btn-default" onClick={this.delete}>Close</button>*/}
 
       </div>
     );

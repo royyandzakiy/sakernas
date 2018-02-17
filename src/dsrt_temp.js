@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/modal.css';
 // table stuff
 import $ from 'jquery';
 
@@ -21,7 +22,7 @@ function set_settings(_url) {
 }
 
 // ----MAIN APP
-class Ruta extends Component {
+class Dsrt extends Component {
 
   constructor(props) {
       super(props);
@@ -49,6 +50,7 @@ class Ruta extends Component {
       this.changeHandlerKec = this.changeHandlerKec.bind(this);
       this.changeHandlerDesa = this.changeHandlerDesa.bind(this);
       this.changeHandlerNks = this.changeHandlerNks.bind(this);
+      this.changeHandlerNbs = this.changeHandlerNbs.bind(this);
       this.refresh = this.refresh.bind(this);
     }
 
@@ -56,10 +58,6 @@ class Ruta extends Component {
 
       $(document).ready(function(){
           // get data: provinsi
-          this.setState({
-            dsrt_sem_val: '1'
-          });
-
           $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
 
                 for (var i=0; i<_data.length; i++) {
@@ -135,8 +133,8 @@ class Ruta extends Component {
                 }
                 }
 
-                // alert(JSON.stringify(data));
-                // alert(first);
+                alert(JSON.stringify(data));
+                alert(first);
 
                 $("#dsrt-desa").val(data[first]['kode_desa']);
 
@@ -149,27 +147,42 @@ class Ruta extends Component {
           // get data: nbs/nks
           $.ajax(set_settings("http://localhost:8002/master-nks")).done(function (_data) {
               var data = _data;
-
-                var first = data.length -1;
-
+              var first = data.length -1;
                 for (var i=0; i<data.length; i++) {
-                  if(_data[i]['kode_desa']==this.state.dsrt_desa_val) {
+                  if(_data[i]['kode_desa']==this.state.dsrt_desa_val){
                     first = (i < first ? i : first);
-                	$("#dsrt-nks").append(
-                  "<option " +
-                  "value='"+data[i]['nbs']+"."+data[i]['nks']+"'>"+data[i]['nks']+" / "+data[i]['nks']+"</option>"
+                  $("#dsrt-nbs").append(
+                    "<option " +
+                    "value='"+data[i]['nbs']+"'>"+data[i]['nbs']+"</option>"
                   );
                 }
                 }
 
-                $("#dsrt-nks").val(_data[first]['nbs']+"."+_data[first]['nks']);
+                $("#dsrt-nbs").val(_data[first]['nbs']);
+
+                this.setState({
+                  dsrt_nbs_val:$("#dsrt-nbs").val()
+                });
+
+                var first = data.length -1;
+
+                for (var i=0; i<data.length; i++) {
+                  if(_data[i]['kode_nbs']==this.state.dsrt_nbs_val) {
+                    first = (i < first ? i : first);
+                	$("#dsrt-nks").append(
+                  "<option " +
+                  "value='"+data[i]['nks']+"'>"+data[i]['nks']+"</option>"
+                  );
+                }
+                }
+
+                $("#dsrt-nks").val(_data[first]['nks']);
 
                 this.setState({
                   dsrt_nks_list: _data,
-                  dsrt_nbs_val:$("#dsrt-nks").val().substring(0,4),
-                  dsrt_nks_val:$("#dsrt-nks").val().substring(5,10),
+                  dsrt_nks_val:$("#dsrt-nks").val()
                 },()=>{
-                  // alert(this.state.dsrt_nks_val)
+                  alert(this.state.dsrt_nks_val)
                 });
           }.bind(this));
 
@@ -202,12 +215,12 @@ class Ruta extends Component {
       $('#dsrt-kab option:selected').val(),
       $('#dsrt-kec option:selected').val(),
       $('#dsrt-desa option:selected').val(),
-      $('#dsrt-nks option:selected').val()
+      $('#dsrt-nks option:selected').val(),
+      $('#dsrt-nbs option:selected').val()
     ]
     for (var i=0; i<arr.length; i++)
-      if(typeof arr[i] == 'undefined'){
-        alert("kosong: "+i);
-        return true;}
+      if(typeof arr[i] == 'undefined')
+        return true
     return false;
   }
 
@@ -217,18 +230,13 @@ class Ruta extends Component {
 
     if(!this.checkEmpty()) {
 
-    // var dsrt_sem = $('#dsrt-sem option:selected').val();
-    // var dsrt_prov = $('#dsrt-prov option:selected').val();
-    // var dsrt_kab = $('#dsrt-kab option:selected').val();
-    // var dsrt_kec = $('#dsrt-kec option:selected').val();
-    // var dsrt_desa = $('#dsrt-desa option:selected').val();
-    var dsrt_sem = this.state.dsrt_sem_val;
-    var dsrt_prov = this.state.dsrt_prov_val;
-    var dsrt_kab = this.state.dsrt_kab_val;
-    var dsrt_kec = this.state.dsrt_kec_val;
-    var dsrt_desa = this.state.dsrt_desa_val;
-    var dsrt_nks = this.state.dsrt_nks_val;
-    var dsrt_nbs = this.state.dsrt_nbs_val;
+    var dsrt_sem = $('#dsrt-sem option:selected').val();
+    var dsrt_prov = $('#dsrt-prov option:selected').val();
+    var dsrt_kab = $('#dsrt-kab option:selected').val();
+    var dsrt_kec = $('#dsrt-kec option:selected').val();
+    var dsrt_desa = $('#dsrt-desa option:selected').val();
+    var dsrt_nks = $('#dsrt-nks option:selected').val();
+    var dsrt_nbs = $('#dsrt-nbs option:selected').val();
 
     // remove rows
     $("#dsrt > tbody > tr").remove();
@@ -240,10 +248,10 @@ class Ruta extends Component {
       dsrt_kec:dsrt_kec,
       dsrt_desa:dsrt_desa,
       dsrt_nks:dsrt_nks,
-      dsrt_nbs:dsrt_nbs
+      dsrt_nbs:dsrt_nbs,
     };
 
-    $.get("http://localhost:8002/ruta",
+    $.get("http://localhost:8002/dsrt",
         query,
         function(data, status) {
             // alert(JSON.stringify(temp)); //debug
@@ -307,7 +315,7 @@ class Ruta extends Component {
                         _kode_kec = this.cells[1].innerHTML;
                         _kode_desa = this.cells[2].innerHTML;
                         _nks = this.cells[3].innerHTML;
-                        // _sls = ;
+                        _sls = this.cells[4].innerHTML;
 
                         // alert(this.cells[4].innerHTML);
 
@@ -343,7 +351,7 @@ class Ruta extends Component {
     this.setState({
       dsrt_sem_val: childComponent.target.value
     },()=>{
-      // alert(this.state.dsrt_sem_val);
+      alert(this.state.dsrt_sem_val);
     });
   }
 
@@ -433,28 +441,37 @@ class Ruta extends Component {
             dsrt_desa_val:temp
       },()=>{
         // alert(this.state.dsrt_desa_val);
+        $("#dsrt-nbs > option").remove();
+        var data = this.state.dsrt_nks_list;
+        // // rubah pilihan pada dropdown list desaupaten
+        for (var i=0; i<data.length; i++)
+          if(data[i]['kode_desa'] == this.state.dsrt_desa_val) {
+              $("#dsrt-nbs").append(
+                "<option value='"+ data[i]['nbs'] +"'>"+data[i]['nbs'] + "</option>"
+              );
+            }
+      });
+    }
+    changeHandlerNbs(childComponent){
+      if (typeof childComponent == 'string')
+        var temp = childComponent;
+      else
+        var temp = childComponent.target.value;
+      // alert(temp);
+      this.setState({
+            dsrt_nbs_val:temp
+      },()=>{
+        // alert(this.state.dsrt_desa_val);
         $("#dsrt-nks > option").remove();
         var data = this.state.dsrt_nks_list;
         // // rubah pilihan pada dropdown list desaupaten
-        var first = data.length -1;
-
         for (var i=0; i<data.length; i++)
-          if(data[i]['kode_desa'] == this.state.dsrt_desa_val) {
-              first = (i < first ? i : first);
+          if(data[i]['nbs'] == this.state.dsrt_nbs_val) {
               $("#dsrt-nks").append(
-                "<option value='"+ data[i]['nbs'] +"."+ data[i]['nks'] +"'>"+data[i]['nbs'] + " / "+data[i]['nks']+"</option>"
+                "<option value='"+ data[i]['nks'] +"'>"+ data[i]['nks'] + "</option>"
               );
             }
-
-
-      $("#dsrt-nks").val(data[first]['nbs']+"."+data[first]['nks']);
-
-      this.setState({
-        dsrt_nks_list: data,
-        dsrt_nbs_val:data[first]['nbs'],
-        dsrt_nks_val:data[first]['nks']
       });
-    });
     }
     changeHandlerNks(childComponent){
       if (typeof childComponent == 'string')
@@ -463,8 +480,7 @@ class Ruta extends Component {
         var temp = childComponent.target.value;
       // alert(temp);
       this.setState({
-            dsrt_nbs_val:temp.substring(0,4),
-            dsrt_nks_val:temp.substring(5,10)
+            dsrt_nks_val:temp
       });
     }
 
@@ -495,7 +511,11 @@ class Ruta extends Component {
         <select class="form-control" id="dsrt-desa" name="dsrt-desa" onChange={this.changeHandlerDesa.bind(this)} value={this.state.dsrt_desa_val}>
         </select>
 
-        <label for="dsrt-nks">Nbs / Nks:</label>
+        <label for="dsrt-nbs">Nbs:</label>
+        <select class="form-control" id="dsrt-nbs" name="dsrt-nbs" onChange={this.changeHandlerNbs.bind(this)} value={this.state.dsrt_nbs_val}>
+        </select>
+
+        <label for="dsrt-nks">Nks:</label>
         <select class="form-control" id="dsrt-nks" name="dsrt-nks" onChange={this.changeHandlerNks.bind(this)} value={this.state.dsrt_nks_val}>
         </select>
 
@@ -567,7 +587,6 @@ class Ruta extends Component {
 
             <div id="hal1" class="tab-pane fade in active">
 
-            {/* MODAL-FORM */}
             <div id="form-dsrt">
             <table class="table table-striped table table-bordered table-hover">
               <thead>
@@ -727,10 +746,9 @@ class Ruta extends Component {
       </div>
       </div>
       </div>
-
       </div>
     );
   }
 }
 
-export default Ruta;
+export default Dsrt;

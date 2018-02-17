@@ -25,7 +25,6 @@ class Entri_p extends Component {
         entri_p_desa_val: '01',
         entri_p_nks_val: '01',
         entri_p_sls_val: '01',
-        refresh: false
       };
   }
 
@@ -60,8 +59,8 @@ class Entri_p extends Component {
           var d = new Date();
           form_entri_p_2.rows[2].cells[1].children[0].value = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
           form_entri_p_2.rows[2].cells[2].children[0].value = d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate();
-          alert(form_entri_p_2.rows[2].cells[1].children[0].value);
-          alert(form_entri_p_2.rows[2].cells[2].children[0].value);
+          // alert(form_entri_p_2.rows[2].cells[1].children[0].value);
+          // alert(form_entri_p_2.rows[2].cells[2].children[0].value);
 
           var status_dok = 'C'; // fungsi memeriksa status dokumen
 
@@ -126,6 +125,10 @@ class Entri_p extends Component {
 
   componentDidMount() {
         // isi list provinsi
+        this.setState({
+          entri_p_sem_val: '1'
+        });
+
         $.get("http://localhost:8002/master-prov",
             {},
             function(_data, status) {
@@ -216,7 +219,7 @@ class Entri_p extends Component {
             } else {
                 $("#entri-p > tbody").append(
                 "<tr class='data'>"+
-                  "<td colspan='6'>Tidak ada data yang sesuai</td><td>"+
+                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
             }
 
@@ -313,6 +316,7 @@ class Entri_p extends Component {
       <div id="container" class="col-lg-12 main">
 
       <div class="form-group col-lg-4" >
+        {/* DROPDOWN */}
         <label for="entri-p-sem">Semester:</label>
         <select class="form-control" id="entri-p-sem" onChange={this.changeHandlerSem.bind(this)}  value={this.state.entri_p_sem_val}>
           <option>1</option>
@@ -331,6 +335,7 @@ class Entri_p extends Component {
         <button id="btn-refresh" type="button" class="btn btn-success" onClick={this.refresh}>Refresh</button>
       </div>
 
+      {/* TABLE */}
       <table id="entri-p" class="table-striped table table-bordered table-hover" >
           <thead>
               <tr>
@@ -370,6 +375,7 @@ class Entri_p extends Component {
           </tbody>
       </table>
 
+      {/* MODAL */}
       <div id="form" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
@@ -387,6 +393,7 @@ class Entri_p extends Component {
             </ul>
 
             <div class="tab-content">
+
             <div id="hal1" class="tab-pane fade in active">
             <div id="form-entri-p">
                 <table class="table table-striped table-bordered" id="form-entri-p-1">
@@ -526,6 +533,7 @@ class Entri_p extends Component {
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
+          {/* MODAL_END */}
 
         </div>
         </div>

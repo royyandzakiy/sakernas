@@ -17,9 +17,22 @@ class Login extends Component {
       this.handleUsername = this.handleUsername.bind(this);
       this.handlePassword = this.handlePassword.bind(this);
       this.state = {
-          username: '',
-          password: ''
+          logged:this.props.logged,
+          id_user:'',
+          username:'',
+          kode_prov:'',
+          kode_kab:'',
+          realname:'',
+          userlevel:''
       };
+
+      this.login = this.login.bind(this);
+  }
+
+  componentDidMount() {
+    if(this.state.logged) {
+      // redirect to App
+    }
   }
 
   login(e) {
@@ -35,11 +48,23 @@ class Login extends Component {
       $.post("http://localhost:8002/login",
           query,
           function(data, status) {
-              if(!data['registered'])
+              if(!data.registered)
                 return alert('Wrong Username / Password combination');
               else
                 alert('You have logged in');
                 // Router.transitionTo('/pemutakhiran',query={keyword:''}); // masih gagal
+
+                this.setState({
+                  logged:true,
+                  id_user:data.id_user,
+                  username:data.username,
+                  kode_prov:data.kode_prov,
+                  kode_kab:data.kode_kab,
+                  realname:data.realname,
+                  userlevel:data.userlevel
+                });
+                // send this.state.logged, dll to it's parent <App />
+                // redirect this.state to "/" with this.state
           });
   }
 

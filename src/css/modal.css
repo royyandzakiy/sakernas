@@ -27,7 +27,7 @@
   width:10%;
 }
 
-#form-entri-p-4 {
+#form-entri-p-4, #form-dsrt-4 {
   overflow-x: scroll;
   overflow-y: hidden;
 }
