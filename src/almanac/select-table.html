@@ -46,37 +46,27 @@
        <input type="text" id="text2" value="change this" />
        <input type="text" id="text3" value="change this" />
        <script type="text/javascript">
-        // alert($("#test-table > tbody > tr").length); // count
 
         $(document).ready(function() {
             select_table("test-table");
-            setListeners();
+            setRowListeners('test-table');
         });
 
-        function setListeners() {
-          var entri_p = document.getElementById('test-table'),rIndex;
+        function setRowListeners(id) {
+            var tableRef = document.getElementById(id),rIndex;
 
-          for (var i=0; i<entri_p.rows.length; i++) {
-            entri_p.rows[i].onclick = function() {
-                  // ubah text
-                  $('#text1').val(this.cells[0].innerHTML.replace(/\s\s+/g, ''));
-                  // ganti inner cell
-                  alert(this.cells[1].innerHTML);
-            };
+            for (var i=0; i<tableRef.rows.length; i++) {
+              tableRef.rows[i].onclick = function() {
+                  alert(this.cells[1].innerHTML.replace(/\s\s+/g, ''));
+              };
+            }
           }
-        }
 
         // selects a row of a table
         function select_table(table_id) {
             $("#"+table_id+" tr").click(function () {
                 $('.selected').removeClass('selected');
                 $(this).addClass("selected");
-
-                //--- lakukan sesuatu
-                // var product = $('.nama',this).html();
-                // var infRate =$('.jurusan',this).html();
-                // var note =$('.kelas',this).html();
-                // alert('data: ' + product +','+ infRate+','+ note);
             });
         }
         </script>

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import './css/App.css';
-
-// dependency
-
 // pages
 import Navbar from './navbar';
 import Login from './login';
@@ -12,23 +9,38 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      logged: false
+      logged: true,
+      id_user:'',
+      username:'',
+      kode_prov:'',
+      kode_kab:'',
+      realname:'',
+      userlevel:''
     }
-    this.loggedHandler = this.loggedHandler.bind(this);
+    // alert('Awal '+this.state.logged);
+    this.changeState = this.changeState.bind(this);
   }
 
-  loggedHandler(childComponent) {
+  changeState(account) {
     this.setState({
-      logged:childComponent.target.value
+      logged:account.status,
+      id_user:account.id_user,
+      username:account.username,
+      kode_prov:account.kode_prov,
+      kode_kab:account.kode_kab,
+      realname:account.realname,
+      userlevel:account.userlevel
     });
-    return this.state.logged;
+
+    // alert('Berubah, App page: '+JSON.stringify(account));
+    // redirect
   }
 
   render() {
     return (
       <div>
 
-      {this.state.logged ? <Navbar /> : <Login logged={this.loggedHandler.bind(this)} />}
+      {this.state.logged ? <Navbar /> : <Login changeState={this.changeState.bind(this)} getState={this.state} />}
 
       </div>
     );

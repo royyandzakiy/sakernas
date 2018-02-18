@@ -478,12 +478,8 @@ class Petugas_lap extends Component {
                     <td><input type="text" class="form-control" id="add-telp" /></td>
                 </tr>
                 <tr>
-                  <th>No Telp :</th>
-                    <td><input type="text" class="form-control" id="add-telp" /></td>
-                </tr>
-                <tr>
-                  <th>No Telp :</th>
-                    <td><input type="text" class="form-control" id="add-jenis" /></td>
+                  <th>Jenis :</th>
+                    <td>	Pencacah (1) / Pengawas (2)<input type="text" class="form-control" id="add-jenis" /></td>
                 </tr>
             </tbody>
             </table>

@@ -40,7 +40,7 @@ class Ruta extends Component {
         dsrt_kec_list:'',
         dsrt_desa_list:'',
         dsrt_sls_list:'',
-        dsrt_nks_list:''
+        dsrt_nks_list:'',
       }
 
       this.changeHandlerSem = this.changeHandlerSem.bind(this);
@@ -50,12 +50,15 @@ class Ruta extends Component {
       this.changeHandlerDesa = this.changeHandlerDesa.bind(this);
       this.changeHandlerNks = this.changeHandlerNks.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.generateARTList = this.generateARTList.bind(this);
+      this.setRowListeners = this.setRowListeners.bind(this);
     }
 
   componentDidMount() {
 
       $(document).ready(function(){
           // get data: provinsi
+
           this.setState({
             dsrt_sem_val: '1'
           });
@@ -181,7 +184,7 @@ class Ruta extends Component {
   add(e) {
     e.preventDefault();
 
-    $("#form-dsrt-b5 > tbody").append(
+    $("#form-modal-dsrt-b5 > tbody").append(
       "<tr>"+
           "<td><input type='hidden' value='new' /><input id='dsrt-form-rt-id_art' type='text' value='' /></td>"+
           "<td><input id='dsrt-form-rt-b4_k2' type='text' value='' /></td>"+
@@ -216,31 +219,17 @@ class Ruta extends Component {
     e.preventDefault();
 
     if(!this.checkEmpty()) {
-
-    // var dsrt_sem = $('#dsrt-sem option:selected').val();
-    // var dsrt_prov = $('#dsrt-prov option:selected').val();
-    // var dsrt_kab = $('#dsrt-kab option:selected').val();
-    // var dsrt_kec = $('#dsrt-kec option:selected').val();
-    // var dsrt_desa = $('#dsrt-desa option:selected').val();
-    var dsrt_sem = this.state.dsrt_sem_val;
-    var dsrt_prov = this.state.dsrt_prov_val;
-    var dsrt_kab = this.state.dsrt_kab_val;
-    var dsrt_kec = this.state.dsrt_kec_val;
-    var dsrt_desa = this.state.dsrt_desa_val;
-    var dsrt_nks = this.state.dsrt_nks_val;
-    var dsrt_nbs = this.state.dsrt_nbs_val;
-
     // remove rows
     $("#dsrt > tbody > tr").remove();
 
     var query = {
-      dsrt_sem:dsrt_sem,
-      dsrt_prov:dsrt_prov,
-      dsrt_kab:dsrt_kab,
-      dsrt_kec:dsrt_kec,
-      dsrt_desa:dsrt_desa,
-      dsrt_nks:dsrt_nks,
-      dsrt_nbs:dsrt_nbs
+      semester:this.state.dsrt_sem_val,
+      kode_prov:this.state.dsrt_prov_val,
+      kode_kab:this.state.dsrt_kab_val,
+      KEC:this.state.dsrt_kec_val,
+      DESA:this.state.dsrt_desa_val,
+      nks:this.state.dsrt_nks_val,
+      nbs:this.state.dsrt_nbs_val
     };
 
     $.get("http://localhost:8002/ruta",
@@ -249,33 +238,39 @@ class Ruta extends Component {
             // alert(JSON.stringify(temp)); //debug
             // alert(JSON.stringify(data)); //debug
             $("#dsrt > tbody > tr").remove();
-            $("#form-entri-b5 > tbody > tr").remove(); // remove rows
+            $("#form-modal-entri-b5 > tbody > tr").remove(); // remove rows
+
+            alert('status');
+            alert(JSON.stringify(data));
+            alert(data.dsrt.length);
 
             // generate rows
-            if (data.length != 0)
-                for (var i=0; i<data.length; i++) {
+            if (data.dsrt.length != 0)
+                for (var i=0; i<data.dsrt.length; i++) {
                   $("#dsrt > tbody").append(
-                  "<tr class='form-data' data-toggle='modal' data-target='#form'>"+
+                  "<tr class='form-data' data-toggle='modal' data-target='#form-modal'>"+
                       "<td>"+
-                      data[i]['no_dsrt'] + "</td><td>" +
-                      data[i]['nama_krt'] + "</td><td>" +
-                      data[i]['alamat'] + "</td><td>" +
-                      data[i]['NURT'] + "</td>" +
+                      data.dsrt[i]['no_dsrt'] + "</td><td>" +
+                      data.dsrt[i]['nama_krt'] + "</td><td>" +
+                      data.dsrt[i]['alamat'] + "</td><td>" +
+                      'jml_art' + "</td>" +
+                      // data.dsrt[i]['NURT'] + "</td>" +
                   "</tr>");
 
-                  $("#form-entri-b5 > tbody").append(
-                  "<tr id='"+data[i]['_id']+"'>"+
+                  // MODAL
+                  $("#form-modal-entri-b5 > tbody").append(
+                  "<tr id='"+data.dsrt[i]['_id']+"'>"+
                       "<td>"+
-                      "<input type='hidden' value='"+data[i]['_id']+"' />"+
-                      "<input type='text' value='"+data[i]['sls']+"' class='dsrt-form-rt-sls'/></td><td>"+
-                      "<input type='text' class='dsrt-form-rt-nbf'value='"+data[i]['nbf']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-nbs' type='text' value='"+data[i]['nks']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-nort' type='text' value='"+data[i]['nort']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-nama_krt' type='text' value='"+data[i]['nama_krt']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-alamat' type='text' value='"+data[i]['alamat']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-keberadaan_rt' type='text' value='"+data[i]['keberadaan_rt']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-nurt' type='text' value='"+data[i]['nurt']+"' /></td><td>"+
-                      "<input class='dsrt-form-rt-jml_art' type='text' value='"+data[i]['jml_art']+"' /></td>"+
+                      "<input type='hidden' value='"+data.dsrt[i]['_id']+"' />"+
+                      "<input type='text' value='"+data.dsrt[i]['sls']+"' class='dsrt-form-rt-sls'/></td><td>"+
+                      "<input type='text' class='dsrt-form-rt-nbf'value='"+data.dsrt[i]['nbf']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-nbs' type='text' value='"+data.dsrt[i]['nks']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-nort' type='text' value='"+data.dsrt[i]['nort']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-nama_krt' type='text' value='"+data.dsrt[i]['nama_krt']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-alamat' type='text' value='"+data.dsrt[i]['alamat']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-keberadaan_rt' type='text' value='"+data.dsrt[i]['keberadaan_rt']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-nurt' type='text' value='"+data.dsrt[i]['nurt']+"' /></td><td>"+
+                      "<input class='dsrt-form-rt-jml_art' type='text' value='"+data.dsrt[i]['jml_art']+"' /></td>"+
                   '</tr>');
                   }
             else
@@ -285,58 +280,97 @@ class Ruta extends Component {
                 "</tr>");
 
                 // generate-clickHandler
-                var dsrt = document.getElementById('dsrt'),rIndex; // dsrt di ekstrak & jadi listener
-                var form_dsrt_p1 = document.getElementById('form-dsrt-1'),rIndex; // FORM diubah
 
-                var _sem = this.state.dsrt_sem_val;
-                var _kode_prov = this.state.dsrt_prov_val;
-                var _kode_kab = this.state.dsrt_kab_val;
-                var _kode_kec = this.state.dsrt_kec_val;
-                var _kode_desa = this.state.dsrt_desa_val;
-                var _nks = this.state.dsrt_nks_val;
-                var _nbs = this.state.dsrt_nbs_val;
-                var _sls = 'this.state.dsrt.sls';
+                // var dataRef = $("#dsrt tr:nth-child(1) td:eq(1) input");
+                // var dataRef = document.getElementById("dsrt").rows[1].cells[2].children[0].value
+                // var formRef = $("#form-dsrt tr:nth-child("+'i'+") td:eq(1) input");
+                var formRef = document.getElementById("form-dsrt");
 
-                // alert(dsrt.rows.length);
-                // alert(form_dsrt_p1.rows[0].cells.length);
+                    // 1. input data ke formRef (prov, kab, kec, desa, nbs, nks)
+                    // 2. klik, get dataRef
+                    // 3. input data (no_dsrt, nama_krt, nurt)
 
-                for (var i=0; i<dsrt.rows.length; i++) {
-                  dsrt.rows[i].onclick = function() {
-                        //--- onclick: change_state kec, desa, nks, sls
+                formRef.rows[1].cells[2].children[0].value = this.state.dsrt_prov_val; //prov
+                formRef.rows[2].cells[2].children[0].value = this.state.dsrt_kab_val; //kab
+                formRef.rows[3].cells[2].children[0].value = this.state.dsrt_kec_val; //kec
+                formRef.rows[4].cells[2].children[0].value = this.state.dsrt_desa_val; //desa
+                formRef.rows[6].cells[2].children[0].value = this.state.dsrt_nbs_val; //nbs
+                formRef.rows[7].cells[2].children[0].value = this.state.dsrt_nks_val; //nks
 
-                        _kode_kec = this.cells[1].innerHTML;
-                        _kode_desa = this.cells[2].innerHTML;
-                        _nks = this.cells[3].innerHTML;
-                        // _sls = ;
+                this.setRowListeners();
 
-                        // alert(this.cells[4].innerHTML);
-
-                        // alert(form_dsrt_p1.cells[0].innerHTML);
-                        form_dsrt_p1.rows[0].cells[1].innerHTML = _sem;
-                        form_dsrt_p1.rows[1].cells[1].innerHTML = _kode_prov;
-                        form_dsrt_p1.rows[2].cells[1].innerHTML = _kode_kab;
-                        form_dsrt_p1.rows[3].cells[1].innerHTML = _kode_kec;
-                        form_dsrt_p1.rows[4].cells[1].innerHTML = _kode_desa;
-                        form_dsrt_p1.rows[5].cells[1].innerHTML = _sls;
-                        form_dsrt_p1.rows[6].cells[1].innerHTML = _nks;
-                  };
-                }
-
-                // alert('old: ' + JSON.stringify(this.state));
-
-                this.setState({
-                    dsrt_kec_val: _kode_kec.toString(),
-                    dsrt_desa_val: _kode_desa.toString(),
-                    dsrt_nks_val: _nks.toString(),
-                    dsrt_sls_val: _sls.toString(),
-                },()=>{
-                  // alert('new: '+ JSON.stringify(this.state));
-                });
         }.bind(this));
 
       } else
         alert('Masih ada pilihan yang kosong');
 
+  }
+
+  setRowListeners() {
+    var tableRef = document.getElementById('dsrt'),rIndex;
+
+    var no_dsrt;
+    var nama_krt;
+    var nurt;
+
+    for (var i=1; i<tableRef.rows.length; i++) {
+      tableRef.rows[i].onclick = function() {
+          // alert(this.cells[1].innerHTML.replace(/\s\s+/g, ''));
+          no_dsrt = this.cells[0].innerHTML;
+          nama_krt = this.cells[1].innerHTML;
+          nurt = this.cells[3].innerHTML;
+
+          alert(no_dsrt);
+          alert(nama_krt);
+          alert(nurt);
+
+          var formRef = document.getElementById("form-dsrt");
+
+          formRef.rows[8].cells[2].children[0].value = no_dsrt; //no_dsrt
+          formRef.rows[9].cells[2].children[0].value = nama_krt; //nama_krt
+          formRef.rows[10].cells[2].children[0].value = nurt; //nurt
+
+          //DATA_ART
+          //4. hitung jumlah data_art pada no_dsrt terpilih
+          //4. hitung jumlah data_art(umur 5++) pada no_dsrt terpilih
+
+          // generate list of ART
+          this.generateARTList();
+      };
+      }
+  }
+
+  generateARTList(){
+    var formRef2 = document.getElementById("form-dsrt-2");
+    var formRef3 = document.getElementById("form-dsrt-3"); //gak dipake
+    var formRef4 = document.getElementById("form-dsrt-4");
+
+    var jml_art = 0;
+    var jml_art_5 = 0;
+
+    var anggotaRumahTanggaList = {};
+
+    var query = {
+      kode_prov:this.state.dsrt_prov_val,
+      kode_kab:this.state.dsrt_kab_val,
+      semeseter:this.state.dsrt_sem_val,
+      nks:this.state.dsrt_nks_val,
+      no_dsrt:this.state.dsrt_noDsrt_val,
+    };
+
+    $.get("http://localhost:8002/data_art",
+    query,
+    function(data, status) {
+      alert(JSON.stringify(data));
+      anggotaRumahTanggaList = data.listArt; // anggota rumah tangga (ART)
+      jml_art = data.listArt.length;
+      jml_art_5 = data.listArtOver5.length; // ART usia 5 tahun keatas
+
+      formRef2.rows[1].cells[2].children[0].value = jml_art; //nurt
+      formRef2.rows[2].cells[2].children[0].value = jml_art_5; //nurt
+    });
+
+    //5. iterate DATA_ART, create list
   }
 
   changeHandlerSem(childComponent) {
@@ -513,19 +547,19 @@ class Ruta extends Component {
           </tr>
         </thead>
         <tbody>
-            <tr data-toggle='modal' data-target='#form'>
+            <tr data-toggle='modal' data-target='#form-modal'>
               <td>1</td>
               <td>SAMSUL BAHRI</td>
               <td>DUSUN MELATI</td>
               <td>3</td>
             </tr>
-            <tr data-toggle='modal' data-target='#form'>
+            <tr data-toggle='modal' data-target='#form-modal'>
               <td>2</td>
               <td>FADLI ISMAIL</td>
               <td>DUSUN MELATI</td>
               <td>4</td>
             </tr>
-            <tr data-toggle='modal' data-target='#form'>
+            <tr data-toggle='modal' data-target='#form-modal'>
               <td>3</td>
               <td>SAMSURI</td>
               <td>DUSUN MELATI</td>
@@ -537,7 +571,7 @@ class Ruta extends Component {
               <td>DUSUN MAWAR</td>
               <td>3</td>
             </tr>
-            <tr data-toggle='modal' data-target='#form'>
+            <tr data-toggle='modal' data-target='#form-modal'>
               <td>5</td>
               <td>DIDI ARIANTO</td>
               <td>DUSUN MELATI</td>
@@ -547,7 +581,7 @@ class Ruta extends Component {
       </table>
 
       {/* MODAL */}
-      <div id="form" class="modal fade" role="dialog">
+      <div id="form-modal" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg">
 
           <div class="modal-content">
@@ -568,14 +602,14 @@ class Ruta extends Component {
             <div id="hal1" class="tab-pane fade in active">
 
             {/* MODAL-FORM */}
-            <div id="form-dsrt">
-            <table class="table table-striped table table-bordered table-hover">
-              <thead>
-                <tr>
-                  <th colSpan="3">I. Pengenalan Tempat</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div>
+          <table id="form-dsrt" class="table table-striped table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th colSpan="3">I. Pengenalan Tempat</th>
+              </tr>
+            </thead>
+            <tbody>
             <tr>
               <th>1.</th>
                 <td>PROVINSI</td>
@@ -634,7 +668,7 @@ class Ruta extends Component {
             </tbody>
             </table>
 
-            <table class="table table-striped table table-bordered table-hover">
+            <table id="form-dsrt-2" class="table table-striped table table-bordered table-hover">
               <thead>
                 <tr>
                   <th colSpan="3">II. RINGKASAN</th>
@@ -654,7 +688,7 @@ class Ruta extends Component {
             </tbody>
             </table>
 
-            <table class="table table-striped table table-bordered table-hover">
+            <table id="form-dsrt-3" class="table table-striped table table-bordered table-hover">
               <thead>
                 <tr>
                   <th colSpan="5">III. KETERANGAN PETUGAS</th>
@@ -681,9 +715,9 @@ class Ruta extends Component {
             </div>
 
             <div id="hal2" class="tab-pane fade">
-            <div id="form-dsrt-4">
+            <div>
               <h3>Pemutakhiran Rumah Tangga</h3>
-              <table id="form-dsrt-b5" class="table table-striped table-bordered">
+              <table id="form-dsrt-4" class="table table-striped table-bordered">
                   <thead>
                       <tr>
                           <th>id_art</th>

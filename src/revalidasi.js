@@ -123,7 +123,7 @@ class Revalidasi extends Component {
   }
 
   revalidasi(e) {
-    
+
   }
 
   // function: revalidasi

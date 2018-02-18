@@ -1,0 +1,47 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <table id="dsrt" class="table table-striped table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>No Dsrt</th>
+        <th>Nama KRT</th>
+        <th>Alamat</th>
+        <th>ART</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="form-data" data-toggle="modal" data-target="#form">
+        <td>1</td>
+        <td>JOHERAN</td>
+        <td>DUSUN SEULANGA</td>
+        <td>003</td>
+      </tr>
+      <tr class="form-data" data-toggle="modal" data-target="#form" style="color: red;">
+        <td>2</td>
+        <td>AZHAR</td>
+        <td>DUSUN SEULANGA</td>
+        <td>008</td>
+      </tr>
+      <tr class="form-data" data-toggle="modal" data-target="#form">
+        <td>3</td>
+        <td>HILSAN ASRI</td>
+        <td style="color: blue;">DUSUN SEULANGA</td>
+        <td>011</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+<script>
+  $('#dsrt tr:eq(2)').css("color", "red");
+  $('#dsrt tr:eq(3) td:eq(2)').css("color", "blue");
+  alert($('#dsrt tr:eq(3) td:eq(2)').text());
+  alert($('#dsrt tr').length);
+</script>
+
+</html>

@@ -16,56 +16,58 @@ class Login extends Component {
       this.login = this.login.bind(this);
       this.handleUsername = this.handleUsername.bind(this);
       this.handlePassword = this.handlePassword.bind(this);
+      this.login = this.login.bind(this);
       this.state = {
-          logged:this.props.logged,
+          logged:false,
           id_user:'',
           username:'',
           kode_prov:'',
           kode_kab:'',
           realname:'',
-          userlevel:''
+          userlevel:'',
       };
-
-      this.login = this.login.bind(this);
   }
 
-  componentDidMount() {
-    if(this.state.logged) {
-      // redirect to App
-    }
+  componentDidMount(){
+    this.setState({
+      logged:this.props.getState.logged,
+      id_user:this.props.getState.id_user,
+      username:this.props.getState.username,
+      kode_prov:this.props.getState.kode_prov,
+      kode_kab:this.props.getState.kode_kab,
+      realname:this.props.getState.realname,
+      userlevel:this.props.getState.userlevel,
+    });
   }
 
   login(e) {
       e.preventDefault();
-      var username = this.state.username;
-      var password = this.state.password;
-
       var query = {
-        username: username,
-        password: password
+        username: this.state.username,
+        password: this.state.password
       }
 
       $.post("http://localhost:8002/login",
           query,
           function(data, status) {
-              if(!data.registered)
+              if(!data[0].registered)
                 return alert('Wrong Username / Password combination');
               else
                 alert('You have logged in');
-                // Router.transitionTo('/pemutakhiran',query={keyword:''}); // masih gagal
-
                 this.setState({
                   logged:true,
-                  id_user:data.id_user,
-                  username:data.username,
-                  kode_prov:data.kode_prov,
-                  kode_kab:data.kode_kab,
-                  realname:data.realname,
-                  userlevel:data.userlevel
+                  id_user:data[0].id_user,
+                  username:data[0].username,
+                  kode_prov:data[0].kode_prov,
+                  kode_kab:data[0].kode_kab,
+                  realname:data[0].realname,
+                  userlevel:data[0].userlevel
                 });
-                // send this.state.logged, dll to it's parent <App />
-                // redirect this.state to "/" with this.state
-          });
+
+                // alert("login page: "+JSON.stringify(this.state));
+
+                this.props.changeState(this.state);
+          }.bind(this));
   }
 
   handleUsername(e){
