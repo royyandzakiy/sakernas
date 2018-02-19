@@ -50,7 +50,6 @@ class Ruta extends Component {
       this.changeHandlerDesa = this.changeHandlerDesa.bind(this);
       this.changeHandlerNks = this.changeHandlerNks.bind(this);
       this.refresh = this.refresh.bind(this);
-      this.generateARTList = this.generateARTList.bind(this);
       this.setRowListeners = this.setRowListeners.bind(this);
     }
 
@@ -137,10 +136,6 @@ class Ruta extends Component {
                   );
                 }
                 }
-
-                // alert(JSON.stringify(data));
-                // alert(first);
-
                 $("#dsrt-desa").val(data[first]['kode_desa']);
 
                 this.setState({
@@ -181,10 +176,16 @@ class Ruta extends Component {
 
   }
 
+  save(e) {
+      //save to dsrt
+      //save to data_rt
+      //save to data_art
+  }
+
   add(e) {
     e.preventDefault();
 
-    $("#form-modal-dsrt-b5 > tbody").append(
+    $("#form-dsrt-4 > tbody").append(
       "<tr>"+
           "<td><input type='hidden' value='new' /><input id='dsrt-form-rt-id_art' type='text' value='' /></td>"+
           "<td><input id='dsrt-form-rt-b4_k2' type='text' value='' /></td>"+
@@ -209,7 +210,7 @@ class Ruta extends Component {
     ]
     for (var i=0; i<arr.length; i++)
       if(typeof arr[i] == 'undefined'){
-        alert("kosong: "+i);
+        // alert("kosong: "+i);
         return true;}
     return false;
   }
@@ -236,24 +237,24 @@ class Ruta extends Component {
         query,
         function(data, status) {
             // alert(JSON.stringify(temp)); //debug
-            // alert(JSON.stringify(data)); //debug
+            // alert(JSON.stringify(data.dsrt)); //debug
+            // alert(JSON.stringify(data.dsrt.length)); //debug
+            // alert(JSON.stringify(data.dsrt[0]['no_dsrt'])); //debug
             $("#dsrt > tbody > tr").remove();
             $("#form-modal-entri-b5 > tbody > tr").remove(); // remove rows
 
-            alert('status');
-            alert(JSON.stringify(data));
-            alert(data.dsrt.length);
 
             // generate rows
             if (data.dsrt.length != 0)
                 for (var i=0; i<data.dsrt.length; i++) {
+
                   $("#dsrt > tbody").append(
                   "<tr class='form-data' data-toggle='modal' data-target='#form-modal'>"+
                       "<td>"+
                       data.dsrt[i]['no_dsrt'] + "</td><td>" +
                       data.dsrt[i]['nama_krt'] + "</td><td>" +
                       data.dsrt[i]['alamat'] + "</td><td>" +
-                      'jml_art' + "</td>" +
+                      data.dsrt[i]['jml_art'] + "</td>" +
                       // data.dsrt[i]['NURT'] + "</td>" +
                   "</tr>");
 
@@ -279,25 +280,19 @@ class Ruta extends Component {
                   "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
 
-                // generate-clickHandler
+          var formRef = document.getElementById("form-dsrt");
 
-                // var dataRef = $("#dsrt tr:nth-child(1) td:eq(1) input");
-                // var dataRef = document.getElementById("dsrt").rows[1].cells[2].children[0].value
-                // var formRef = $("#form-dsrt tr:nth-child("+'i'+") td:eq(1) input");
-                var formRef = document.getElementById("form-dsrt");
+              // 1. input data ke formRef (prov, kab, kec, desa, nbs, nks)
+              // 2. klik, get dataRef
+              // 3. input data (no_dsrt, nama_krt, nurt)
+          formRef.rows[1].cells[2].children[0].value = this.state.dsrt_prov_val; //prov
+          formRef.rows[2].cells[2].children[0].value = this.state.dsrt_kab_val; //kab
+          formRef.rows[3].cells[2].children[0].value = this.state.dsrt_kec_val; //kec
+          formRef.rows[4].cells[2].children[0].value = this.state.dsrt_desa_val; //desa
+          formRef.rows[6].cells[2].children[0].value = this.state.dsrt_nbs_val; //nbs
+          formRef.rows[7].cells[2].children[0].value = this.state.dsrt_nks_val; //nks
 
-                    // 1. input data ke formRef (prov, kab, kec, desa, nbs, nks)
-                    // 2. klik, get dataRef
-                    // 3. input data (no_dsrt, nama_krt, nurt)
-
-                formRef.rows[1].cells[2].children[0].value = this.state.dsrt_prov_val; //prov
-                formRef.rows[2].cells[2].children[0].value = this.state.dsrt_kab_val; //kab
-                formRef.rows[3].cells[2].children[0].value = this.state.dsrt_kec_val; //kec
-                formRef.rows[4].cells[2].children[0].value = this.state.dsrt_desa_val; //desa
-                formRef.rows[6].cells[2].children[0].value = this.state.dsrt_nbs_val; //nbs
-                formRef.rows[7].cells[2].children[0].value = this.state.dsrt_nks_val; //nks
-
-                this.setRowListeners();
+                this.setRowListeners(data);//*/
 
         }.bind(this));
 
@@ -306,25 +301,28 @@ class Ruta extends Component {
 
   }
 
-  setRowListeners() {
+  setRowListeners(_data) {
     var tableRef = document.getElementById('dsrt'),rIndex;
+    var formRef = document.getElementById("form-dsrt"),rIndex;
+    var formRef2 = document.getElementById("form-dsrt-2"),rIndex;
 
-    var no_dsrt;
-    var nama_krt;
-    var nurt;
+    var no_dsrt, nama_krt, nurt;
+
+    var thisProv = this.state.dsrt_prov_val; //prov
+    var thisKab = this.state.dsrt_kab_val; //kab
+    var thisNks = this.state.dsrt_nks_val; //nks
 
     for (var i=1; i<tableRef.rows.length; i++) {
       tableRef.rows[i].onclick = function() {
-          // alert(this.cells[1].innerHTML.replace(/\s\s+/g, ''));
           no_dsrt = this.cells[0].innerHTML;
           nama_krt = this.cells[1].innerHTML;
-          nurt = this.cells[3].innerHTML;
 
-          alert(no_dsrt);
-          alert(nama_krt);
-          alert(nurt);
+          var index = _data.dsrt.findIndex(function(item, i){
+            return item.no_dsrt === no_dsrt;
+          });
 
-          var formRef = document.getElementById("form-dsrt");
+          // nurt = _data.dsrt[index].nurt;
+          nurt = 5; //dummy
 
           formRef.rows[8].cells[2].children[0].value = no_dsrt; //no_dsrt
           formRef.rows[9].cells[2].children[0].value = nama_krt; //nama_krt
@@ -333,44 +331,110 @@ class Ruta extends Component {
           //DATA_ART
           //4. hitung jumlah data_art pada no_dsrt terpilih
           //4. hitung jumlah data_art(umur 5++) pada no_dsrt terpilih
+          var jml_art = 0;
+          var jml_art_5 = 0;
 
-          // generate list of ART
-          this.generateARTList();
+          for(var i=0; i<_data.data_art.length; i++) {
+              if(_data.data_art[i].no_dsrt == no_dsrt) {
+                 jml_art++;
+                 if(_data.data_art[i].b4_k6 >= 5) {
+                    jml_art_5++;
+                 }
+              }
+          }
+
+          formRef2.rows[1].cells[2].children[0].value = jml_art; //nurt
+          formRef2.rows[2].cells[2].children[0].value = jml_art_5; //nurt
+
+          //5. generate table of ART based on (kode_prov, kode_kab, semester, nks, no_dsrt)
+          $("#form-dsrt-4 > tbody > tr").remove();
+          for(var i=0; i<_data.data_art.length; i++) {
+            if (
+                _data.data_art[i].kode_prov == thisProv &&
+                _data.data_art[i].kode_kab == thisKab &&
+                _data.data_art[i].nks == thisNks &&
+                _data.data_art[i].no_dsrt == no_dsrt)
+                {
+          $("#form-dsrt-4 > tbody").append(
+            "<tr>"+
+            "<td><input id='dsrt-form-rt-id_art' type='text' value='" + _data.data_art[i].id_art + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k2' type='text' value='" + _data.data_art[i].b4_k2 + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k3' type='text' value='" + _data.data_art[i].b4_k3 + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k4' type='text' value='" + _data.data_art[i].b4_k4 + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k5_bl' type='text' value='" + _data.data_art[i].b4_k5_bl + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k5_th' type='text' value='" + _data.data_art[i].b4_k5_th + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k6' type='text' value='" + _data.data_art[i].b4_k6 + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k7' type='text' value='" + _data.data_art[i].b4_k7 + "' /></td>"+
+            "<td><input id='dsrt-form-rt-b4_k8' type='text' value='" + _data.data_art[i].b4_k8 + "' /></td>"+
+            "</tr>"
+          );
+
+          $("#form-modal > .nav-tabs").append(
+            "<li><a data-toggle='tab' href='#hal--'"+i+">Halaman --"+i+"</a></li>"
+          );
+
+
+          $("#form-modal > .tab-content").append(
+            "<div id='hal--'"+i+" class='tab-pane fade'>"+
+            "<div>"+
+              "<h3>KETERANGAN ANGGOTA RUMAH TANGGA YANG BERUMUR 5 TAHUN KE ATAS</h3>"+
+
+              "<table class='table table-striped table-bordered' id='form-dsrt-5'>"+
+                  "<tbody>"+
+                    "<tr id='new'>"+
+                    "<td>Nama</td><td><input id='dsrt-form-rt-b5_rnama' type='text' value='' /></td>"+
+                  "</tr><tr><td>Pemberi Informasi</td><td><input id='dsrt-form-rt-b5_rinfo' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>V.A. KARAKTERISTIK UMUM</td>"+
+                  "</tr><tr><td>1.a. Apakah ijazah/STTB tertinggi yang dimiliki</td><td><input id='dsrt-form-rt-b5_r1a' type='text' value='' /></td>"+
+                  "</tr><tr><td>b. Jurusan pendidikan/bidang studi</td><td><input id='dsrt-form-rt-b5_r1b' type='text' value='' /></td>"+
+                  "</tr><tr><td>c. Apakah anda lulus dari pendidikan tertinggi pada setahun terakhir?</td><td><input id='dsrt-form-rt-b5_r1c' type='text' value='' /></td>"+
+                  "</tr><tr><td>d. Apakah anda lulus dari pernah mendapatkan pelatihan/kursus/training dan memperoleh sertifikat?</td><td><input id='dsrt-form-rt-b5_r1d' type='text' value='' /></td>"+
+                  "</tr><tr><td>e. Apakah anda sedang mengikuti pelatihan/kursus/training (tidak harus bersertifikat)?</td><td><input id='dsrt-form-rt-b5_r1e' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>2. Dimanakah tempat lahir anda?</td>"+
+                  "</tr><tr><td>PROVINSI/NEGARA</td><td><input id='dsrt-form-rt-b5_r2a' type='text' value='' /></td>"+
+                  "</tr><tr><td>KAB/KOTA</td><td><input id='dsrt-form-rt-b5_r2b' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>3. Dimanakah tempat tinggal anda selama 5 tahun kebelakang?</td>"+
+                  "</tr><tr><td>PROVINSI/NEGARA</td><td><input id='dsrt-form-rt-b5_r3a' type='text' value='' /></td>"+
+                  "</tr><tr><td>KAB/KOTA</td><td><input id='dsrt-form-rt-b5_r3b' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>4. Apakah anda mengalami kesulitan/gangguan</td>"+
+                  "</tr><tr><td>a. Penglihatan (1-3)</td><td><input id='dsrt-form-rt-b5_r4a' type='text' value='' /></td>"+
+                  "</tr><tr><td>b. Pendengaran (4-6)</td><td><input id='dsrt-form-rt-b5_r4b' type='text' value='' /></td>"+
+                  "</tr><tr><td>c. Berjalan/naik tangga (mobilitas) (1-3)</td><td><input id='dsrt-form-rt-b5_r4c' type='text' value='' /></td>"+
+                  "</tr><tr><td>d. Menggunakan/menggerakkan jari/tangan (4-6)</td><td><input id='dsrt-form-rt-b5_r4d' type='text' value='' /></td>"+
+                  "</tr><tr><td>e. Berbicara dan atau memahami/berkomunikasi dengan orang lain (1-3)</td><td><input id='dsrt-form-rt-b5_r4e' type='text' value='' /></td>"+
+                  "</tr><tr><td>f. Lainnya (misal: mengingat/konsentrasi, perilaku/emosional, mengurus diri, dll.) (4-6)</td><td><input id='dsrt-form-rt-b5_r4f' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>V.B. KEGIATAN SEMINGGU DAN SEBULAN YANG LALU</td>"+
+                  "</tr><tr><td colspan='2'>5.a. Selama seminggu yang lalu</td>"+
+                  "</tr><tr><td>1. Apakah anda bekerja minima 1 jam tanpa terputus? (1-2)</td><td><input id='dsrt-form-rt-b5_r5a1' type='text' value='' /></td>"+
+                  "</tr><tr><td>2. Apakah anda sekolah? (3-4)</td><td><input id='dsrt-form-rt-b5_r5a2' type='text' value='' /></td>"+
+                  "</tr><tr><td>3. Apakah anda mengurus rumah tangga? (1-2)</td><td><input id='dsrt-form-rt-b5_r5a3' type='text' value='' /></td>"+
+                  "</tr><tr><td>4. Apakah anda melakukan kegiatan lainnya (selain tidur, malas-malasan, nonton, dll.) (3-4)</td><td><input id='dsrt-form-rt-b5_r5a4' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>b. Dari kegiatan 1-4 yang menyatakan 'Ya' pada 5.a., kegiatan apa yang menggunakan waktu terbanyak selama seminggu lalu?</td>"+
+                  "</tr><tr><td>Pilih nomor 1-4</td><td><input id='dsrt-form-rt-b5_r5b' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>6. Apakah anda biasanya bekerja minimal 1 jam tanpa terputus dalam seminggu tetapi saat ini sementara tidak bekerja?</td>"+
+                  "</tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r6' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>7.a. Apakah anda bekerja minimal 1 jam kumulatif dalam seminggu yang lalu?</td>"+
+                  "</tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r7a' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>b. Apakah anda biasanya bekerja minimal 1 jam kumulatif dalam seminggu tetapi saat ini sementara tidak bekerja?</td>"+
+                  "</tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r7b' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>8. Apakah alasan utama anda sementara tidak bekerja selama seminggu yang lalu?</td>"+
+                    "</tr><tr><td>isi dengan nomor 1-9</td><td><input id='dsrt-form-rt-b5_r8' type='text' value='' /></td>"+
+                    "</tr><tr><td>Lainnya... (jika pilih nomor 9)</td><td><input id='dsrt-form-rt-b5_r8l' type='text' value='' /></td>"+
+                  "</tr><tr><td colspan='2'>V.D. PEKERJAAN UTAMA</td>"+
+                  "</tr><tr><td>23. Apakah lapangan usaha/bidang pekerjaan utama dari tempat anda bekerja selama seminggu yang lalu?</td><td><input id='dsrt-form-rt-b5_r23' type='text' value='' /></td>"+
+                  "</tr><tr><td>24. Apakah jenis pekerjaan/jabatan dari pekerjaan utama anda selama seminggu yang lalu?</td><td><input id='dsrt-form-rt-b5_r24' type='text' value='' /></td>"+
+                    "</tr>"+
+                  "</tbody>"+
+              "</table>"+
+
+            "</div>"+
+          "</div>"
+          );
+
+        }
+        }
       };
       }
-  }
-
-  generateARTList(){
-    var formRef2 = document.getElementById("form-dsrt-2");
-    var formRef3 = document.getElementById("form-dsrt-3"); //gak dipake
-    var formRef4 = document.getElementById("form-dsrt-4");
-
-    var jml_art = 0;
-    var jml_art_5 = 0;
-
-    var anggotaRumahTanggaList = {};
-
-    var query = {
-      kode_prov:this.state.dsrt_prov_val,
-      kode_kab:this.state.dsrt_kab_val,
-      semeseter:this.state.dsrt_sem_val,
-      nks:this.state.dsrt_nks_val,
-      no_dsrt:this.state.dsrt_noDsrt_val,
-    };
-
-    $.get("http://localhost:8002/data_art",
-    query,
-    function(data, status) {
-      alert(JSON.stringify(data));
-      anggotaRumahTanggaList = data.listArt; // anggota rumah tangga (ART)
-      jml_art = data.listArt.length;
-      jml_art_5 = data.listArtOver5.length; // ART usia 5 tahun keatas
-
-      formRef2.rows[1].cells[2].children[0].value = jml_art; //nurt
-      formRef2.rows[2].cells[2].children[0].value = jml_art_5; //nurt
-    });
-
-    //5. iterate DATA_ART, create list
   }
 
   changeHandlerSem(childComponent) {
@@ -595,6 +659,7 @@ class Ruta extends Component {
             <ul class="nav nav-tabs">
               <li class="active"><a data-toggle="tab" href="#hal1">Halaman 1</a></li>
               <li><a data-toggle="tab" href="#hal2">Halaman 2</a></li>
+              <li><a data-toggle="tab" href="#hal3">Halaman 3</a></li>
             </ul>
 
             <div class="tab-content">
@@ -613,42 +678,42 @@ class Ruta extends Component {
             <tr>
               <th>1.</th>
                 <td>PROVINSI</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled/></td>
             </tr>
             <tr>
               <th>2.</th>
                 <td>KABUPATEN/KOTA *)</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled/></td>
             </tr>
             <tr>
               <th>3.</th>
                 <td>KECAMATAN</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled/></td>
             </tr>
             <tr>
               <th>4.</th>
                 <td>DESA/KELURAHAN *)</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled /></td>
             </tr>
             <tr>
                 <th>5.</th>
                   <td>KLASIFIKASI DESA/KELUARAHAN</td>
-                  <td><input type="text" class="form-control" id="usr" /></td>
+                  <td><input type="text" class="form-control" id="usr" disabled /></td>
             </tr>
             <tr>
               <th>6.</th>
                 <td>NOMOR BLOK SENSUS</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr"  disabled/></td>
             </tr>
             <tr>
               <th>7.</th>
                 <td>NOMOR KODE SAMPEL</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled /></td>
             </tr>
             <tr>
               <th>8.</th>
                 <td>NOMOR URUT RUMAH TANGGA SAMPEL SAK17.DSRT BLOK III KOLOM (1)</td>
-                <td><input type="text" class="form-control" id="usr" /></td>
+                <td><input type="text" class="form-control" id="usr" disabled /></td>
             </tr>
             <tr>
               <th>9.</th>
@@ -747,6 +812,61 @@ class Ruta extends Component {
               </table>
             </div>
           </div>
+
+          <div id='hal3' class='tab-pane fade'>
+          <div>
+            <h3>KETERANGAN ANGGOTA RUMAH TANGGA YANG BERUMUR 5 TAHUN KE ATAS</h3>
+
+            <table class='table table-striped table-bordered' id='form-dsrt-5'>
+                <tbody>
+                  <tr id='new'>
+                  <td>Nama</td><td><input id='dsrt-form-rt-b5_rnama' type='text' value='' /></td>
+                </tr><tr><td>Pemberi Informasi</td><td><input id='dsrt-form-rt-b5_rinfo' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>V.A. KARAKTERISTIK UMUM</td>
+                </tr><tr><td>1.a. Apakah ijazah/STTB tertinggi yang dimiliki</td><td><input id='dsrt-form-rt-b5_r1a' type='text' value='' /></td>
+                </tr><tr><td>b. Jurusan pendidikan/bidang studi</td><td><input id='dsrt-form-rt-b5_r1b' type='text' value='' /></td>
+                </tr><tr><td>c. Apakah anda lulus dari pendidikan tertinggi pada setahun terakhir?</td><td><input id='dsrt-form-rt-b5_r1c' type='text' value='' /></td>
+                </tr><tr><td>d. Apakah anda lulus dari pernah mendapatkan pelatihan/kursus/training dan memperoleh sertifikat?</td><td><input id='dsrt-form-rt-b5_r1d' type='text' value='' /></td>
+                </tr><tr><td>e. Apakah anda sedang mengikuti pelatihan/kursus/training (tidak harus bersertifikat)?</td><td><input id='dsrt-form-rt-b5_r1e' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>2. Dimanakah tempat lahir anda?</td>
+                </tr><tr><td>PROVINSI/NEGARA</td><td><input id='dsrt-form-rt-b5_r2a' type='text' value='' /></td>
+                </tr><tr><td>KAB/KOTA</td><td><input id='dsrt-form-rt-b5_r2b' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>3. Dimanakah tempat tinggal anda selama 5 tahun kebelakang?</td>
+                </tr><tr><td>PROVINSI/NEGARA</td><td><input id='dsrt-form-rt-b5_r3a' type='text' value='' /></td>
+                </tr><tr><td>KAB/KOTA</td><td><input id='dsrt-form-rt-b5_r3b' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>4. Apakah anda mengalami kesulitan/gangguan</td>
+                </tr><tr><td>a. Penglihatan (1-3)</td><td><input id='dsrt-form-rt-b5_r4a' type='text' value='' /></td>
+                </tr><tr><td>b. Pendengaran (4-6)</td><td><input id='dsrt-form-rt-b5_r4b' type='text' value='' /></td>
+                </tr><tr><td>c. Berjalan/naik tangga (mobilitas) (1-3)</td><td><input id='dsrt-form-rt-b5_r4c' type='text' value='' /></td>
+                </tr><tr><td>d. Menggunakan/menggerakkan jari/tangan (4-6)</td><td><input id='dsrt-form-rt-b5_r4d' type='text' value='' /></td>
+                </tr><tr><td>e. Berbicara dan atau memahami/berkomunikasi dengan orang lain (1-3)</td><td><input id='dsrt-form-rt-b5_r4e' type='text' value='' /></td>
+                </tr><tr><td>f. Lainnya (misal: mengingat/konsentrasi, perilaku/emosional, mengurus diri, dll.) (4-6)</td><td><input id='dsrt-form-rt-b5_r4f' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>V.B. KEGIATAN SEMINGGU DAN SEBULAN YANG LALU</td>
+                </tr><tr><td colspan='2'>5.a. Selama seminggu yang lalu</td>
+                </tr><tr><td>1. Apakah anda bekerja minima 1 jam tanpa terputus? (1-2)</td><td><input id='dsrt-form-rt-b5_r5a1' type='text' value='' /></td>
+                </tr><tr><td>2. Apakah anda sekolah? (3-4)</td><td><input id='dsrt-form-rt-b5_r5a2' type='text' value='' /></td>
+                </tr><tr><td>3. Apakah anda mengurus rumah tangga? (1-2)</td><td><input id='dsrt-form-rt-b5_r5a3' type='text' value='' /></td>
+                </tr><tr><td>4. Apakah anda melakukan kegiatan lainnya (selain tidur, malas-malasan, nonton, dll.) (3-4)</td><td><input id='dsrt-form-rt-b5_r5a4' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>b. Dari kegiatan 1-4 yang menyatakan 'Ya' pada 5.a., kegiatan apa yang menggunakan waktu terbanyak selama seminggu lalu?</td>
+                </tr><tr><td>Pilih nomor 1-4</td><td><input id='dsrt-form-rt-b5_r5b' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>6. Apakah anda biasanya bekerja minimal 1 jam tanpa terputus dalam seminggu tetapi saat ini sementara tidak bekerja?</td>
+                </tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r6' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>7.a. Apakah anda bekerja minimal 1 jam kumulatif dalam seminggu yang lalu?</td>
+                </tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r7a' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>b. Apakah anda biasanya bekerja minimal 1 jam kumulatif dalam seminggu tetapi saat ini sementara tidak bekerja?</td>
+                </tr><tr><td>Jawab Ya (1) atau Tidak (2)</td><td><input id='dsrt-form-rt-b5_r7b' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>8. Apakah alasan utama anda sementara tidak bekerja selama seminggu yang lalu?</td>
+                  </tr><tr><td>isi dengan nomor 1-9</td><td><input id='dsrt-form-rt-b5_r8' type='text' value='' /></td>
+                  </tr><tr><td>Lainnya... (jika pilih nomor 9)</td><td><input id='dsrt-form-rt-b5_r8l' type='text' value='' /></td>
+                </tr><tr><td colspan='2'>V.D. PEKERJAAN UTAMA</td>
+                </tr><tr><td>23. Apakah lapangan usaha/bidang pekerjaan utama dari tempat anda bekerja selama seminggu yang lalu?</td><td><input id='dsrt-form-rt-b5_r23' type='text' value='' /></td>
+                </tr><tr><td>24. Apakah jenis pekerjaan/jabatan dari pekerjaan utama anda selama seminggu yang lalu?</td><td><input id='dsrt-form-rt-b5_r24' type='text' value='' /></td>
+                  </tr>
+                </tbody>
+            </table>
+
+          </div>
+        </div>
 
             </div>
 

@@ -11,6 +11,15 @@
   overflow-y: scroll;
 }
 
+.tab-content {
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+#form-dsrt-5.dark > td {
+  background-color: black;
+}
+
 #modal-table-big > tbody > tr > input[type='text'] {
   max-width: 30px;
 }
