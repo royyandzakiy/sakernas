@@ -22,10 +22,6 @@ class Progres_ruta extends Component {
     this.changeReport = this.changeReport.bind(this);
     this.refresh = this.refresh.bind(this);
 
-  }
-
-  componentDidMount() {
-
     $.get("http://localhost:8002/master-prov",
         {},
         function(data, status) {
@@ -83,18 +79,21 @@ class Progres_ruta extends Component {
   refresh(e) {
     e.preventDefault();
 
-
     var report = this.state.report_val;
     var query = {
       kode_kab: this.state.kab_val,
       kode_prov: this.state.prov_val,
     }
 
+
     var tableRef = $("#App-table > tbody");
 
-    $.get("http://localhost:8002/" + (report == 'Pemutakhiran' ? "pemutakhiran/" : "data-rt/" ),
+    console.log("tes pemutakhiran: "+report);
+
+    $.get("http://localhost:8002/" + (report.toLowerCase() == 'pemutakhiran' ? "pemutakhiran/" : "data-rt-monitor/" ),
         query,
         function(data, status) {
+          // alert(JSON.stringify(data));
             $("#App-table > tbody > tr").remove();
             if (data.length != 0)
                 this.setState({
@@ -106,6 +105,7 @@ class Progres_ruta extends Component {
                   var kode_kec_list = [];
                   var temp = {};
 
+                  // /*
                   // isi kode_kec_list & kec_list
                   for (var i=0; i<data.length; i++) {
                       if (!kode_kec_list.includes(data[i]['kode_kec'])) {
@@ -124,6 +124,8 @@ class Progres_ruta extends Component {
                           // alert("temp: "+JSON.stringify(temp));
                           kec_list.push(temp);
                       }
+
+                      console.log("tes: "+JSON.stringify(data[i]));
 
                       var indexOfKec = kode_kec_list.indexOf(data[i]['kode_kec']);
                       if (data[i]['status_dok'].toLowerCase()  == 'c')
@@ -171,6 +173,7 @@ class Progres_ruta extends Component {
                               "</tr>"
                           );
                       }
+                      //*/
                 });
               else
                   tableRef.append(
@@ -213,99 +216,99 @@ class Progres_ruta extends Component {
   render() {
     return (
       <div className="App">
-        <div id="main" class="container main">
-        <div id="App-pilih" class="col-lg-8">
-        <table >
-            <tbody>
-                <tr>
-                    <td>Jenis Kegiatan: </td>
-                    <td>
-                    <select id="jenis-kegiatan" class="form-control">
-                        <option>Sakernas 2017</option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Provinsi: </td>
-                    <td>
-                    <select class="form-control" id="monitor-prov" onChange={this.changeProv.bind(this)} value={this.state.prov_value}>
-                        <option>-</option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Kab/Kota: </td>
-                    <td>
-                    <select class="form-control" id="monitor-kab" onChange={this.changeKab.bind(this)} value={this.state.kab_value}>
-                        <option>-</option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Report: </td>
-                    <td>
-                    <select class="form-control" id="monitor-report" onChange={this.changeReport.bind(this)} value={this.state.report_value}>
-                        <option>Pemutakhiran</option>
-                        <option>Rumah Tangga</option>
-                    </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <button id="monitor-Refresh" onClick={this.refresh}>Refresh</button>
-        </div>
+      <div id="main" class="container">
+      <div id="App-pilih" class="col-lg-8">
+      <table >
+          <tbody>
+              <tr>
+                  <td>Jenis Kegiatan: </td>
+                  <td>
+                  <select id="jenis-kegiatan" class="form-control">
+                      <option>Sakernas 2017</option>
+                  </select>
+                  </td>
+              </tr>
+              <tr>
+                  <td>Provinsi: </td>
+                  <td>
+                  <select class="form-control" id="monitor-prov" onChange={this.changeProv.bind(this)} value={this.state.prov_value}>
+                      <option>-</option>
+                  </select>
+                  </td>
+              </tr>
+              <tr>
+                  <td>Kab/Kota: </td>
+                  <td>
+                  <select class="form-control" id="monitor-kab" onChange={this.changeKab.bind(this)} value={this.state.kab_value}>
+                      <option>-</option>
+                  </select>
+                  </td>
+              </tr>
+              <tr>
+                  <td>Report: </td>
+                  <td>
+                  <select class="form-control" id="monitor-report" onChange={this.changeReport.bind(this)} value={this.state.report_value}>
+                      <option>Pemutakhiran</option>
+                      <option>Rumah Tangga</option>
+                  </select>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+      <button id="monitor-Refresh" onClick={this.refresh}>Refresh</button>
+      </div>
 
 
-        <div>
-            <table id="App-table" class="table table-striped table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>
-                            Kode Wilayah
-                        </th>
-                        <th>
-                            Nama Prov
-                        </th>
-                        <th>
-                            Nama Kab
-                        </th>
-                        <th>
-                            Nama Kec
-                        </th>
-                        <th>
-                            DokBlank
-                        </th>
-                        <th>
-                            PersenBlank
-                        </th>
-                        <th>
-                            DokClean
-                        </th>
-                        <th>
-                            PersenClean
-                        </th>
-                        <th>
-                            DokError
-                        </th>
-                        <th>
-                            PersenError
-                        </th>
-                        <th>
-                            Total
-                        </th>
-                        <th>
-                            TotalNKS
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr class='data'>
-                    <td colspan='12'>Tekan Refresh</td>
+      <div>
+          <table id="App-table" class="table table-striped table-hover table-bordered">
+              <thead>
+                  <tr>
+                      <th>
+                          Kode Wilayah
+                      </th>
+                      <th>
+                          Nama Prov
+                      </th>
+                      <th>
+                          Nama Kab
+                      </th>
+                      <th>
+                          Nama Kec
+                      </th>
+                      <th>
+                          DokBlank
+                      </th>
+                      <th>
+                          PersenBlank
+                      </th>
+                      <th>
+                          DokClean
+                      </th>
+                      <th>
+                          PersenClean
+                      </th>
+                      <th>
+                          DokError
+                      </th>
+                      <th>
+                          PersenError
+                      </th>
+                      <th>
+                          Total
+                      </th>
+                      <th>
+                          TotalNKS
+                      </th>
                   </tr>
-                </tbody>
-            </table>
-        </div>
-        </div>
+              </thead>
+              <tbody>
+                <tr class='data'>
+                  <td colspan='12'>Tekan Refresh</td>
+                </tr>
+              </tbody>
+          </table>
+      </div>
+      </div>
       </div>
     );
   }
