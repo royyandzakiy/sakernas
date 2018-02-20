@@ -192,13 +192,6 @@ class Ruta extends Component {
       // post & update berdasarkan _id tiap data (id ada di)
       // ulangi utk data_rt, data_art
 
-        // for (var i=0; i<form_entri_b5.rows.length; i++) {
-        //   if (i > 0) {
-        //   var _id = form_entri_b5.rows[i].cells[0].children[0].value;
-        //   var id_user = '';
-        //   var b3_r1a = $('#form-entri-p-2 #entri-p-form-b3_r1a').val();
-        //   var b3_r1b = $('#form-entri-p-2 #entri-p-form-b3_r1b').val();
-
           // 1. get referemce ke tabel
           // var form_data_rt = document.getElementById('form-dsrt'),rIndex;
           var form_data_rt = document.getElementById('form-dsrt'),rIndex; // #hal1
@@ -208,7 +201,6 @@ class Ruta extends Component {
 
           var jml_art = form_data_art_2.rows[1].cells[2].children[0].value; // juml_art
 
-          // var _id_rt = '';
           var _id_art = '';
 
           // 2. siapkan data
@@ -240,7 +232,6 @@ class Ruta extends Component {
 
           console.log(JSON.stringify(temp_data_rt));
 
-          /*
           $.post("http://localhost:8002/data-rt/add",
             temp_data_rt,
             function(_data, status) {
@@ -307,7 +298,7 @@ class Ruta extends Component {
               console.log("_id_art-"+i+": "+_id_art);
               console.log("#art-"+i+": "+JSON.stringify(temp_data_art));
 
-              /*
+
             // 3. save
             // data_art = sejumlah hal2_row_length
             // if (_id_art == 'new'){
@@ -334,7 +325,7 @@ class Ruta extends Component {
                     console.log(response);
                 });
             }//*/
-          }
+
 
 
       alert('Data diperbaharui!');
@@ -519,7 +510,8 @@ class Ruta extends Component {
                 _data.data_art[i].kode_prov == thisProv &&
                 _data.data_art[i].kode_kab == thisKab &&
                 _data.data_art[i].nks == thisNks &&
-                _data.data_art[i].no_dsrt == no_dsrt)
+                _data.data_art[i].no_dsrt == no_dsrt
+              )
                 {
           $("#form-dsrt-4 > tbody").append(
             "<tr id='"+_data.data_art[i]._id+"'>"+
@@ -536,12 +528,12 @@ class Ruta extends Component {
           );
 
           $(".nav-tabs").append(
-            "<li class='art'><a data-toggle='tab' href='#art-"+i+"'>"+_data.data_art[i].b4_k2+"</a></li>"
+            "<li class='art'><a data-toggle='tab' href='#art-"+j+"'>"+_data.data_art[i].b4_k2+"</a></li>"
           );
 
 
           $(".tab-content").append(
-            "<div id='art-"+i+"' class='tab-pane fade art'>"+
+            "<div id='art-"+j+"' class='tab-pane fade art'>"+
             "<div>"+
               "<h3>KETERANGAN ANGGOTA RUMAH TANGGA YANG BERUMUR 5 TAHUN KE ATAS</h3>"+
 
@@ -596,8 +588,10 @@ class Ruta extends Component {
             "</div>"+
           "</div>"
         );//*/
+        j++;
 
         }
+
         }
       };
       }
