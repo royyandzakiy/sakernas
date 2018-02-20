@@ -45,6 +45,50 @@ class Entri_p extends Component {
     '</tr>');
   }
 
+  componentDidMount() {
+        // isi list provinsi
+        this.setState({
+          entri_p_sem_val: '1'
+        });
+
+        $.get("http://localhost:8002/master-prov",
+            {},
+            function(_data, status) {
+
+              for (var i=0; i<_data.length; i++) {
+                  $("#entri-p-prov").append(
+                    "<option " + (i==0 ? "selected" : "") +
+                    "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
+                  );
+                }
+
+                this.setState({
+                  entri_p_prov_list: _data,
+                  entri_p_prov_val: _data[0]['kode_prov']
+                });
+            }.bind(this));
+        // isi list kabupaten
+        $.get("http://localhost:8002/master-kab",
+            {kode_prov: this.state.entri_p_prov_val},
+            function(_data, status) {
+                // alert(JSON.stringify(_data)); //debug
+                $("#entri-p-kab > option").remove();
+
+                if (_data.length != 0)
+                for (var i=0; i<_data.length; i++) {
+                  if(_data[i]['kode_prov'] == this.state.entri_p_prov_val)
+                    $("#entri-p-kab").append(
+                      "<option value="+_data[i]['kode_kab']+">["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                    );
+                }
+                this.setState({
+                  entri_p_kab_list: _data,
+                  entri_p_kab_val: _data[0]['kode_kab']
+                });
+
+            }.bind(this));
+  }
+
   save(e) {
         var form_entri_b5 = document.getElementById('form-entri-b5'),rIndex; // entri_p di ekstrak & jadi listener
         var form_entri_p_1 = document.getElementById('form-entri-p-1'),rIndex; // entri_p di ekstrak & jadi listener
@@ -92,7 +136,6 @@ class Entri_p extends Component {
                 "nort": form_entri_b5.rows[i].cells[3].children[0].value
               }
 
-            if(0)
             if (_id == 'new'){
                   $.post("http://localhost:8002/pemutakhiran/add",
                       temp,
@@ -121,50 +164,6 @@ class Entri_p extends Component {
       }
       alert('Data diperbaharui!');
       this.refresh();
-  }
-
-  componentDidMount() {
-        // isi list provinsi
-        this.setState({
-          entri_p_sem_val: '1'
-        });
-
-        $.get("http://localhost:8002/master-prov",
-            {},
-            function(_data, status) {
-
-              for (var i=0; i<_data.length; i++) {
-                  $("#entri-p-prov").append(
-                    "<option " + (i==0 ? "selected" : "") +
-                    "value="+_data[i]['kode_prov']+">["+_data[i]['kode_prov']+"] "+_data[i]['nama_prov']+"</option>"
-                  );
-                }
-
-                this.setState({
-                  entri_p_prov_list: _data,
-                  entri_p_prov_val: _data[0]['kode_prov']
-                });
-            }.bind(this));
-        // isi list kabupaten
-        $.get("http://localhost:8002/master-kab",
-            {kode_prov: this.state.entri_p_prov_val},
-            function(_data, status) {
-                // alert(JSON.stringify(_data)); //debug
-                $("#entri-p-kab > option").remove();
-
-                if (_data.length != 0)
-                for (var i=0; i<_data.length; i++) {
-                  if(_data[i]['kode_prov'] == this.state.entri_p_prov_val)
-                    $("#entri-p-kab").append(
-                      "<option value="+_data[i]['kode_kab']+">["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
-                    );
-                }
-                this.setState({
-                  entri_p_kab_list: _data,
-                  entri_p_kab_val: _data[0]['kode_kab']
-                });
-
-            }.bind(this));
   }
 
   //--- function: refresh

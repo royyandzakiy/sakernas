@@ -50,6 +50,7 @@ class Ruta extends Component {
       this.changeHandlerDesa = this.changeHandlerDesa.bind(this);
       this.changeHandlerNks = this.changeHandlerNks.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.save = this.save.bind(this);
       this.setRowListeners = this.setRowListeners.bind(this);
     }
 
@@ -177,9 +178,167 @@ class Ruta extends Component {
   }
 
   save(e) {
-      //save to dsrt
-      //save to data_rt
-      //save to data_art
+      // save to dsrt x (gaperlu)
+      // save to data_rt #hal1
+      // save to data_art
+          // #hal2 = #form-dsrt-4 > tbody > tr
+          // .tab-content > div.art = hitung dengan iterasi
+      // console.log("save now");
+
+      // buat referensi dari tiap tabel terkait
+
+
+      // ambil data dari semua kolom terkait
+      // post & update berdasarkan _id tiap data (id ada di)
+      // ulangi utk data_rt, data_art
+
+        // for (var i=0; i<form_entri_b5.rows.length; i++) {
+        //   if (i > 0) {
+        //   var _id = form_entri_b5.rows[i].cells[0].children[0].value;
+        //   var id_user = '';
+        //   var b3_r1a = $('#form-entri-p-2 #entri-p-form-b3_r1a').val();
+        //   var b3_r1b = $('#form-entri-p-2 #entri-p-form-b3_r1b').val();
+
+          // 1. get referemce ke tabel
+          // var form_data_rt = document.getElementById('form-dsrt'),rIndex;
+          var form_data_rt = document.getElementById('form-dsrt'),rIndex; // #hal1
+          var form_data_art_2 = document.getElementById('form-dsrt-2'),rIndex; // #hal1
+          var form_data_art_3 = document.getElementById('form-dsrt-3'),rIndex; // #hal1
+          var form_data_art_4 = document.getElementById('form-dsrt-4'),rIndex; // #hal2
+
+          var jml_art = form_data_art_2.rows[1].cells[2].children[0].value; // juml_art
+
+          // var _id_rt = '';
+          var _id_art = '';
+
+          // 2. siapkan data
+          var temp_data_rt = {
+            kode_prov:form_data_rt.rows[1].cells[2].children[0].value,
+            kode_kab:form_data_rt.rows[2].cells[2].children[0].value,
+            semester:this.state.dsrt_sem_val,
+            nks:form_data_rt.rows[7].cells[2].children[0].value,
+            no_dsrt:form_data_rt.rows[8].cells[2].children[0].value,
+            status_dok:'',
+            id_user:'',
+            b1_r9:form_data_rt.rows[9].cells[2].children[0].value,
+            b1_r10:form_data_rt.rows[10].cells[2].children[0].value,
+            b1_r11:form_data_rt.rows[11].cells[2].children[0].value,
+            b2_r1:form_data_art_2.rows[1].cells[2].children[0].value,
+            b2_r2:form_data_art_2.rows[2].cells[2].children[0].value,
+            b3_r1b:form_data_art_3.rows[1].cells[2].children[0].value,
+            b3_r1a_tl:form_data_art_3.rows[1].cells[4].children[0].value,
+            b3_r1a_bl:form_data_art_3.rows[1].cells[5].children[0].value,
+            b3_r1a_th:form_data_art_3.rows[1].cells[6].children[0].value,
+            b3_r1a_ttd:'',
+            b3_r2b:form_data_art_3.rows[2].cells[2].children[0].value,
+            b3_r2a_tl:form_data_art_3.rows[2].cells[4].children[0].value,
+            b3_r2a_bl:form_data_art_3.rows[2].cells[5].children[0].value,
+            b3_r2a_th:form_data_art_3.rows[2].cells[6].children[0].value,
+            b3_r2a_ttd:'',
+            b6_rcat:'',
+          }
+
+          console.log(JSON.stringify(temp_data_rt));
+
+          /*
+          $.post("http://localhost:8002/data-rt/add",
+            temp_data_rt,
+            function(_data, status) {
+              console.log(_data);
+            });//*/
+
+
+          var jumlah_row_hal2 = form_data_art_2.rows[1].cells[2].children[0].value;
+
+          for (var i=0; i<jumlah_row_hal2; i++){
+              var formRef = document.getElementById('art-'+i),rIndex;
+
+              var _id_art = $("#art-"+i+" table").attr('id');
+
+              var temp_data_art = {
+                kode_prov:form_data_rt.rows[1].cells[2].children[0].value,
+                kode_kab:form_data_rt.rows[2].cells[2].children[0].value,
+                semester:this.state.dsrt_sem_val,
+                nks:form_data_rt.rows[7].cells[2].children[0].value,
+                no_dsrt:form_data_rt.rows[8].cells[2].children[0].value,
+                id_art:form_data_art_4.rows[1].cells[0].children[0].value,
+
+                b4_k2:form_data_art_4.rows[1].cells[1].children[0].value,
+                b4_k3:form_data_art_4.rows[1].cells[2].children[0].value,
+                b4_k4:form_data_art_4.rows[1].cells[3].children[0].value,
+                b4_k5_bl:form_data_art_4.rows[1].cells[4].children[0].value,
+                b4_k5_th:form_data_art_4.rows[1].cells[5].children[0].value,
+                b4_k6:form_data_art_4.rows[1].cells[6].children[0].value,
+                b4_k7:form_data_art_4.rows[1].cells[7].children[0].value,
+                b4_k8:form_data_art_4.rows[1].cells[8].children[0].value,
+
+                b5_rnama:$("#art-"+i+" #dsrt-form-rt-b5_rnama").val(),
+                b5_rinfo:$("#art-"+i+" #dsrt-form-rt-b5_rinfo").val(),
+                b5_r1a:$("#art-"+i+" #dsrt-form-rt-b5_r1a").val(),
+                b5_r1b:$("#art-"+i+" #dsrt-form-rt-b5_r1b").val(),
+                b5_r1c:$("#art-"+i+" #dsrt-form-rt-b5_r1c").val(),
+                b5_r1d:$("#art-"+i+" #dsrt-form-rt-b5_r1d").val(),
+                b5_r1e:$("#art-"+i+" #dsrt-form-rt-b5_r1e").val(),
+                b5_r2a:$("#art-"+i+" #dsrt-form-rt-b5_r2a").val(),
+                b5_r2b:$("#art-"+i+" #dsrt-form-rt-b5_r2b").val(),
+                b5_r3a:$("#art-"+i+" #dsrt-form-rt-b5_r3a").val(),
+                b5_r3b:$("#art-"+i+" #dsrt-form-rt-b5_r3b").val(),
+                b5_r4a:$("#art-"+i+" #dsrt-form-rt-b5_r4a").val(),
+                b5_r4b:$("#art-"+i+" #dsrt-form-rt-b5_r4b").val(),
+                b5_r4c:$("#art-"+i+" #dsrt-form-rt-b5_r4c").val(),
+                b5_r4d:$("#art-"+i+" #dsrt-form-rt-b5_r4d").val(),
+                b5_r4e:$("#art-"+i+" #dsrt-form-rt-b5_r4e").val(),
+                b5_r4f:$("#art-"+i+" #dsrt-form-rt-b5_r4f").val(),
+                b5_r5a1:$("#art-"+i+" #dsrt-form-rt-b5_r5a1").val(),
+                b5_r5a2:$("#art-"+i+" #dsrt-form-rt-b5_r5a2").val(),
+                b5_r5a3:$("#art-"+i+" #dsrt-form-rt-b5_r5a3").val(),
+                b5_r5a4:$("#art-"+i+" #dsrt-form-rt-b5_r5a4").val(),
+                b5_r5b:$("#art-"+i+" #dsrt-form-rt-b5_r5b").val(),
+                b5_r6:$("#art-"+i+" #dsrt-form-rt-b5_r6").val(),
+                b5_r7a:$("#art-"+i+" #dsrt-form-rt-b5_r7a").val(),
+                b5_r7b:$("#art-"+i+" #dsrt-form-rt-b5_r7b").val(),
+                b5_r8:$("#art-"+i+" #dsrt-form-rt-b5_r8").val(),
+                b5_r8l:$("#art-"+i+" #dsrt-form-rt-b5_r8l").val(),
+                b5_r23:$("#art-"+i+" #dsrt-form-rt-b5_r23").val(),
+                b5_r24:$("#art-"+i+" #dsrt-form-rt-b5_r24").val(),
+              }
+              // $("#art-"+i+" table tr:nth-child(1) td:eq(1)").val()
+
+              console.log("_id_art-"+i+": "+_id_art);
+              console.log("#art-"+i+": "+JSON.stringify(temp_data_art));
+
+              /*
+            // 3. save
+            // data_art = sejumlah hal2_row_length
+            // if (_id_art == 'new'){
+            //       $.post("http://localhost:8002/data_art/add",
+            //           temp_data_art,
+            //           function(_data, status) {
+            //             console.log(_data);
+            //           });
+            // } else {
+              var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "http://localhost:8002/data-art/update/"+_id_art,
+                    "method": "PUT",
+                    "headers": {
+                    "content-type": "application/x-www-form-urlencoded",
+                    "cache-control": "no-cache",
+                    "postman-token": "979f6bf0-2751-c970-018d-e5b138487bec"
+                    },
+                    "data": temp_data_art
+                }
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+            }//*/
+          }
+
+
+      alert('Data diperbaharui!');
+      // this.refresh();
   }
 
   add(e) {
@@ -324,6 +483,8 @@ class Ruta extends Component {
           // nurt = _data.dsrt[index].nurt;
           nurt = 5; //dummy
 
+          //SETTING #hal1
+          // formRef.rows[0].cells[0].setAttribute('id', _data.dsrt[i]._id); //id
           formRef.rows[8].cells[2].children[0].value = no_dsrt; //no_dsrt
           formRef.rows[9].cells[2].children[0].value = nama_krt; //nama_krt
           formRef.rows[10].cells[2].children[0].value = nurt; //nurt
@@ -350,6 +511,9 @@ class Ruta extends Component {
 
           //5. generate table of ART based on (kode_prov, kode_kab, semester, nks, no_dsrt)
           $("#form-dsrt-4 > tbody > tr").remove();
+          $(".nav-tabs > li.art").remove();
+          $(".tab-content > div.art").remove();
+
           for(var i=0; i<_data.data_art.length; i++) {
             if (
                 _data.data_art[i].kode_prov == thisProv &&
@@ -358,7 +522,7 @@ class Ruta extends Component {
                 _data.data_art[i].no_dsrt == no_dsrt)
                 {
           $("#form-dsrt-4 > tbody").append(
-            "<tr>"+
+            "<tr id='"+_data.data_art[i]._id+"'>"+
             "<td><input id='dsrt-form-rt-id_art' type='text' value='" + _data.data_art[i].id_art + "' /></td>"+
             "<td><input id='dsrt-form-rt-b4_k2' type='text' value='" + _data.data_art[i].b4_k2 + "' /></td>"+
             "<td><input id='dsrt-form-rt-b4_k3' type='text' value='" + _data.data_art[i].b4_k3 + "' /></td>"+
@@ -372,18 +536,18 @@ class Ruta extends Component {
           );
 
           $(".nav-tabs").append(
-            "<li><a data-toggle='tab' href='#art-"+i+"'>"+_data.data_art[i].b4_k2+"</a></li>"
+            "<li class='art'><a data-toggle='tab' href='#art-"+i+"'>"+_data.data_art[i].b4_k2+"</a></li>"
           );
 
 
           $(".tab-content").append(
-            "<div id='art-"+i+"' class='tab-pane fade'>"+
+            "<div id='art-"+i+"' class='tab-pane fade art'>"+
             "<div>"+
               "<h3>KETERANGAN ANGGOTA RUMAH TANGGA YANG BERUMUR 5 TAHUN KE ATAS</h3>"+
 
-              "<table class='table table-striped table-bordered' id='form-dsrt-5'>"+
+              "<table class='table table-striped table-bordered' id='"+_data.data_art[i]._id+"'>"+
                   "<tbody>"+
-                    "<tr id='"+_data.data_art[i]._id+"'>"+
+                    "<tr>"+
                     "<td>Nama</td><td><input id='dsrt-form-rt-b5_rnama' type='text' value='"+_data.data_art[i].b5_rnama+"' /></td>"+
                   "</tr><tr><td>Pemberi Informasi</td><td><input id='dsrt-form-rt-b5_rinfo' type='text' value='"+_data.data_art[i].b5_rinfo+"' /></td>"+
                   "</tr><tr><td colspan='2'>V.A. KARAKTERISTIK UMUM</td>"+
@@ -767,12 +931,16 @@ class Ruta extends Component {
                     <td>KODE PENCACAH<input type="text" class="form-control" id="usr" /></td>
                     <td>NOMOR HP PENCACAH<input type="text" class="form-control" id="usr" /></td>
                     <td>TANGGAL PENCACAHAN<input type="text" class="form-control" id="usr" /></td>
+                    <td>BULAN PENCACAHAN<input type="text" class="form-control" id="usr" /></td>
+                    <td>TAHUN PENCACAHAN<input type="text" class="form-control" id="usr" /></td>
                 </tr><tr>
                   <th>2.</th>
                     <td>NAMA PENGAWAS<input type="text" class="form-control" id="usr" /></td>
                     <td>KODE PENGAWAS<input type="text" class="form-control" id="usr" /></td>
                     <td>NOMOR HP PENGAWAS<input type="text" class="form-control" id="usr" /></td>
                     <td>TANGGAL PENGAWASAN<input type="text" class="form-control" id="usr" /></td>
+                    <td>BULAN PENGAWASAN<input type="text" class="form-control" id="usr" /></td>
+                    <td>TAHUN PENGAWASAN<input type="text" class="form-control" id="usr" /></td>
                 </tr>
             </tbody>
             </table>
@@ -874,7 +1042,7 @@ class Ruta extends Component {
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-warning" id="add-btn-add" onClick={this.add}>Add</button>
+              {/*<button type="button" class="btn btn-warning" id="add-btn-add" onClick={this.add}>Add</button>*/}
               <button type="button" class="btn btn-warning" id="add-btn-save" onClick={this.save} data-dismiss="modal">Save</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
