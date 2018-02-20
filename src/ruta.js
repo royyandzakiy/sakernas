@@ -241,7 +241,7 @@ class Ruta extends Component {
 
           var jumlah_row_hal2 = form_data_art_2.rows[1].cells[2].children[0].value;
 
-          for (var i=0; i<jumlah_row_hal2; i++){
+          for (var i=1; i<jumlah_row_hal2; i++){
               var formRef = document.getElementById('art-'+i),rIndex;
 
               var _id_art = $("#art-"+i+" table").attr('id');
@@ -252,16 +252,16 @@ class Ruta extends Component {
                 semester:this.state.dsrt_sem_val,
                 nks:form_data_rt.rows[7].cells[2].children[0].value,
                 no_dsrt:form_data_rt.rows[8].cells[2].children[0].value,
-                id_art:form_data_art_4.rows[1].cells[0].children[0].value,
+                id_art:form_data_art_4.rows[i].cells[0].children[0].value,
 
-                b4_k2:form_data_art_4.rows[1].cells[1].children[0].value,
-                b4_k3:form_data_art_4.rows[1].cells[2].children[0].value,
-                b4_k4:form_data_art_4.rows[1].cells[3].children[0].value,
-                b4_k5_bl:form_data_art_4.rows[1].cells[4].children[0].value,
-                b4_k5_th:form_data_art_4.rows[1].cells[5].children[0].value,
-                b4_k6:form_data_art_4.rows[1].cells[6].children[0].value,
-                b4_k7:form_data_art_4.rows[1].cells[7].children[0].value,
-                b4_k8:form_data_art_4.rows[1].cells[8].children[0].value,
+                b4_k2:form_data_art_4.rows[i].cells[1].children[0].value,
+                b4_k3:form_data_art_4.rows[i].cells[2].children[0].value,
+                b4_k4:form_data_art_4.rows[i].cells[3].children[0].value,
+                b4_k5_bl:form_data_art_4.rows[i].cells[4].children[0].value,
+                b4_k5_th:form_data_art_4.rows[i].cells[5].children[0].value,
+                b4_k6:form_data_art_4.rows[i].cells[6].children[0].value,
+                b4_k7:form_data_art_4.rows[i].cells[7].children[0].value,
+                b4_k8:form_data_art_4.rows[i].cells[8].children[0].value,
 
                 b5_rnama:$("#art-"+i+" #dsrt-form-rt-b5_rnama").val(),
                 b5_rinfo:$("#art-"+i+" #dsrt-form-rt-b5_rinfo").val(),
@@ -329,7 +329,7 @@ class Ruta extends Component {
 
 
       alert('Data diperbaharui!');
-      // this.refresh();
+      this.refresh();
   }
 
   add(e) {
@@ -366,8 +366,7 @@ class Ruta extends Component {
   }
 
   // function: refresh
-  refresh(e) {
-    e.preventDefault();
+  refresh() {
 
     if(!this.checkEmpty()) {
     // remove rows
@@ -953,7 +952,7 @@ class Ruta extends Component {
                           <th>Hubungan dengan KRT</th>
                           <th>Jenis Kelamin</th>
                           <th>Bulan Lahir</th>
-                          <th>Tanggal Lahir</th>
+                          <th>Tahun Lahir</th>
                           <th>Umur</th>
                           <th>Partisipasi Sekolah</th>
                           <th>Status Perkawinan</th>
