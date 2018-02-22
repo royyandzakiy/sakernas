@@ -80,7 +80,7 @@ class Revalidasi extends Component {
       entri_p_sem_val: '1'
     });
 
-    $.get("http://localhost:8002/master-prov",
+    $.get("https://sakernas-api.herokuapp.com/master-prov",
         {},
         function(_data, status) {
 
@@ -97,7 +97,7 @@ class Revalidasi extends Component {
             });
         }.bind(this));
     // isi list kabupaten
-    $.get("http://localhost:8002/master-kab",
+    $.get("https://sakernas-api.herokuapp.com/master-kab",
         {kode_prov: this.state.entri_p_prov_val},
         function(_data, status) {
             // alert(JSON.stringify(_data)); //debug
@@ -138,7 +138,7 @@ class Revalidasi extends Component {
 
     $("#revalidasi > tbody > tr").remove();
 
-    $.get("http://localhost:8002/data-art",
+    $.get("https://sakernas-api.herokuapp.com/data-art",
         query,
         function(data, status) {
         // alert(JSON.stringify(data));

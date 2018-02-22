@@ -22,7 +22,7 @@ class Progres_ruta extends Component {
     this.changeReport = this.changeReport.bind(this);
     this.refresh = this.refresh.bind(this);
 
-    $.get("http://localhost:8002/master-prov",
+    $.get("https://sakernas-api.herokuapp.com/master-prov",
         {},
         function(data, status) {
             // alert(JSON.stringify(data));
@@ -41,7 +41,7 @@ class Progres_ruta extends Component {
             });
         }.bind(this));
 
-        $.get("http://localhost:8002/master-kab",
+        $.get("https://sakernas-api.herokuapp.com/master-kab",
             {kode_prov: this.state.prov_val},
             function(data, status) {
                 // alert(JSON.stringify(data));
@@ -60,7 +60,7 @@ class Progres_ruta extends Component {
                     });
             }.bind(this));
 
-            $.get("http://localhost:8002/master-kec",
+            $.get("https://sakernas-api.herokuapp.com/master-kec",
                 {},
                 function(data, status) {
                     // alert(JSON.stringify(data));
@@ -90,7 +90,7 @@ class Progres_ruta extends Component {
 
     console.log("tes pemutakhiran: "+report);
 
-    $.get("http://localhost:8002/" + (report.toLowerCase() == 'pemutakhiran' ? "pemutakhiran/" : "data-rt-monitor/" ),
+    $.get("https://sakernas-api.herokuapp.com/" + (report.toLowerCase() == 'pemutakhiran' ? "pemutakhiran/" : "data-rt-monitor/" ),
         query,
         function(data, status) {
           // alert(JSON.stringify(data));

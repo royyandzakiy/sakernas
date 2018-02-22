@@ -79,7 +79,7 @@ class Cek_kewajaran extends Component {
       entri_p_sem_val: '1'
     });
 
-    $.get("http://localhost:8002/master-prov",
+    $.get("https://sakernas-api.herokuapp.com/master-prov",
         {},
         function(_data, status) {
 
@@ -96,7 +96,7 @@ class Cek_kewajaran extends Component {
             });
         }.bind(this));
     // isi list kabupaten
-    $.get("http://localhost:8002/master-kab",
+    $.get("https://sakernas-api.herokuapp.com/master-kab",
         {kode_prov: this.state.entri_p_prov_val},
         function(_data, status) {
             // alert(JSON.stringify(_data)); //debug
@@ -128,7 +128,7 @@ class Cek_kewajaran extends Component {
       id_user:'999'
     }
 
-    $.post("http://localhost:8002/approval",
+    $.post("https://sakernas-api.herokuapp.com/approval",
         query,
         function(data, status) {
           console.log(JSON.stringify(data));
@@ -147,7 +147,7 @@ class Cek_kewajaran extends Component {
 
     $("#cek-kewajaran > tbody > tr").remove();
 
-    $.get("http://localhost:8002/cek-kewajaran",
+    $.get("https://sakernas-api.herokuapp.com/cek-kewajaran",
         query,
         function(data, status) {
         // COUNT things

@@ -4,7 +4,7 @@ edit(e) {
 
   var _petugas_lap_sem = $('#petugas-lap-sem option:selected').val();
 
-  $.post("http://localhost:8002/petugas_lap",
+  $.post("https://sakernas-api.herokuapp.com/petugas_lap",
       {
         petugas_lap_kab:_petugas_lap_kab
       },

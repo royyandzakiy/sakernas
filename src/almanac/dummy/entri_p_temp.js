@@ -130,7 +130,7 @@ class Modal extends Component {
     $.ajax({
       "async": true,
       "crossDomain": true,
-      "url": "http://localhost:8002/petugas-lap/all",
+      "url": "https://sakernas-api.herokuapp.com/petugas-lap/all",
       "method": "GET",
       "headers": {
         "content-type": "application/x-www-form-urlencoded",
@@ -239,7 +239,7 @@ class Modal extends Component {
         document.getElementById("modal-nks").innerHTML = modal_nks;
 
         //--- ambil data untuk generate TABLE
-        $.get("http://localhost:8002/pemutakhiran",
+        $.get("https://sakernas-api.herokuapp.com/pemutakhiran",
             {
               entri_p_sem:modal_sem,
               entri_p_prov:modal_prov,
@@ -323,7 +323,7 @@ class Entri_p extends Component {
 
       $(document).ready(function(){
           // get data: provinsi
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-prov")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -335,7 +335,7 @@ class Entri_p extends Component {
           });
 
           // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -372,7 +372,7 @@ class Entri_p extends Component {
     var entri_p_prov = $('#entri-p-prov option:selected').val();
     var entri_p_kab = $('#entri-p-kab option:selected').val();
 
-    $.get("http://localhost:8002/pemutakhiran",
+    $.get("https://sakernas-api.herokuapp.com/pemutakhiran",
         {
           entri_p_sem:entri_p_sem,
           entri_p_prov:entri_p_prov,

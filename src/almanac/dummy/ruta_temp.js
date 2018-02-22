@@ -29,7 +29,7 @@ class Ruta extends Component {
 
       $(document).ready(function(){
           // get data: provinsi
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-prov")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -41,7 +41,7 @@ class Ruta extends Component {
           });
 
           // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -53,7 +53,7 @@ class Ruta extends Component {
           });
 
           // get data: Kecamatan
-          $.ajax(set_settings("http://localhost:8002/master-kec")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kec")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -65,7 +65,7 @@ class Ruta extends Component {
           });
 
           // get data: desa
-          $.ajax(set_settings("http://localhost:8002/master-desa")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-desa")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -77,7 +77,7 @@ class Ruta extends Component {
           });
 
           // get data: nbs/nks
-          $.ajax(set_settings("http://localhost:8002/master-nks")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-nks")).done(function (_data) {
               var data = _data;
               // console.log(JSON.stringify(data)); //debug
 
@@ -106,7 +106,7 @@ class Ruta extends Component {
     //var dsrt_nbsnks = $('#dsrt-nbsnks option:selected').val();
     var ruta_no_dsrt;
 
-    $.get("http://localhost:8002/dsrt",
+    $.get("https://sakernas-api.herokuapp.com/dsrt",
         {
           ruta_sem:ruta_sem,
           ruta_prov:ruta_prov,
@@ -133,7 +133,7 @@ class Ruta extends Component {
                     data[i]['NURT'] + "</td><td>";
 
                     // get status_dok
-                    $.get("http://localhost:8002/data_rt",
+                    $.get("https://sakernas-api.herokuapp.com/data_rt",
                       {
                         ruta_sem:ruta_sem,
                         ruta_prov:ruta_prov,

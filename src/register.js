@@ -34,7 +34,7 @@ class Register extends Component {
         password: password
       }
 
-      $.post("http://localhost:8002/register",
+      $.post("https://sakernas-api.herokuapp.com/register",
           query,
           function(data, status) {
               alert(JSON.stringify(data));
@@ -58,7 +58,7 @@ class Register extends Component {
       }
 
       if(username != '')
-        $.post("http://localhost:8002/check-user-avail",
+        $.post("https://sakernas-api.herokuapp.com/check-user-avail",
             query,
             function(data, status) {
                 if(data.length != 0)

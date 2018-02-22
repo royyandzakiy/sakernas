@@ -118,7 +118,7 @@ save(e) {
           // if(0) {
                 // data_rt = sekali aja
                 if (_id_rt == 'new'){
-                      $.post("http://localhost:8002/data-rt/add",
+                      $.post("https://sakernas-api.herokuapp.com/data-rt/add",
                           temp_data_rt,
                           function(_data, status) {
                             console.log(_data);
@@ -127,7 +127,7 @@ save(e) {
                   var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://localhost:8002/data-rt/update/"+_id_rt,
+                        "url": "https://sakernas-api.herokuapp.com/data-rt/update/"+_id_rt,
                         "method": "PUT",
                         "headers": {
                         "content-type": "application/x-www-form-urlencoded",
@@ -143,7 +143,7 @@ save(e) {
 
                 // data_art = sejumlah hal2_row_length
                 if (_id_art == 'new'){
-                      $.post("http://localhost:8002/data_art/add",
+                      $.post("https://sakernas-api.herokuapp.com/data_art/add",
                           temp_data_art,
                           function(_data, status) {
                             console.log(_data);
@@ -152,7 +152,7 @@ save(e) {
                   var settings = {
                         "async": true,
                         "crossDomain": true,
-                        "url": "http://localhost:8002/data_art/update/"+_id_art,
+                        "url": "https://sakernas-api.herokuapp.com/data_art/update/"+_id_art,
                         "method": "PUT",
                         "headers": {
                         "content-type": "application/x-www-form-urlencoded",

@@ -39,7 +39,7 @@ class Entri_p_form extends Component {
 
       $(document).ready(function(){
           // get data sesuai dengan props
-          $.get("http://localhost:8002/pemutakhiran",
+          $.get("https://sakernas-api.herokuapp.com/pemutakhiran",
           {
             entri_p_sem: entri_p_sem,
             entri_p_prov: entri_p_prov,

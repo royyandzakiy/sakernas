@@ -15,7 +15,7 @@ class Account extends Component {
 
       $("#user-table > tbody > tr").remove();
 
-      $.get("http://localhost:8002/user/" + _id,
+      $.get("https://sakernas-api.herokuapp.com/user/" + _id,
           {},
           function(data, status) {
           // COUNT things

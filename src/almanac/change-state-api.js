@@ -13,7 +13,7 @@ class Table extends Component {
     $.ajax({
       "async": true,
       "crossDomain": true,
-      "url": "http://localhost:8002/petugas-lap/all",
+      "url": "https://sakernas-api.herokuapp.com/petugas-lap/all",
       "method": "GET",
       "headers": {
         "content-type": "application/x-www-form-urlencoded",

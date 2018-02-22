@@ -51,7 +51,7 @@ class Entri_p extends Component {
           entri_p_sem_val: '1'
         });
 
-        $.get("http://localhost:8002/master-prov",
+        $.get("https://sakernas-api.herokuapp.com/master-prov",
             {},
             function(_data, status) {
 
@@ -68,7 +68,7 @@ class Entri_p extends Component {
                 });
             }.bind(this));
         // isi list kabupaten
-        $.get("http://localhost:8002/master-kab",
+        $.get("https://sakernas-api.herokuapp.com/master-kab",
             {kode_prov: this.state.entri_p_prov_val},
             function(_data, status) {
                 // alert(JSON.stringify(_data)); //debug
@@ -137,7 +137,7 @@ class Entri_p extends Component {
               }
 
             if (_id == 'new'){
-                  $.post("http://localhost:8002/pemutakhiran/add",
+                  $.post("https://sakernas-api.herokuapp.com/pemutakhiran/add",
                       temp,
                       function(_data, status) {
                         console.log(_data);
@@ -146,7 +146,7 @@ class Entri_p extends Component {
               var settings = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://localhost:8002/pemutakhiran/update/"+_id,
+                    "url": "https://sakernas-api.herokuapp.com/pemutakhiran/update/"+_id,
                     "method": "PUT",
                     "headers": {
                     "content-type": "application/x-www-form-urlencoded",
@@ -177,7 +177,7 @@ class Entri_p extends Component {
     // alert("query_kab: " +JSON.stringify(this.state.entri_p_kab_val));
     // alert("query: " +JSON.stringify(query));
 
-    $.get("http://localhost:8002/pemutakhiran",
+    $.get("https://sakernas-api.herokuapp.com/pemutakhiran",
         query,
         function(data, status) {
             // alert("data : "+ JSON.stringify(data)); //debug

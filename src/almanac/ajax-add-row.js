@@ -16,7 +16,7 @@ function set_settings(_url) {
 }
 
 // get data: table
-$.ajax(set_settings("http://localhost:8002/pemutakhiran")).done(function (_data) {
+$.ajax(set_settings("https://sakernas-api.herokuapp.com/pemutakhiran")).done(function (_data) {
     var data = _data;
     console.log("data_pemutakhiran: " + JSON.stringify(data)); // debug
 

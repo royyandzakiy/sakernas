@@ -63,7 +63,7 @@ class Ruta extends Component {
             dsrt_sem_val: '1'
           });
 
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-prov")).done(function (_data) {
 
                 for (var i=0; i<_data.length; i++) {
                 	$("#dsrt-prov").append(
@@ -79,7 +79,7 @@ class Ruta extends Component {
           }.bind(this));
 
           // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
                 var data = _data;
                 var first = data.length -1;
                 for (var i=0; i<_data.length; i++) {
@@ -101,7 +101,7 @@ class Ruta extends Component {
           }.bind(this));
 
           // get data: Kecamatan
-          $.ajax(set_settings("http://localhost:8002/master-kec")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kec")).done(function (_data) {
               var data = _data;
               var first = data.length -1;
 
@@ -124,7 +124,7 @@ class Ruta extends Component {
           }.bind(this));
 
           // get data: desa
-          $.ajax(set_settings("http://localhost:8002/master-desa")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-desa")).done(function (_data) {
               var data = _data;
               var first = data.length -1;
 
@@ -146,7 +146,7 @@ class Ruta extends Component {
           }.bind(this));
 
           // get data: nbs/nks
-          $.ajax(set_settings("http://localhost:8002/master-nks")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-nks")).done(function (_data) {
               var data = _data;
 
                 var first = data.length -1;
@@ -232,7 +232,7 @@ class Ruta extends Component {
 
           console.log(JSON.stringify(temp_data_rt));
 
-          $.post("http://localhost:8002/data-rt/add",
+          $.post("https://sakernas-api.herokuapp.com/data-rt/add",
             temp_data_rt,
             function(_data, status) {
               console.log(_data);
@@ -302,7 +302,7 @@ class Ruta extends Component {
             // 3. save
             // data_art = sejumlah hal2_row_length
             // if (_id_art == 'new'){
-            //       $.post("http://localhost:8002/data_art/add",
+            //       $.post("https://sakernas-api.herokuapp.com/data_art/add",
             //           temp_data_art,
             //           function(_data, status) {
             //             console.log(_data);
@@ -311,7 +311,7 @@ class Ruta extends Component {
               var settings = {
                     "async": true,
                     "crossDomain": true,
-                    "url": "http://localhost:8002/data-art/update/"+_id_art,
+                    "url": "https://sakernas-api.herokuapp.com/data-art/update/"+_id_art,
                     "method": "PUT",
                     "headers": {
                     "content-type": "application/x-www-form-urlencoded",
@@ -382,7 +382,7 @@ class Ruta extends Component {
       nbs:this.state.dsrt_nbs_val
     };
 
-    $.get("http://localhost:8002/ruta",
+    $.get("https://sakernas-api.herokuapp.com/ruta",
         query,
         function(data, status) {
             // alert(JSON.stringify(temp)); //debug

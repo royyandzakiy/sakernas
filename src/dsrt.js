@@ -61,7 +61,7 @@ class Dsrt extends Component {
             dsrt_sem_val: '1'
           });
 
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-prov")).done(function (_data) {
 
                 for (var i=0; i<_data.length; i++) {
                 	$("#dsrt-prov").append(
@@ -77,7 +77,7 @@ class Dsrt extends Component {
           }.bind(this));
 
           // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
                 var data = _data;
                 var first = data.length -1;
                 for (var i=0; i<_data.length; i++) {
@@ -99,7 +99,7 @@ class Dsrt extends Component {
           }.bind(this));
 
           // get data: Kecamatan
-          $.ajax(set_settings("http://localhost:8002/master-kec")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kec")).done(function (_data) {
               var data = _data;
               var first = data.length -1;
 
@@ -122,7 +122,7 @@ class Dsrt extends Component {
           }.bind(this));
 
           // get data: desa
-          $.ajax(set_settings("http://localhost:8002/master-desa")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-desa")).done(function (_data) {
               var data = _data;
               var first = data.length -1;
 
@@ -145,7 +145,7 @@ class Dsrt extends Component {
           }.bind(this));
 
           // get data: nbs/nks
-          $.ajax(set_settings("http://localhost:8002/master-nks")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-nks")).done(function (_data) {
               var data = _data;
 
                 var first = data.length -1;
@@ -213,7 +213,7 @@ class Dsrt extends Component {
       dsrt_nbs:dsrt_nbs
     };
 
-    $.get("http://localhost:8002/dsrt",
+    $.get("https://sakernas-api.herokuapp.com/dsrt",
         query,
         function(data, status) {
             $("#dsrt > tbody > tr").remove();

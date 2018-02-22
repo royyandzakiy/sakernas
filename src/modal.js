@@ -55,7 +55,7 @@ class Modal extends Component {
     $.ajax({
       "async": true,
       "crossDomain": true,
-      "url": "http://localhost:8002/petugas-lap/all",
+      "url": "https://sakernas-api.herokuapp.com/petugas-lap/all",
       "method": "GET",
       "headers": {
         "content-type": "application/x-www-form-urlencoded",
@@ -100,7 +100,7 @@ class Modal extends Component {
         document.getElementById("modal-nks").innerHTML = modal_nks;
 
         //--- ambil data untuk generate TABLE
-        $.get("http://localhost:8002/pemutakhiran",
+        $.get("https://sakernas-api.herokuapp.com/pemutakhiran",
             {
               entri_p_sem:modal_sem,
               entri_p_prov:modal_prov,

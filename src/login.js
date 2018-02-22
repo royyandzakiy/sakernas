@@ -47,7 +47,7 @@ class Login extends Component {
         password: this.state.password
       }
 
-      $.post("http://localhost:8002/login",
+      $.post("https://sakernas-api.herokuapp.com/login",
           query,
           function(data, status) {
               if(!data[0].registered)

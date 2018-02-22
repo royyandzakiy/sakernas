@@ -57,7 +57,7 @@ class Petugas_lap extends Component {
 
       // 1. get dropdown data
           // get data: provinsi
-          $.get("http://localhost:8002/master-prov",
+          $.get("https://sakernas-api.herokuapp.com/master-prov",
               {},
               function(_data, status) {
 
@@ -74,7 +74,7 @@ class Petugas_lap extends Component {
                   });
               }.bind(this));
           // isi list kabupaten
-          $.get("http://localhost:8002/master-kab",
+          $.get("https://sakernas-api.herokuapp.com/master-kab",
               {kode_prov: this.state.petugas_lap_prov_val},
               function(_data, status) {
                   var data = _data;
@@ -230,7 +230,7 @@ class Petugas_lap extends Component {
     var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "http://localhost:8002/petugas-lap/update/"+_id,
+          "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
           "method": "PUT",
           "headers": {
           "content-type": "application/x-www-form-urlencoded",
@@ -268,7 +268,7 @@ class Petugas_lap extends Component {
       add_petugas_jenis:add_petugas_jenis
     };
 
-    $.post("http://localhost:8002/petugas-lap/add",
+    $.post("https://sakernas-api.herokuapp.com/petugas-lap/add",
         temp,
         function(data, status) {
             //alert("save status: "+status+": "+JSON.stringify(data)); //debug
@@ -290,7 +290,7 @@ class Petugas_lap extends Component {
   //   alert(deleteConfirm);
   //
   //   // kirim utk hapus
-  //   $.delete("http://localhost:8002/petugas-lap/"+_id,
+  //   $.delete("https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
   //       temp,
   //       function(data, status) {
   //           // add rows
@@ -308,7 +308,7 @@ class Petugas_lap extends Component {
   //   alert(deleteConfirm);
   //
   //   // kirim utk hapus
-  //   $.delete("http://localhost:8002/petugas-lap/"+_id,
+  //   $.delete("https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
   //       temp,
   //       function(data, status) {
   //           // add rows
@@ -332,7 +332,7 @@ class Petugas_lap extends Component {
     $("#petugas-lap > tbody > tr").remove();
     $("#pencacah-lap > tbody > tr").remove();
 
-    $.get("http://localhost:8002/petugas-lap",
+    $.get("https://sakernas-api.herokuapp.com/petugas-lap",
         temp,
         function(data, status) {
             // generate rows

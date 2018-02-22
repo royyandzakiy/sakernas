@@ -29,7 +29,7 @@ class Revalidasi extends Component {
 
       $(document).ready(function(){
           // get data: provinsi
-          $.ajax(set_settings("http://localhost:8002/master-prov")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-prov")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -41,7 +41,7 @@ class Revalidasi extends Component {
           });
 
           // get data: kabupaten
-          $.ajax(set_settings("http://localhost:8002/master-kab")).done(function (_data) {
+          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
               var data = _data;
 
                 for (var i=0; i<data.length; i++) {
@@ -98,7 +98,7 @@ class Revalidasi extends Component {
       add_petugas_telp:add_petugas_telp
     };
 
-    $.post("http://localhost:8002/revalidasi/add",
+    $.post("https://sakernas-api.herokuapp.com/revalidasi/add",
         temp,
         function(data, status) {
             //alert("save status: "+status+": "+JSON.stringify(data)); //debug
@@ -137,7 +137,7 @@ class Revalidasi extends Component {
     // remove rows
     $("#revalidasi > tbody > tr").remove();
 
-    $.get("http://localhost:8002/revalidasi",
+    $.get("https://sakernas-api.herokuapp.com/revalidasi",
         temp,
         function(data, status) {
             // generate rows
