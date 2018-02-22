@@ -247,7 +247,7 @@ class Petugas_lap extends Component {
     var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "http://localhost:8002/petugas-lap/update/"+_id,
+          "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
           // "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
           "method": "PUT",
           "headers": {
