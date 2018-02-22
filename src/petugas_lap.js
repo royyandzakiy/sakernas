@@ -41,9 +41,12 @@ class Petugas_lap extends Component {
         pencacah_id:''
       };
 
-      this.delete = this.delete.bind(this);
+      this.deletePengawas = this.deletePengawas.bind(this);
+      this.deletePencacah = this.deletePencacah.bind(this);
       this.refresh = this.refresh.bind(this);
       this.save = this.save.bind(this);
+      this.saveEditPengawas = this.saveEditPengawas.bind(this);
+      this.saveEditPencacah = this.saveEditPencacah.bind(this);
       this.saveEdit = this.saveEdit.bind(this);
     }
 
@@ -72,32 +75,33 @@ class Petugas_lap extends Component {
                     petugas_lap_prov_list: _data,
                     petugas_lap_prov_val: _data[0]['kode_prov']
                   });
-              }.bind(this));
-          // isi list kabupaten
-          $.get("https://sakernas-api.herokuapp.com/master-kab",
-              {kode_prov: this.state.petugas_lap_prov_val},
-              function(_data, status) {
-                  var data = _data;
-                  var first = data.length -1;
-                  $("#petugas-lap-kab > option").remove();
 
-                  if (_data.length != 0)
-                  for (var i=0; i<_data.length; i++) {
-                    if(_data[i]['kode_prov'] == this.state.petugas_lap_prov_val) {
-                      first = (i < first ? i : first);
-                      $("#petugas-lap-kab").append(
-                        "<option value='"+_data[i]['kode_kab']+"'>["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
-                      );
-                    }
-                  }
+                  // isi list kabupaten
+                  $.get("https://sakernas-api.herokuapp.com/master-kab",
+                      {kode_prov: this.state.petugas_lap_prov_val},
+                      function(_data, status) {
+                          var data = _data;
+                          var first = data.length -1;
+                          $("#petugas-lap-kab > option").remove();
 
-                  $("#petugas-lap-kab").val(_data[first]['kode_kab']);
+                          if (_data.length != 0)
+                          for (var i=0; i<_data.length; i++) {
+                            if(_data[i]['kode_prov'] == this.state.petugas_lap_prov_val) {
+                              first = (i < first ? i : first);
+                              $("#petugas-lap-kab").append(
+                                "<option value='"+_data[i]['kode_kab']+"'>["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                              );
+                            }
+                          }
 
-                  this.setState({
-                    petugas_lap_kab_list: _data,
-                    petugas_lap_kab_val: _data[0]['kode_kab']
-                  });
+                          $("#petugas-lap-kab").val(_data[first]['kode_kab']);
 
+                          this.setState({
+                            petugas_lap_kab_list: _data,
+                            petugas_lap_kab_val: _data[0]['kode_kab']
+                          });
+
+                      }.bind(this));
               }.bind(this));
 
               var pengawas_id,pencacah_id;
@@ -115,7 +119,7 @@ class Petugas_lap extends Component {
               $(this).addClass('active').siblings().removeClass('active');
               $('#edit-jenis').val("1");
               $('#edit-id').val($(this).attr('id'));
-              pencacah_id = $("#pencach-lap tr.active").attr('id');
+              pencacah_id = $("#pencacah-lap tr.active").attr('id');
 
               $("#pencacah-selected-id").val(pencacah_id); // penyimpan id pengawas selevted
           });
@@ -177,7 +181,7 @@ class Petugas_lap extends Component {
     var edit_petugas_nama = $('#pencacah-lap tr.active td:eq(1)').text();
     var edit_petugas_desk = $('#pencacah-lap tr.active td:eq(2)').text();
     var edit_petugas_notelp = $('#pencacah-lap tr.active td:eq(3)').text();
-    var edit_petugas_jenis = 2;
+    var edit_petugas_jenis = 1;
 
     var _id = $('#pencacah-lap tr.active').attr('id');
     console.log(_id);
@@ -194,25 +198,38 @@ class Petugas_lap extends Component {
     });
   }
 
-  // function: saveEdit
-  saveEdit(e) {
-    e.preventDefault();
+  saveEditPencacah() {
+      this.saveEdit("1");
+  }
 
+  saveEditPengawas() {
+      this.saveEdit("2");
+  }
+
+  // function: saveEdit
+  saveEdit(jenis_petugas) {
     var _id_pengawas = $("#pengawas-selected-id").val(); // penyimpan id pengawas selevted;
     var _id_pencacah = $("#pencacah-selected-id").val(); // penyimpan id pengawas selevted;
 
-    alert(document.getElementsByClassName("active"));
-    alert(document.getElementsByClassName("active").length);
-    alert(document.getElementsByClassName("active")[1]);
+    var edit_petugas_jenis = jenis_petugas;
 
-    var edit_petugas_sem = $('#edit-sem').val();
-    var edit_petugas_prov = $('#edit-prov').val();
-    var edit_petugas_kab = $('#edit-kab').val();
-    var edit_petugas_kodepetugas = $('#edit-kode-petugas').val();$('#edit-kode-petugas').val("");
-    var edit_petugas_namapetugas = $('#edit-nama-petugas').val();$('#edit-nama-petugas').val("");
-    var edit_petugas_status = $('#edit-status').val();$('#edit-status').val("");
-    var edit_petugas_telp = $('#edit-telp').val();$('#edit-telp').val("");
-    var edit_petugas_jenis = $('#edit-jenis').val();$('#edit-jenis').val("");
+    var edit_petugas_sem = $('#petugas-lap-sem option:selected').val();
+    var edit_petugas_prov = $('#petugas-lap-prov option:selected').val();
+    var edit_petugas_kab = $('#petugas-lap-kab option:selected').val();
+
+    var _id = (edit_petugas_jenis == '1' ? _id_pencacah : _id_pengawas );
+
+    if (edit_petugas_jenis == '2') {
+        var edit_petugas_kodepetugas = $('#edit-kode-pengawas').val();
+        var edit_petugas_namapetugas = $('#edit-nama-pengawas').val();
+        var edit_petugas_status = $('#edit-status-pengawas').val();
+        var edit_petugas_telp = $('#edit-telp-pengawas').val();
+    } else {
+        var edit_petugas_kodepetugas = $('#edit-kode-pencacah').val();
+        var edit_petugas_namapetugas = $('#edit-nama-pencacah').val();
+        var edit_petugas_status = $('#edit-status-pencacah').val();
+        var edit_petugas_telp = $('#edit-telp-pencacah').val();
+    }
 
     var temp = {
       edit_petugas_sem:edit_petugas_sem,
@@ -225,12 +242,13 @@ class Petugas_lap extends Component {
       edit_petugas_jenis:edit_petugas_jenis,
     };
 
-    var _id = (edit_petugas_jenis == '1' ? _id_pencacah : _id_pengawas );
-
+    // alert("_id: "+JSON.stringify(_id));
+    // alert("data: "+JSON.stringify(temp));
     var settings = {
           "async": true,
           "crossDomain": true,
-          "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
+          "url": "http://localhost:8002/petugas-lap/update/"+_id,
+          // "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
           "method": "PUT",
           "headers": {
           "content-type": "application/x-www-form-urlencoded",
@@ -280,42 +298,62 @@ class Petugas_lap extends Component {
         //*/
   }
 
-  // // function: delete
-  // deletePengawas(e) {
-  //   e.preventDefault();
-  //
-  //   var _id = $("#pengawas-selected-id").val(); // penyimpan id pengawas selevted;
-  //
-  //   var deleteConfirm = window.confirm("Apakah anda akan menghapus PETUGAS dengan NAMA: " + nama);
-  //   alert(deleteConfirm);
-  //
-  //   // kirim utk hapus
-  //   $.delete("https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
-  //       temp,
-  //       function(data, status) {
-  //           // add rows
-  //       }).done(function() {
-  //           this.refresh;
-  //       });
-  // }
-  //
-  // deletePencacah(e) {
-  //   e.preventDefault();
-  //
-  //   var _id = $("#pencacah-selected-id").val(); // penyimpan id pengawas selevted;
-  //
-  //   var deleteConfirm = window.confirm("Apakah anda akan menghapus PETUGAS dengan NAMA: " + nama);
-  //   alert(deleteConfirm);
-  //
-  //   // kirim utk hapus
-  //   $.delete("https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
-  //       temp,
-  //       function(data, status) {
-  //           // add rows
-  //       }).done(function() {
-  //           this.refresh;
-  //       });
-  // }
+  // function: delete
+  deletePengawas(e) {
+    e.preventDefault();
+
+    var _id = $("#pengawas-selected-id").val(); // penyimpan id pengawas selevted;
+
+    console.log(_id);
+
+    var deleteConfirm = window.confirm("Yakin akan menghapus data terpilih?");
+
+    // kirim utk hapus
+    if(deleteConfirm)
+    var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
+          // "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
+          "method": "DELETE",
+          "headers": {
+          "cache-control": "no-cache",
+          "postman-token": "979f6bf0-2751-c970-018d-e5b138487bec"
+          }
+      }
+
+      $.ajax(settings).done(function (response) {
+          console.log(response);
+      });
+  }
+
+  deletePencacah(e) {
+    e.preventDefault();
+
+    var _id = $("#pencacah-selected-id").val(); // penyimpan id pengawas selevted;
+
+    console.log(_id);
+
+    var deleteConfirm = window.confirm("Yakin akan menghapus data terpilih?");
+
+    // kirim utk hapus
+    if(deleteConfirm)
+    var settings = {
+          "async": true,
+          "crossDomain": true,
+          "url": "https://sakernas-api.herokuapp.com/petugas-lap/"+_id,
+          // "url": "https://sakernas-api.herokuapp.com/petugas-lap/update/"+_id,
+          "method": "DELETE",
+          "headers": {
+          "cache-control": "no-cache",
+          "postman-token": "979f6bf0-2751-c970-018d-e5b138487bec"
+          }
+      }
+
+      $.ajax(settings).done(function (response) {
+          console.log(response);
+      });
+  }
 
   // function: refresh
   refresh(e) {
@@ -375,7 +413,7 @@ class Petugas_lap extends Component {
     this.setState({
       petugas_lap_sem_val: childComponent.target.value
     },()=>{
-      alert(this.state.petugas_lap_sem_val);
+      // alert(this.state.petugas_lap_sem_val);
     });
   }
 
@@ -414,7 +452,7 @@ class Petugas_lap extends Component {
         this.setState({
               petugas_lap_kab_val:temp
         },()=>{
-          alert(this.petugas_lap_kab_val);
+          // alert(this.petugas_lap_kab_val);
         });
     }
 
@@ -617,7 +655,7 @@ class Petugas_lap extends Component {
 
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.saveEdit}>Save</button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.saveEditPengawas}>Save</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>
@@ -676,7 +714,7 @@ class Petugas_lap extends Component {
 
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.saveEdit}>Save</button>
+              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.saveEditPencacah}>Save</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
           </div>

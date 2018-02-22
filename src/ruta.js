@@ -76,105 +76,102 @@ class Ruta extends Component {
                   dsrt_prov_list: _data,
                   dsrt_prov_val:_data[0]['kode_prov']
                 });
+
+                // get data: kabupaten
+                $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
+                      var data = _data;
+                      var first = data.length -1;
+                      for (var i=0; i<_data.length; i++) {
+                        if(_data[i]['kode_prov']==this.state.dsrt_prov_val) {
+                            first = (i < first ? i : first);
+                          	$("#dsrt-kab").append(
+                              "<option "+
+                              "value='"+_data[i]['kode_kab']+"'>["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
+                            );
+                          }
+                      }
+
+                      $("#dsrt-kab").val(_data[first]['kode_kab']);
+
+                      this.setState({
+                        dsrt_kab_list: _data,
+                        dsrt_kab_val:$("#dsrt-kab").val()
+                      });
+
+                      // get data: Kecamatan
+                      $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kec")).done(function (_data) {
+                          var data = _data;
+                          var first = data.length -1;
+
+                            for (var i=0; i<data.length; i++) {
+                              if(_data[i]['kode_kab']==this.state.dsrt_kab_val) {
+                                first = (i < first ? i : first);
+                            	$("#dsrt-kec").append(
+                              "<option " +
+                              "value='"+data[i]['kode_kec']+"'>["+data[i]['kode_kec']+"] "+data[i]['nama_kec']+"</option>"
+                              );
+                            }
+                            }
+
+                            $("#dsrt-kec").val(_data[first]['kode_kec']);
+
+                            this.setState({
+                              dsrt_kec_list: _data,
+                              dsrt_kec_val:$("#dsrt-kec").val()
+                            });
+
+                            // get data: desa
+                            $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-desa")).done(function (_data) {
+                                var data = _data;
+                                var first = data.length -1;
+
+                                  for (var i=0; i<data.length; i++) {
+                                    if(data[i]['kode_kec']==this.state.dsrt_kec_val) {
+                                    first = (i < first ? i : first);
+                                  	$("#dsrt-desa").append(
+                                    "<option " +
+                                    "value='"+data[i]['kode_desa']+"'>["+data[i]['kode_desa']+"] "+data[i]['nama_desa']+"</option>"
+                                    );
+                                  }
+                                  }
+                                  $("#dsrt-desa").val(data[first]['kode_desa']);
+
+                                  this.setState({
+                                    dsrt_desa_list: data,
+                                    dsrt_desa_val:$("#dsrt-desa").val()
+                                  });
+
+                                  // get data: nbs/nks
+                                  $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-nks")).done(function (_data) {
+                                      var data = _data;
+
+                                        var first = data.length -1;
+
+                                        for (var i=0; i<data.length; i++) {
+                                          if(_data[i]['kode_desa']==this.state.dsrt_desa_val) {
+                                            first = (i < first ? i : first);
+                                          $("#dsrt-nks").append(
+                                          "<option " +
+                                          "value='"+data[i]['nbs']+"."+data[i]['nks']+"'>"+data[i]['nks']+" / "+data[i]['nks']+"</option>"
+                                          );
+                                        }
+                                        }
+
+                                        $("#dsrt-nks").val(_data[first]['nbs']+"."+_data[first]['nks']);
+
+                                        this.setState({
+                                          dsrt_nks_list: _data,
+                                          dsrt_nbs_val:$("#dsrt-nks").val().substring(0,4),
+                                          dsrt_nks_val:$("#dsrt-nks").val().substring(5,10),
+                                        },()=>{
+                                          // alert(this.state.dsrt_nks_val)
+                                        });
+                                  }.bind(this));
+                            }.bind(this));
+                      }.bind(this));
+                }.bind(this));
           }.bind(this));
-
-          // get data: kabupaten
-          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kab")).done(function (_data) {
-                var data = _data;
-                var first = data.length -1;
-                for (var i=0; i<_data.length; i++) {
-                  if(_data[i]['kode_prov']==this.state.dsrt_prov_val) {
-                      first = (i < first ? i : first);
-                    	$("#dsrt-kab").append(
-                        "<option "+
-                        "value='"+_data[i]['kode_kab']+"'>["+_data[i]['kode_kab']+"] "+_data[i]['nama_kab']+"</option>"
-                      );
-                    }
-                }
-
-                $("#dsrt-kab").val(_data[first]['kode_kab']);
-
-                this.setState({
-                  dsrt_kab_list: _data,
-                  dsrt_kab_val:$("#dsrt-kab").val()
-                });
-          }.bind(this));
-
-          // get data: Kecamatan
-          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-kec")).done(function (_data) {
-              var data = _data;
-              var first = data.length -1;
-
-                for (var i=0; i<data.length; i++) {
-                  if(_data[i]['kode_kab']==this.state.dsrt_kab_val) {
-                    first = (i < first ? i : first);
-                	$("#dsrt-kec").append(
-                  "<option " +
-                  "value='"+data[i]['kode_kec']+"'>["+data[i]['kode_kec']+"] "+data[i]['nama_kec']+"</option>"
-                  );
-                }
-                }
-
-                $("#dsrt-kec").val(_data[first]['kode_kec']);
-
-                this.setState({
-                  dsrt_kec_list: _data,
-                  dsrt_kec_val:$("#dsrt-kec").val()
-                });
-          }.bind(this));
-
-          // get data: desa
-          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-desa")).done(function (_data) {
-              var data = _data;
-              var first = data.length -1;
-
-                for (var i=0; i<data.length; i++) {
-                  if(data[i]['kode_kec']==this.state.dsrt_kec_val) {
-                  first = (i < first ? i : first);
-                	$("#dsrt-desa").append(
-                  "<option " +
-                  "value='"+data[i]['kode_desa']+"'>["+data[i]['kode_desa']+"] "+data[i]['nama_desa']+"</option>"
-                  );
-                }
-                }
-                $("#dsrt-desa").val(data[first]['kode_desa']);
-
-                this.setState({
-                  dsrt_desa_list: data,
-                  dsrt_desa_val:$("#dsrt-desa").val()
-                });
-          }.bind(this));
-
-          // get data: nbs/nks
-          $.ajax(set_settings("https://sakernas-api.herokuapp.com/master-nks")).done(function (_data) {
-              var data = _data;
-
-                var first = data.length -1;
-
-                for (var i=0; i<data.length; i++) {
-                  if(_data[i]['kode_desa']==this.state.dsrt_desa_val) {
-                    first = (i < first ? i : first);
-                	$("#dsrt-nks").append(
-                  "<option " +
-                  "value='"+data[i]['nbs']+"."+data[i]['nks']+"'>"+data[i]['nks']+" / "+data[i]['nks']+"</option>"
-                  );
-                }
-                }
-
-                $("#dsrt-nks").val(_data[first]['nbs']+"."+_data[first]['nks']);
-
-                this.setState({
-                  dsrt_nks_list: _data,
-                  dsrt_nbs_val:$("#dsrt-nks").val().substring(0,4),
-                  dsrt_nks_val:$("#dsrt-nks").val().substring(5,10),
-                },()=>{
-                  // alert(this.state.dsrt_nks_val)
-                });
-          }.bind(this));
-
       }.bind(this));
-
-
   }
 
   save(e) {
