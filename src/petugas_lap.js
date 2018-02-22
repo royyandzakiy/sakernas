@@ -37,6 +37,8 @@ class Petugas_lap extends Component {
         petugas_lap_nks_val: '01',
         petugas_lap_sls_val: '01',
         petugas_lap_id: 'NULL',
+        pengawas_id:'',
+        pencacah_id:''
       };
 
       this.delete = this.delete.bind(this);
@@ -98,16 +100,24 @@ class Petugas_lap extends Component {
 
               }.bind(this));
 
+              var pengawas_id,pencacah_id;
+
       //2. set click listener
           $('#petugas-lap').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
               $(this).addClass('active').siblings().removeClass('active');
               $('#edit-jenis').val("2");
               $('#edit-id').val($(this).attr('id'));
+              pengawas_id = $("#petugas-lap tr.active").attr('id');
+
+              $("#pengawas-selected-id").val(pengawas_id); // penyimpan id pengawas selevted
           });
           $('#pencacah-lap').on('click', '.clickable-row', function(event) { // table #cek-kewajaran
               $(this).addClass('active').siblings().removeClass('active');
               $('#edit-jenis').val("1");
               $('#edit-id').val($(this).attr('id'));
+              pencacah_id = $("#pencach-lap tr.active").attr('id');
+
+              $("#pencacah-selected-id").val(pencacah_id); // penyimpan id pengawas selevted
           });
 
       }.bind(this));
@@ -129,27 +139,67 @@ class Petugas_lap extends Component {
   }
 
   // function: edit
-  edit(e) {
+  editPengawas(e) {
     e.preventDefault();
 
     var edit_petugas_sem = $('#petugas-lap-sem option:selected').val();
     var edit_petugas_prov = $('#petugas-lap-prov option:selected').val();
     var edit_petugas_kab = $('#petugas-lap-kab option:selected').val();
-    var edit_petugas_jenis = $('#petugas-lap-jenis option:selected').val();
+    var edit_petugas_kode = $('#petugas-lap tr.active td:eq(0)').text();
+    var edit_petugas_nama = $('#petugas-lap tr.active td:eq(1)').text();
+    var edit_petugas_desk = $('#petugas-lap tr.active td:eq(2)').text();
+    var edit_petugas_notelp = $('#petugas-lap tr.active td:eq(3)').text();
+    var edit_petugas_jenis = 2;
+
+    var _id = $('#petugas-lap tr.active').attr('id');
+    console.log(_id);
 
     $(document).ready(function(){
         $('#edit-sem').val(edit_petugas_sem);
         $('#edit-prov').val(edit_petugas_prov);
         $('#edit-kab').val(edit_petugas_kab);
+        $('#edit-kode-pengawas').val(edit_petugas_kode);
+        $('#edit-nama-pengawas').val(edit_petugas_nama);
+        $('#edit-status-pengawas').val(edit_petugas_desk);
+        $('#edit-telp-pengawas').val(edit_petugas_notelp);
+        $('#edit-jenis-pengawas').val(edit_petugas_jenis);
     });
+  }
 
+  // function: edit
+  editPencacah(e) {
+    e.preventDefault();
+
+    var edit_petugas_sem = $('#petugas-lap-sem option:selected').val();
+    var edit_petugas_prov = $('#petugas-lap-prov option:selected').val();
+    var edit_petugas_kab = $('#petugas-lap-kab option:selected').val();
+    var edit_petugas_kode = $('#pencacah-lap tr.active td:eq(0)').text();
+    var edit_petugas_nama = $('#pencacah-lap tr.active td:eq(1)').text();
+    var edit_petugas_desk = $('#pencacah-lap tr.active td:eq(2)').text();
+    var edit_petugas_notelp = $('#pencacah-lap tr.active td:eq(3)').text();
+    var edit_petugas_jenis = 2;
+
+    var _id = $('#pencacah-lap tr.active').attr('id');
+    console.log(_id);
+
+    $(document).ready(function(){
+        $('#edit-sem').val(edit_petugas_sem);
+        $('#edit-prov').val(edit_petugas_prov);
+        $('#edit-kab').val(edit_petugas_kab);
+        $('#edit-kode-pencacah').val(edit_petugas_kode);
+        $('#edit-nama-pencacah').val(edit_petugas_nama);
+        $('#edit-status-pencacah').val(edit_petugas_desk);
+        $('#edit-telp-pencacah').val(edit_petugas_notelp);
+        $('#edit-jenis-pencacah').val(edit_petugas_jenis);
+    });
   }
 
   // function: saveEdit
   saveEdit(e) {
     e.preventDefault();
 
-    var _id = '';
+    var _id_pengawas = $("#pengawas-selected-id").val(); // penyimpan id pengawas selevted;
+    var _id_pencacah = $("#pencacah-selected-id").val(); // penyimpan id pengawas selevted;
 
     alert(document.getElementsByClassName("active"));
     alert(document.getElementsByClassName("active").length);
@@ -174,6 +224,8 @@ class Petugas_lap extends Component {
       edit_petugas_telp:edit_petugas_telp,
       edit_petugas_jenis:edit_petugas_jenis,
     };
+
+    var _id = (edit_petugas_jenis == '1' ? _id_pencacah : _id_pengawas );
 
     var settings = {
           "async": true,
@@ -228,15 +280,42 @@ class Petugas_lap extends Component {
         //*/
   }
 
-  // function: delete
-  delete(e) {
-    e.preventDefault();
-
-    var idSelected = $("#edit-id").val();
-    var nama = $("#" + idSelected);
-    var deleteConfirm = window.confirm("Apakah anda akan menghapus PETUGAS dengan NAMA: " + nama);
-    alert(deleteConfirm);
-  }
+  // // function: delete
+  // deletePengawas(e) {
+  //   e.preventDefault();
+  //
+  //   var _id = $("#pengawas-selected-id").val(); // penyimpan id pengawas selevted;
+  //
+  //   var deleteConfirm = window.confirm("Apakah anda akan menghapus PETUGAS dengan NAMA: " + nama);
+  //   alert(deleteConfirm);
+  //
+  //   // kirim utk hapus
+  //   $.delete("http://localhost:8002/petugas-lap/"+_id,
+  //       temp,
+  //       function(data, status) {
+  //           // add rows
+  //       }).done(function() {
+  //           this.refresh;
+  //       });
+  // }
+  //
+  // deletePencacah(e) {
+  //   e.preventDefault();
+  //
+  //   var _id = $("#pencacah-selected-id").val(); // penyimpan id pengawas selevted;
+  //
+  //   var deleteConfirm = window.confirm("Apakah anda akan menghapus PETUGAS dengan NAMA: " + nama);
+  //   alert(deleteConfirm);
+  //
+  //   // kirim utk hapus
+  //   $.delete("http://localhost:8002/petugas-lap/"+_id,
+  //       temp,
+  //       function(data, status) {
+  //           // add rows
+  //       }).done(function() {
+  //           this.refresh;
+  //       });
+  // }
 
   // function: refresh
   refresh(e) {
@@ -251,6 +330,7 @@ class Petugas_lap extends Component {
     // alert(JSON.stringify(temp)); //debug
     // remove rows
     $("#petugas-lap > tbody > tr").remove();
+    $("#pencacah-lap > tbody > tr").remove();
 
     $.get("http://localhost:8002/petugas-lap",
         temp,
@@ -258,46 +338,37 @@ class Petugas_lap extends Component {
             // generate rows
             if (data.length != 0)
                 for (var i=0; i<data.length; i++) {
-                  $("#petugas-lap > tbody").append(
-                  "<tr class='form-data clickable-row' id='"+ data[i]['_id']  +"'>"+
-                    "<td>"+
-                    data[i]['kode_petugas'] + "</td><td>" +
-                    data[i]['nama'] + "</td><td>" +
-                    data[i]['no_telp'] + "</td><td>" +
-                    data[i]['jabatan_petugas'] + "</td>" +
-                  "</tr>");
+                  if(data[i].jenis_petugas == '2') {
+                    $("#petugas-lap > tbody").append(
+                    "<tr class='form-data clickable-row' id='"+ data[i]['_id']  +"'>"+
+                      "<td>"+
+                      data[i]['kode_petugas'] + "</td><td>" +
+                      data[i]['nama'] + "</td><td>" +
+                      data[i]['no_telp'] + "</td><td>" +
+                      data[i]['jabatan_petugas'] + "</td>" +
+                    "</tr>");
+                  } else if (data[i].jenis_petugas == '1') {
+                    $("#pencacah-lap > tbody").append(
+                    "<tr class='form-data clickable-row' id='"+ data[i]['_id']  +"'>"+
+                      "<td>"+
+                      data[i]['kode_petugas'] + "</td><td>" +
+                      data[i]['nama'] + "</td><td>" +
+                      data[i]['no_telp'] + "</td><td>" +
+                      data[i]['jabatan_petugas'] + "</td>" +
+                    "</tr>");
+                    }
                   }
-            else
+            else {
                 $("#petugas-lap > tbody").append(
                 "<tr class='empty-data'>"+
                   "<td colspan='6'>Tidak ada data yang sesuai</td>"+
                 "</tr>");
-
-            // generate-clickHandler
-            var petugas_lap = document.getElementById('petugas-lap'),rIndex; // entri_p di ekstrak & jadi listener
-
-
-
-            for (var i=0; i<petugas_lap.rows.length; i++) {
-              petugas_lap.rows[i].onclick = function() {
-                    //--- onclick: change_state kec, desa, nks, sls
-
-                    var _kode = this.cells[0].innerHTML;
-                    var _nama = this.cells[1].innerHTML;
-                    var _noTelp = this.cells[2].innerHTML;
-                    var _status = this.cells[3].innerHTML;
-
-                    // alert(this.cells[4].innerHTML);
-
-                    // alert(form_entri_p_p1.cells[0].innerHTML);
-                    $('#edit-kode-petugas').val(_kode);
-                    $('#edit-nama-petugas').val(_nama);
-                    $('#edit-status').val(_status);
-                    $('#edit-telp').val(_noTelp);
-              };
-            }
-        }.bind(this));
-
+                $("#pencacah-lap > tbody").append(
+                "<tr class='empty-data'>"+
+                  "<td colspan='6'>Tidak ada data yang sesuai</td>"+
+                "</tr>");
+              }
+        });
   }
 
   changeHandlerSem(childComponent) {
@@ -400,9 +471,9 @@ class Petugas_lap extends Component {
           </tbody>
       </table>
 
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Pengawas</button>
-      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#edit" onClick={this.edit}>Edit</button>
-      <button type="button" class="btn btn-default" onClick={this.deletePengawas}>Delete</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Petugas</button>
+      <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#edit-pengawas" onClick={this.editPengawas}>Edit Pengawas</button>
+      <button type="button" class="btn btn-default" onClick={this.deletePengawas}>Delete Pengawas</button>
 
       </div>
 
@@ -428,9 +499,9 @@ class Petugas_lap extends Component {
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Pencacah</button>
-        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onClick={this.edit}>Edit</button>
-        <button type="button" class="btn btn-default" onClick={this.delete}>Delete</button>
+        <button type="button" class="btn btn-default"  data-toggle="modal" data-target="#add" onClick={this.add}>Add Petugas</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit-pencacah" onClick={this.editPencacah}>Edit Pencacah</button>
+        <button type="button" class="btn btn-default" onClick={this.deletePencacah}>Delete Pencacah</button>
       </div>
 
 
@@ -495,7 +566,7 @@ class Petugas_lap extends Component {
       </div>
 
 
-      <div id="edit" class="modal fade" role="dialog">
+      <div id="edit-pengawas" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
           <div class="modal-content">
@@ -509,36 +580,96 @@ class Petugas_lap extends Component {
               <tbody>
                 <tr>
                   <th>Semester :</th>
-                    <td><input type="text" class="form-control" id="edit-sem" disabled value={this.state.petugas_lap_sem_val}/>
-                    <input type="hidden" class="form-control" id="edit-id" disabled value=''/></td>
+                    <td><input type="text" class="form-control" id="edit-sem-pengawas" disabled value={this.state.petugas_lap_sem_val}/>
+                    <input type="hidden" class="form-control" id="edit-id-pengawas" disabled value=''/>
+                    <input type="hidden" class="form-control" id="pengawas-selected-id" disabled value=''/></td>
                 </tr>
                 <tr>
                   <th>Provinsi :</th>
-                    <td><input type="text" class="form-control" id="edit-prov" disabled value={this.state.petugas_lap_prov_val}/></td>
+                    <td><input type="text" class="form-control" id="edit-prov-pengawas" disabled value={this.state.petugas_lap_prov_val}/></td>
                 </tr>
                 <tr>
                   <th>Kabupaten :</th>
-                    <td><input type="text" class="form-control" id="edit-kab" disabled value={this.state.petugas_lap_kab_val}/></td>
+                    <td><input type="text" class="form-control" id="edit-kab-pengawas" disabled value={this.state.petugas_lap_kab_val}/></td>
                 </tr>
                 <tr>
                   <th>Kode Petugas :</th>
-                    <td><input type="text" class="form-control" id="edit-kode-petugas" /></td>
+                    <td><input type="text" class="form-control" id="edit-kode-pengawas" /></td>
                 </tr>
                 <tr>
                   <th>Nama Petugas :</th>
-                    <td><input type="text" class="form-control" id="edit-nama-petugas" /></td>
+                    <td><input type="text" class="form-control" id="edit-nama-pengawas" /></td>
                 </tr>
                 <tr>
                   <th>Deskripsi Status :</th>
-                    <td><input type="text" class="form-control" id="edit-status" /></td>
+                    <td><input type="text" class="form-control" id="edit-status-pengawas" /></td>
                 </tr>
                 <tr>
                   <th>No Telp :</th>
-                    <td><input type="text" class="form-control" id="edit-telp" /></td>
+                    <td><input type="text" class="form-control" id="edit-telp-pengawas" /></td>
                 </tr>
                 <tr>
                   <th>Jenis :</th>
-                    <td>Pencacah (1) / Pengawas (2)<input type="text" class="form-control" id="edit-jenis" /></td>
+                    <td>Pencacah (1) / Pengawas (2)<input type="text" class="form-control" id="edit-jenis-pengawas" /></td>
+                </tr>
+            </tbody>
+            </table>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" id="add-btn-save" onClick={this.saveEdit}>Save</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div id="edit-pencacah" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Edit Pencacah</h4>
+            </div>
+            <div class="modal-body">
+
+            <table class="table-condensed">
+              <tbody>
+                <tr>
+                  <th>Semester :</th>
+                    <td><input type="text" class="form-control" id="edit-sem-pencacah" disabled value={this.state.petugas_lap_sem_val}/>
+                    <input type="hidden" class="form-control" id="edit-id-pencacah" disabled value=''/>
+                    <input type="hidden" class="form-control" id="pencacah-selected-id" disabled value=''/></td>
+                </tr>
+                <tr>
+                  <th>Provinsi :</th>
+                    <td><input type="text" class="form-control" id="edit-prov-pencacah" disabled value={this.state.petugas_lap_prov_val}/></td>
+                </tr>
+                <tr>
+                  <th>Kabupaten :</th>
+                    <td><input type="text" class="form-control" id="edit-kab-pencacah" disabled value={this.state.petugas_lap_kab_val}/></td>
+                </tr>
+                <tr>
+                  <th>Kode Petugas :</th>
+                    <td><input type="text" class="form-control" id="edit-kode-pencacah" /></td>
+                </tr>
+                <tr>
+                  <th>Nama Petugas :</th>
+                    <td><input type="text" class="form-control" id="edit-nama-pencacah" /></td>
+                </tr>
+                <tr>
+                  <th>Deskripsi Status :</th>
+                    <td><input type="text" class="form-control" id="edit-status-pencacah" /></td>
+                </tr>
+                <tr>
+                  <th>No Telp :</th>
+                    <td><input type="text" class="form-control" id="edit-telp-pencacah" /></td>
+                </tr>
+                <tr>
+                  <th>Jenis :</th>
+                    <td>Pencacah (1) / Pengawas (2)<input type="text" class="form-control" id="edit-jenis-pencacah" /></td>
                 </tr>
             </tbody>
             </table>
