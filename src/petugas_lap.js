@@ -267,7 +267,7 @@ class Petugas_lap extends Component {
   save(jenis) {
 
     var add_petugas_sem = $('#add-sem').val();
-    var add_petugas_prov = $('#add-prov').val();
+    var add_petugas_prov = $('#petugas-lap-prov option:selected').val().substring(1,3);
     var add_petugas_kab = $('#add-kab').val();
     var add_petugas_kodepetugas = $('#add-kode-petugas').val();$('#add-kode-petugas').val("");
     var add_petugas_namapetugas = $('#add-nama-petugas').val();$('#add-nama-petugas').val("");
